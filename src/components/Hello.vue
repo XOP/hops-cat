@@ -3,18 +3,18 @@
 </template>
 
 <script>
-export default {
-  name: 'hello',
+    export default {
+        name: 'hello',
 
-  data () {
-    return {
-      msg: 'Hops Cat'
-    }
-  }
-}
+        data () {
+            return {
+                msg: 'Hops Cat'
+            };
+        }
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import 'hello.scss';
+    @import 'hello.scss';
 </style>
