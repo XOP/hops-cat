@@ -20,7 +20,11 @@
 </template>
 
 <script>
+    /* eslint-disable no-console */
+
     import Firebase from 'firebase';
+
+    const auth = require('../../../auth.json');
 
     const config = {
         apiKey: "AIzaSyAclic4voJf-mjs_dLwlpYqjzG9n_LvA7g",
@@ -33,6 +37,11 @@
 
     const firebaseApp = Firebase.initializeApp(config);
     const db = firebaseApp.database();
+
+    firebaseApp
+        .auth()
+        .signInWithEmailAndPassword(auth.email, auth.pass)
+        .catch((error) => console.error(error));
 
     const itemsRef = db.ref('items');
 
