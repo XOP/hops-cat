@@ -1,7 +1,5 @@
 <template>
     <section>
-        <h1>{{ msg }}</h1>
-
         <dl>
             <dt>items count</dt>
             <dd>{{ itemsCount }}</dd>
@@ -25,9 +23,7 @@
         name: 'hello',
 
         data () {
-            return {
-                msg: 'Hops Cat'
-            };
+            return {};
         },
 
         computed: {
