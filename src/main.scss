@@ -1,0 +1,15 @@
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-flow: column;
+
+    height: 100%;
+}
+
+.section {
+    padding: 1rem .75rem;
+    background: inherit;
+}

@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Hello from '@/components/Hello';
-import Catalogue from '@/components/catalogue/Catalogue';
+
+import Catalogue from '@/components/catalogue/';
+import Storage from '@/components/storage/';
 
 Vue.use(Router);
 
@@ -10,13 +11,13 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'Hello',
-            component: Hello
-        },
-        {
-            path: '/hops',
             name: 'Catalogue',
             component: Catalogue
+        },
+        {
+            path: '/storage',
+            name: 'Storage',
+            component: Storage
         }
     ]
 });

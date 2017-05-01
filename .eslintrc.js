@@ -20,11 +20,13 @@ module.exports = {
         "node": true
     },
     "rules": {
+        // fixme
+        "no-console": 0,
+
         "arrow-parens": 0,
         "generator-star-spacing": 0,
         "no-debugger": process.env.NODE_ENV === "production" ? 2 : 0,
         "quotes": 0,
-        "no-console": 1,
         "no-var": 1,
         "semi": [1, "always"],
         "no-trailing-spaces": 0,

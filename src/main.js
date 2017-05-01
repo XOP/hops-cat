@@ -10,6 +10,7 @@ import store from './store';
 
 import 'buefy/lib/buefy.css';
 import './assets/styles/font-awesome.min.css';
+import './main.scss';
 
 Vue.config.productionTip = false;
 

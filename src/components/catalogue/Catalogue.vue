@@ -1,6 +1,6 @@
 <template>
     <section>
-        <h1>Catalogue</h1>
+        <h1 class="title is-3">Catalogue</h1>
 
         <section>
             <h2>Add new item</h2>
@@ -20,8 +20,6 @@
 </template>
 
 <script>
-    /* eslint-disable no-console */
-
     import Firebase from 'firebase';
 
     const auth = require('../../../auth.json');
@@ -73,5 +71,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import 'catalogue.scss';
+    @import './catalogue.scss';
 </style>

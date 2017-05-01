@@ -1,5 +1,7 @@
 <template>
     <section>
+        <h1 class="title is-3">Storage</h1>
+
         <dl>
             <dt>items count</dt>
             <dd>{{ itemsCount }}</dd>
@@ -45,7 +47,6 @@
     };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-    @import 'hello.scss';
+    @import './storage.scss';
 </style>
