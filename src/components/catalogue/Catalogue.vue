@@ -2,7 +2,7 @@
     <section>
         <h1 class="title is-3">Catalogue</h1>
 
-        <section class="section">
+        <section class="section" v-if="!debug">
             <h2 class="title is-4">Add new item</h2>
             <div>
                 <input type="text" v-model="newItem.name" />
@@ -35,7 +35,9 @@
             </div>
 
             <ul>
-                <li v-for="item in itemsProcessed">{{ item.name }}</li>
+                <li v-for="item in itemsProcessed">
+                    <pre><code>{{ JSON.stringify(item, null, '  ') }}</code></pre>
+                </li>
             </ul>
         </section>
     </section>
@@ -45,6 +47,9 @@
     import Firebase from 'firebase';
 
     const auth = require('../../../auth.json');
+    const local = require('../../../local.json');
+
+    import mockItems from '../../fixtures/items';
 
     const config = {
         apiKey: "AIzaSyAclic4voJf-mjs_dLwlpYqjzG9n_LvA7g",
@@ -65,17 +70,25 @@
 
     const itemsRef = db.ref('items');
 
-    export default {
-        name: 'catalogue',
-
-        firebase: function () {
+    const firebaseData = local.debug ?
+        (() => null) :
+        (() => {
             return {
                 items: itemsRef
             };
-        },
+        });
+
+    export default {
+        name: 'catalogue',
+
+        firebase: firebaseData,
 
         data () {
             return {
+                debug: local.debug,
+
+                items: local.debug ? mockItems : null,
+
                 newItem: {},
 
                 defaultOrder: true,
