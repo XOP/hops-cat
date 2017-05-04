@@ -49,7 +49,10 @@
     const auth = require('../../../auth.json');
     const local = require('../../../local.json');
 
-    import mockItems from '../../fixtures/items';
+    import {
+        Items as mockItems,
+        Styles as mockStyles
+    } from '../../fixtures';
 
     const config = {
         apiKey: "AIzaSyAclic4voJf-mjs_dLwlpYqjzG9n_LvA7g",
@@ -69,12 +72,14 @@
         .catch((error) => console.error(error));
 
     const itemsRef = db.ref('items');
+    const stylesRef = db.ref('styles');
 
     const firebaseData = local.debug ?
         (() => null) :
         (() => {
             return {
-                items: itemsRef
+                items: itemsRef,
+                styles: stylesRef
             };
         });
 
@@ -88,6 +93,7 @@
                 debug: local.debug,
 
                 items: local.debug ? mockItems : null,
+                styles: local.debug ? mockStyles : null,
 
                 newItem: {},
 
