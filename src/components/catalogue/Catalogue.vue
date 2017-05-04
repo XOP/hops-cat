@@ -36,7 +36,7 @@
 
             <ul>
                 <li v-for="item in itemsProcessed">
-                    <pre><code>{{ JSON.stringify(item, null, '  ') }}</code></pre>
+                    <catalogue-item>{{ JSON.stringify(item, null, '  ') }}</catalogue-item>
                 </li>
             </ul>
         </section>
@@ -44,6 +44,8 @@
 </template>
 
 <script>
+    import CatalogueItem from '../catalogue-item';
+
     import Firebase from 'firebase';
 
     const auth = require('../../../auth.json');
@@ -87,6 +89,10 @@
         name: 'catalogue',
 
         firebase: firebaseData,
+
+        components: {
+            'catalogue-item': CatalogueItem
+        },
 
         data () {
             return {

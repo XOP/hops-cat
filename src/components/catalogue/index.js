@@ -1,3 +1,3 @@
-import Cataloge from './Catalogue.vue';
+import Catalogue from './Catalogue.vue';
 
-export default Cataloge;
+export default Catalogue;
