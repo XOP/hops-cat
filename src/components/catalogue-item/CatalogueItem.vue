@@ -9,6 +9,12 @@
         <td class="table-cell has-text-centered">
             {{usageFormatted}}
         </td>
+        <td class="table-cell has-text-centered">
+            {{alphaFormatted}}
+        </td>
+        <td class="table-cell has-text-centered">
+            {{betaFormatted}}
+        </td>
     </tr>
 </template>
 
@@ -35,6 +41,16 @@
             usage: {
                 type: Array,
                 default: []
+            },
+
+            alpha: {
+                type: Object,
+                default: 'NA'
+            },
+
+            beta: {
+                type: Object,
+                default: 'NA'
             }
         },
 
@@ -62,6 +78,24 @@
                 }
 
                 return usage;
+            },
+
+            alphaFormatted: function () {
+                // todo: check if empty
+
+                return this.average(this.alpha.min, this.alpha.max);
+            },
+
+            betaFormatted: function () {
+                // todo: check if empty
+
+                return this.average(this.beta.min, this.beta.max);
+            }
+        },
+
+        methods: {
+            average: (min, max) => {
+                return ((min + max) / 2).toFixed(1);
             }
         }
     };

@@ -21,6 +21,10 @@ body {
 }
 
 .table-cell {
+    &.has-text-centered {
+        text-align: center;
+    }
+
     &.--w-min {
         width: .5rem;
     }

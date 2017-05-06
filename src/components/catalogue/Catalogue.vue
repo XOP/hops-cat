@@ -10,10 +10,8 @@
             </div>
         </section>
 
-        <section class="section">
-            <h2 class="title is-4">Existing items</h2>
-
-            <div class="field">
+        <section>
+            <div class="box">
                 Sort:
 
                 <button
@@ -37,9 +35,11 @@
             <table class="catalogue__table table">
                 <thead>
                     <tr>
-                        <th class="table-cell --w-min">#</th>
+                        <th class="table-cell --w-min has-text-centered">#</th>
                         <th class="table-cell --w-max">Name</th>
-                        <th class="table-cell --w-min">Usage</th>
+                        <th class="table-cell --w-min has-text-centered">Usage</th>
+                        <th class="table-cell --w-min has-text-centered">alpha, %</th>
+                        <th class="table-cell --w-min has-text-centered">beta, %</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +49,8 @@
                         :index="index + 1"
                         :name="item.name"
                         :usage="item.usage"
+                        :alpha="item.alpha"
+                        :beta="item.beta"
                     >
                     </catalogue-item>
                 </tbody>

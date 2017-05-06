@@ -72,5 +72,82 @@ export default [
             },
         },
         notes: "One of the most popular American hops, extremely versatile"
+    },
+    {
+        name: "Amarillo",
+        alias: [
+            "VGXP01"
+        ],
+        usage: [
+            "A",
+            "B"
+        ],
+        country: [
+            "USA"
+        ],
+        similar: [
+            "Cascade",
+            "Ahtanum"
+        ],
+        styles: [
+            "18",
+            "21"
+        ],
+        types: [
+            "pellet",
+            "leaf/whole"
+        ],
+        shelf_life: 5,
+        aroma: {
+            primary: [
+                "flower"
+            ],
+            secondary: [
+                "citrus",
+                "grapefruit"
+            ],
+            rest: [
+                "orange",
+                "lemon",
+                "melon",
+                "apricot",
+                "peach"
+            ]
+        },
+        alpha: {
+            min: 8,
+            max: 11
+        },
+        beta: {
+            min: 6,
+            max: 7
+        },
+        co: {
+            min: 21,
+            max: 24
+        },
+        oil: {
+            total: {
+                min: 1.5,
+                max: 1.9
+            },
+            myr: {
+                min: 68,
+                max: 70
+            },
+            hum: {
+                min: 9,
+                max: 11
+            },
+            car: {
+                min: 2,
+                max: 4
+            },
+            far: {
+                min: 2,
+                max: 4
+            },
+        },
+        notes: "Is in the top-10 hops of craft beer industry"
     }
 ];
