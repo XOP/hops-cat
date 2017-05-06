@@ -7,9 +7,29 @@ body {
     flex-flow: column;
 
     height: 100%;
+
+    line-height: 1.5;
 }
 
 .section {
     padding: 1rem .75rem;
     background: inherit;
+}
+
+.table-row {
+
+}
+
+.table-cell {
+    &.--w-min {
+        width: .5rem;
+    }
+
+    &.--w-max {
+
+    }
+
+    &.--w-10 {
+        width: 10%;
+    }
 }

@@ -34,11 +34,25 @@
                 </button>
             </div>
 
-            <ul>
-                <li v-for="item in itemsProcessed">
-                    <catalogue-item>{{ JSON.stringify(item, null, '  ') }}</catalogue-item>
-                </li>
-            </ul>
+            <table class="catalogue__table table">
+                <thead>
+                    <tr>
+                        <th class="table-cell --w-min">#</th>
+                        <th class="table-cell --w-max">Name</th>
+                        <th class="table-cell --w-min">Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <catalogue-item
+                        v-for="(item, index) in itemsProcessed"
+                        :key="item.key"
+                        :index="index + 1"
+                        :name="item.name"
+                        :usage="item.usage"
+                    >
+                    </catalogue-item>
+                </tbody>
+            </table>
         </section>
     </section>
 </template>

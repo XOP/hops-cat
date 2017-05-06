@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "buefy": "^0.2.1",
+    "classnames": "^2.2.5",
     "firebase": "^3.8.0",
     "vue": "^2.2.6",
     "vue-router": "^2.3.1",
