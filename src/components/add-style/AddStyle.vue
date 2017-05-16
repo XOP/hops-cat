@@ -2,26 +2,32 @@
     <section>
         <h1 class="title is-3">Add new Style</h1>
 
-        <form>
-            <b-field grouped>
-                <b-input placeholder="Name" expanded name="name" required></b-input>
-                <b-input placeholder="Category" expanded name="category" required></b-input>
-            </b-field>
+        <div class="columns">
+            <div class="column is-half">
 
-            <b-field grouped>
-                <b-field expanded>
-                    <b-input placeholder="Code" name="code" required></b-input>
-                </b-field>
-                <b-field expanded>
-                    <b-input placeholder="Letter Code" name="sub_code"></b-input>
-                </b-field>
-                <b-field expanded>
-                    <b-input placeholder="Family" name="family" required></b-input>
-                </b-field>
-            </b-field>
+                <form>
+                    <b-field grouped>
+                        <b-field label="Name" expanded>
+                            <b-input placeholder="Double IPA" name="name" required v-model="newStyle.name"></b-input>
+                        </b-field>
+                        <b-field label="Category" expanded>
+                            <b-input placeholder="Strong American Ale" name="category" required v-model="newStyle.category"></b-input>
+                        </b-field>
+                        <b-field label="Family" expanded>
+                            <b-input placeholder="IPA" name="family" required v-model="newStyle.family"></b-input>
+                        </b-field>
+                    </b-field>
 
-            <div class="columns">
-                <div class="column is-half is-offset-one-quarter has-text-centered">
+                    <b-field grouped>
+                        <b-field label="Code" expanded>
+                            <b-input placeholder="22" name="code" required v-model="newStyle.code"></b-input>
+                        </b-field>
+                        <b-field label="Letter Code" expanded>
+                            <b-input placeholder="A" name="sub_code" v-model="newStyle.sub_code"></b-input>
+                        </b-field>
+
+                    </b-field>
+
                     <b-field grouped>
                         <div class="control is-expanded">
                             <button class="button is-primary is-fullwidth" @click.prevent="addStyle">
@@ -29,16 +35,17 @@
                                 <span>Add</span>
                             </button>
                         </div>
-                        <div class="control is-expanded">
+                        <div class="control">
                             <button class="button is-fullwidth" @click.prevent="clearFields">
                                 <b-icon icon="eraser"></b-icon>
                                 <span>Clear</span>
                             </button>
                         </div>
                     </b-field>
-                </div>
+                </form>
+
             </div>
-        </form>
+        </div>
     </section>
 </template>
 
@@ -52,7 +59,13 @@
 
         data () {
             return {
-
+                newStyle: {
+                    name: '',
+                    category: '',
+                    code: '',
+                    sub_code: '',
+                    family: ''
+                }
             };
         },
 
@@ -62,11 +75,15 @@
 
         methods: {
             addStyle: function () {
-
+                this.clearFields();
             },
 
             clearFields: function () {
-
+                this.newStyle.name = '';
+                this.newStyle.category = '';
+                this.newStyle.code = '';
+                this.newStyle.sub_code = '';
+                this.newStyle.family = '';
             }
         }
     };
