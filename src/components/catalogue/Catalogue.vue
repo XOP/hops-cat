@@ -60,9 +60,11 @@
 </template>
 
 <script>
+    import Firebase from 'firebase';
+
     import CatalogueItem from '../catalogue-item';
 
-    import Firebase from 'firebase';
+    import { FIREBASE_CFG } from '../../constants/firebase';
 
     const auth = require('../../../auth.json');
     const local = require('../../../local.json');
@@ -72,16 +74,7 @@
         Styles as mockStyles
     } from '../../fixtures';
 
-    const config = {
-        apiKey: "AIzaSyAclic4voJf-mjs_dLwlpYqjzG9n_LvA7g",
-        authDomain: "hops-cat.firebaseapp.com",
-        databaseURL: "https://hops-cat.firebaseio.com",
-        projectId: "hops-cat",
-        storageBucket: "hops-cat.appspot.com",
-        messagingSenderId: "64878387063"
-    };
-
-    const firebaseApp = Firebase.initializeApp(config);
+    const firebaseApp = Firebase.initializeApp(FIREBASE_CFG);
     const db = firebaseApp.database();
 
     firebaseApp
