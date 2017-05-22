@@ -45,13 +45,44 @@
                 </form>
 
             </div>
+
+            <div class="column is-half">
+                <ul>
+                    <li v-for="style in styles">
+                        <b>
+                            {{ style.code }}{{ style.sub_code }}
+                        </b>
+                        {{ style.name }}
+                    </li>
+                </ul>
+            </div>
         </div>
     </section>
 </template>
 
 <script>
+    import db from '../../firebase';
+
+    import local from '../../../local.json';
+
+    import {
+        Styles as mockStyles
+    } from '../../fixtures';
+
+    const stylesRef = db.ref('styles');
+
+    const firebaseData = local.debug ?
+        (() => null) :
+        (() => {
+            return {
+                styles: stylesRef
+            };
+        });
+
     export default {
         name: 'add-style',
+
+        firebase: firebaseData,
 
         props: {
 
@@ -59,6 +90,8 @@
 
         data () {
             return {
+                styles: local.debug ? mockStyles : null,
+
                 newStyle: {
                     name: '',
                     category: '',
@@ -75,6 +108,8 @@
 
         methods: {
             addStyle: function () {
+                stylesRef.push(this.newStyle);
+
                 this.clearFields();
             },
 

@@ -9,3 +9,6 @@ yarn-error.log*
 
 auth.json
 local.json
+
+_temp
+_todo

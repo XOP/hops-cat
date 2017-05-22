@@ -60,27 +60,16 @@
 </template>
 
 <script>
-    import Firebase from 'firebase';
+    import db from '../../firebase';
+
+    import local from '../../../local.json';
 
     import CatalogueItem from '../catalogue-item';
-
-    import { FIREBASE_CFG } from '../../constants/firebase';
-
-    const auth = require('../../../auth.json');
-    const local = require('../../../local.json');
 
     import {
         Items as mockItems,
         Styles as mockStyles
     } from '../../fixtures';
-
-    const firebaseApp = Firebase.initializeApp(FIREBASE_CFG);
-    const db = firebaseApp.database();
-
-    firebaseApp
-        .auth()
-        .signInWithEmailAndPassword(auth.email, auth.pass)
-        .catch((error) => console.error(error));
 
     const itemsRef = db.ref('items');
     const stylesRef = db.ref('styles');
