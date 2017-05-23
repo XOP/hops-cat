@@ -7,7 +7,6 @@ yarn-error.log*
 
 .idea
 
-auth.json
 local.json
 
 _temp

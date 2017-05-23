@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import Auth from '@/components/auth/';
 
 import Catalogue from '@/components/catalogue/';
 import Storage from '@/components/storage/';
@@ -20,6 +21,11 @@ export default new Router({
             path: '/add-style',
             name: 'AddStyle',
             component: AddStyle
+        },
+        {
+            path: '/auth',
+            name: 'Auth',
+            component: Auth
         },
         {
             path: '/storage',
