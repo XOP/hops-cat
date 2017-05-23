@@ -51,7 +51,8 @@
                     .then(() => {
                         this.$snackbar.open({
                             message: `User ${this.email} is now authorized!`,
-                            actionText: 'OK'
+                            actionText: 'OK',
+                            position: 'top'
                         });
 
                         this.email = '';
@@ -61,7 +62,8 @@
                         this.$snackbar.open({
                             message: `Sorry, something is wrong: ${error}`,
                             actionText: 'Ouch!',
-                            type: 'is-danger'
+                            type: 'is-danger',
+                            position: 'top'
                         });
 
                         this.pass = '';
