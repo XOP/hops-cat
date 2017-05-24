@@ -47,14 +47,24 @@
             </div>
 
             <div class="column is-half">
-                <ul>
-                    <li v-for="style in styles">
-                        <b>
-                            {{ style.code }}{{ style.sub_code }}
-                        </b>
-                        {{ style.name }}
-                    </li>
-                </ul>
+                <table class="table is-narrow">
+                    <thead>
+                    <tr>
+                        <th>Code / Group</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Family</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr @click="fillFormFields(style)" v-for="style in styles">
+                        <td>{{ style.code }} / {{ style.sub_code }}</td>
+                        <td>{{ style.name }}</td>
+                        <td>{{ style.category }}</td>
+                        <td>{{ style.family }}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
@@ -119,6 +129,14 @@
                 this.newStyle.code = '';
                 this.newStyle.sub_code = '';
                 this.newStyle.family = '';
+            },
+
+            fillFormFields: function (dbStyle) {
+                this.newStyle.name = dbStyle.name;
+                this.newStyle.category = dbStyle.category;
+                this.newStyle.code = dbStyle.code;
+                this.newStyle.sub_code = dbStyle.sub_code;
+                this.newStyle.family = dbStyle.family;
             }
         }
     };
