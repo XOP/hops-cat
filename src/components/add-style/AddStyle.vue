@@ -71,6 +71,8 @@
 </template>
 
 <script>
+    import _find from 'lodash/find';
+
     import db from '../../firebase';
 
     import local from '../../../local.json';
@@ -118,9 +120,28 @@
 
         methods: {
             addStyle: function () {
-                stylesRef.push(this.newStyle);
+                const newStyle = this.newStyle;
+                const newStyleCode = `${newStyle.code}/${newStyle.sub_code}`;
 
-                this.clearFields();
+                if (!_find(this.styles, {code: newStyle.code, sub_code: newStyle.sub_code})) {
+                    this.$snackbar.open({
+                        message: `Style ${newStyleCode} successfully added!`,
+                        actionText: 'OK',
+                        position: 'top',
+                        duration: 1500
+                    });
+
+                    stylesRef.push(newStyle);
+                    this.clearFields();
+                } else {
+                    this.$snackbar.open({
+                        message: `Style ${newStyleCode} already exists!`,
+                        actionText: 'Got it',
+                        position: 'top',
+                        type: 'is-danger',
+                        duration: 1500
+                    });
+                }
             },
 
             clearFields: function () {
