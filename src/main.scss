@@ -37,3 +37,8 @@ body {
         width: 10%;
     }
 }
+
+.h-vertical-overflow {
+    max-height: 100%;
+    overflow: scroll;
+}

@@ -47,24 +47,34 @@
             </div>
 
             <div class="column is-half">
-                <table class="table is-narrow">
-                    <thead>
-                    <tr>
-                        <th>Code / Group</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Family</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr @click="fillFormFields(style)" v-for="style in styles">
-                        <td>{{ style.code }} / {{ style.sub_code }}</td>
-                        <td>{{ style.name }}</td>
-                        <td>{{ style.category }}</td>
-                        <td>{{ style.family }}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="h-vertical-overflow">
+
+                    <table class="add-style__table table is-narrow">
+                        <thead>
+                        <tr>
+                            <th>Code / Group</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Family</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr @click="fillFormFields(style)" v-for="style in stylesProcessed">
+                            <td>{{ style.code }} / {{ style.sub_code }}</td>
+                            <td>{{ style.name }}</td>
+                            <td>{{ style.category }}</td>
+                            <td>{{ style.family }}</td>
+                            <td>
+                                <button class="button add-style__delete">
+                                    <b-icon icon="trash-o"></b-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
         </div>
     </section>
@@ -85,11 +95,9 @@
 
     const firebaseData = local.debug ?
         (() => null) :
-        (() => {
-            return {
-                styles: stylesRef
-            };
-        });
+        (() => ({
+            styles: stylesRef.orderByKey()
+        }));
 
     export default {
         name: 'add-style',
@@ -115,7 +123,9 @@
         },
 
         computed: {
-
+            stylesProcessed: function () {
+                return this.styles.slice().reverse();
+            }
         },
 
         methods: {
@@ -131,8 +141,9 @@
                         duration: 1500
                     });
 
-                    stylesRef.push(newStyle);
-                    this.clearFields();
+                    this.$firebaseRefs.styles.push(newStyle).then(() => {
+                        this.clearFields();
+                    });
                 } else {
                     this.$snackbar.open({
                         message: `Style ${newStyleCode} already exists!`,

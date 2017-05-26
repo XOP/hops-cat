@@ -1,3 +1,11 @@
-.catalogue-item {
-    font-size: inherit;
+.columns {
+    height: 80vh;
+}
+
+.add-style__delete {
+    visibility: hidden;
+}
+
+.add-style__table tr:hover .add-style__delete {
+    visibility: visible;
 }
