@@ -66,7 +66,7 @@
                             <td>{{ style.category }}</td>
                             <td>{{ style.family }}</td>
                             <td>
-                                <button class="button add-style__delete">
+                                <button class="button add-style__delete" @click.stop="removeStyle(style)">
                                     <b-icon icon="trash-o"></b-icon>
                                 </button>
                             </td>
@@ -134,14 +134,14 @@
                 const newStyleCode = `${newStyle.code}/${newStyle.sub_code}`;
 
                 if (!_find(this.styles, {code: newStyle.code, sub_code: newStyle.sub_code})) {
-                    this.$snackbar.open({
-                        message: `Style ${newStyleCode} successfully added!`,
-                        actionText: 'OK',
-                        position: 'top',
-                        duration: 1500
-                    });
-
                     this.$firebaseRefs.styles.push(newStyle).then(() => {
+                        this.$snackbar.open({
+                            message: `Style ${newStyleCode} successfully added!`,
+                            actionText: 'OK',
+                            position: 'top',
+                            duration: 1500
+                        });
+
                         this.clearFields();
                     });
                 } else {
@@ -153,6 +153,17 @@
                         duration: 1500
                     });
                 }
+            },
+
+            removeStyle: function (dbStyle) {
+                this.$firebaseRefs.styles.child(dbStyle['.key']).remove().then(() => {
+                    this.$snackbar.open({
+                        message: `Deleted successfully`,
+                        type: 'is-warning',
+                        position: 'top',
+                        duration: 1500
+                    });
+                });
             },
 
             clearFields: function () {
