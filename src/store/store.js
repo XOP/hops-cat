@@ -4,7 +4,8 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 const state = {
-    itemsCount: 5
+    itemsCount: 5,
+    fitScreen: false
 };
 
 const getters = {
@@ -20,6 +21,14 @@ const mutations = {
 
     removeItem (state) {
         state.itemsCount--;
+    },
+
+    enableFitScreen (state) {
+        state.fitScreen = true;
+    },
+
+    disableFitScreen (state) {
+        state.fitScreen = false;
     }
 };
 
@@ -41,6 +50,14 @@ const actions = {
                 resolve();
             }, 500);
         });
+    },
+
+    enableFitScreen ({ commit }) {
+        commit('enableFitScreen');
+    },
+
+    disableFitScreen ({ commit }) {
+        commit('disableFitScreen');
     }
 };
 

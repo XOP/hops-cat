@@ -20,7 +20,10 @@ export default new Router({
         {
             path: '/add-style',
             name: 'AddStyle',
-            component: AddStyle
+            component: AddStyle,
+            props: {
+                fitScreen: true
+            }
         },
         {
             path: '/auth',

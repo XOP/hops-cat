@@ -2,7 +2,7 @@
     <div class="app">
         <app-header></app-header>
 
-        <main role="main" class="main section">
+        <main role="main" :class="mainClassname">
             <router-view></router-view>
         </main>
 
@@ -11,6 +11,10 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
+
+    import cls from 'classnames';
+
     import Header from './Header.vue';
     import Footer from './Footer.vue';
 
@@ -21,6 +25,18 @@
             'app-header': Header,
             'app-footer': Footer
         },
+
+        computed: {
+            ...mapState([
+                'fitScreen'
+            ]),
+
+            mainClassname: function () {
+                return cls('main section', {
+                    'is-fit-screen': this.fitScreen
+                });
+            }
+        }
     };
 </script>
 

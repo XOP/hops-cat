@@ -47,7 +47,7 @@
             </div>
 
             <div class="column is-half">
-                <div class="h-vertical-overflow">
+                <div class="is-auto-overflow-vertical">
 
                     <table class="add-style__table table is-narrow">
                         <thead>
@@ -81,6 +81,8 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex';
+
     import _find from 'lodash/find';
 
     import db from '../../firebase';
@@ -105,7 +107,9 @@
         firebase: firebaseData,
 
         props: {
-
+            fitScreen: {
+                type: Boolean
+            }
         },
 
         data () {
@@ -122,6 +126,18 @@
             };
         },
 
+        beforeMount: function () {
+            if (this.fitScreen) {
+                this.enableFitScreen();
+            } else {
+                this.disableFitScreen();
+            }
+        },
+
+        beforeDestroy: function () {
+            this.disableFitScreen();
+        },
+
         computed: {
             stylesProcessed: function () {
                 return this.styles.slice().reverse();
@@ -129,6 +145,11 @@
         },
 
         methods: {
+            ...mapActions([
+                'enableFitScreen',
+                'disableFitScreen'
+            ]),
+
             addStyle: function () {
                 const newStyle = this.newStyle;
                 const newStyleCode = `${newStyle.code}/${newStyle.sub_code}`;

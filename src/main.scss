@@ -1,3 +1,6 @@
+/* Core
+-------------------------------------------------- */
+
 html {
     height: 100%;
 }
@@ -11,10 +14,46 @@ body {
     line-height: 1.5;
 }
 
+main.is-fit-screen {
+    display: flex;
+
+    flex: 1 1 100%;
+    flex-flow: column;
+
+    & > section {
+        display: flex;
+
+        flex-flow: column;
+    }
+}
+
+/* /Core
+-------------------------------------------------- */
+
+
+/* Overrides
+-------------------------------------------------- */
+
 .section {
     padding: 1rem .75rem;
     background: inherit;
 }
+
+/* /Overrides
+-------------------------------------------------- */
+
+
+/* Layout
+-------------------------------------------------- */
+
+.is-auto-overflow-vertical {
+    max-height: 100%;
+    overflow: scroll;
+}
+
+/* /Layout
+-------------------------------------------------- */
+
 
 .table-row {
 
@@ -36,9 +75,4 @@ body {
     &.--w-10 {
         width: 10%;
     }
-}
-
-.h-vertical-overflow {
-    max-height: 100%;
-    overflow: scroll;
 }
