@@ -31,8 +31,8 @@
                     <b-field grouped>
                         <div class="control is-expanded">
                             <button class="button is-primary is-fullwidth" @click.prevent="addStyle">
-                                <b-icon icon="plus"></b-icon>
-                                <span>Add</span>
+                                <b-icon :icon="selectedStyle.code ? 'wrench' : 'plus'"></b-icon>
+                                <span v-text="selectedStyle.code ? 'Update' : 'Add'"></span>
                             </button>
                         </div>
                         <div class="control">
@@ -122,7 +122,9 @@
                     code: '',
                     sub_code: '',
                     family: ''
-                }
+                },
+
+                selectedStyle: {}
             };
         },
 
@@ -168,10 +170,24 @@
                 } else {
                     this.$snackbar.open({
                         message: `Style ${newStyleCode} already exists!`,
-                        actionText: 'Got it',
+                        actionText: 'Override',
                         position: 'top',
-                        type: 'is-danger',
-                        duration: 1500
+                        type: 'is-warning',
+                        duration: 2500,
+                        onAction: () => {
+                            this.$firebaseRefs.styles
+                                .child(this.selectedStyle['.key'])
+                                .set({...newStyle}).then(() => {
+                                    this.$snackbar.open({
+                                        message: `Style ${newStyleCode} successfully updated!`,
+                                        actionText: 'OK',
+                                        position: 'top',
+                                        duration: 1500
+                                    });
+
+                                    this.clearFields();
+                            });
+                        }
                     });
                 }
             },
@@ -187,7 +203,17 @@
                 });
             },
 
+            selectStyle: function (dbStyle) {
+                this.selectedStyle = {...dbStyle};
+            },
+
+            clearSelected: function () {
+                this.selectedStyle = {};
+            },
+
             clearFields: function () {
+                this.clearSelected();
+
                 this.newStyle.name = '';
                 this.newStyle.category = '';
                 this.newStyle.code = '';
@@ -196,6 +222,8 @@
             },
 
             fillFormFields: function (dbStyle) {
+                this.selectStyle(dbStyle);
+
                 this.newStyle.name = dbStyle.name;
                 this.newStyle.category = dbStyle.category;
                 this.newStyle.code = dbStyle.code;
