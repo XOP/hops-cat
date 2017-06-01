@@ -31,8 +31,8 @@
                     <b-field grouped>
                         <div class="control is-expanded">
                             <button class="button is-primary is-fullwidth" @click.prevent="addStyle">
-                                <b-icon :icon="selectedStyle.code ? 'wrench' : 'plus'"></b-icon>
-                                <span v-text="selectedStyle.code ? 'Update' : 'Add'"></span>
+                                <b-icon :icon="isStyleUpdated ? 'wrench' : 'plus'"></b-icon>
+                                <span v-text="isStyleUpdated ? 'Update' : 'Add'"></span>
                             </button>
                         </div>
                         <div class="control">
@@ -83,6 +83,7 @@
 <script>
     import { mapActions } from 'vuex';
 
+    import _isEmpty from 'lodash/isEmpty';
     import _find from 'lodash/find';
 
     import db from '../../firebase';
@@ -141,6 +142,25 @@
         },
 
         computed: {
+            isStyleUpdated: function () {
+                if (_isEmpty(this.selectedStyle)) return false;
+
+                const selected = this.selectedStyle;
+                const edited = this.newStyle;
+
+                if (
+                    selected.code === edited.code &&
+                    selected.sub_code === edited.sub_code &&
+                    (
+                        selected.name !== edited.name ||
+                        selected.category !== edited.category ||
+                        selected.family !== edited.family
+                    )
+                ) {
+                    return true;
+                }
+            },
+
             stylesProcessed: function () {
                 return this.styles.slice().reverse();
             }
