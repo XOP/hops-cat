@@ -1,15 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex);
-
 const state = {
-    itemsCount: 5,
-    fitScreen: false
+    itemsCount: 5
 };
 
 const getters = {
-    isCatEmpty: state => {
+    isCatEmpty (state) {
         return state.itemsCount === 0;
     }
 };
@@ -21,14 +15,6 @@ const mutations = {
 
     removeItem (state) {
         state.itemsCount--;
-    },
-
-    enableFitScreen (state) {
-        state.fitScreen = true;
-    },
-
-    disableFitScreen (state) {
-        state.fitScreen = false;
     }
 };
 
@@ -50,20 +36,13 @@ const actions = {
                 resolve();
             }, 500);
         });
-    },
-
-    enableFitScreen ({ commit }) {
-        commit('enableFitScreen');
-    },
-
-    disableFitScreen ({ commit }) {
-        commit('disableFitScreen');
     }
 };
 
-export default new Vuex.Store({
+export default {
+    namespaced: true,
     state,
     getters,
     mutations,
     actions
-});
+};

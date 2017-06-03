@@ -1,3 +1,14 @@
-import Store from './store';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-export default Store;
+Vue.use(Vuex);
+
+import HelpersStore from './modules/helpers-store';
+import SimpleStore from './modules/simple-store';
+
+export default new Vuex.Store({
+    modules: {
+        helpers: HelpersStore,
+        simple: SimpleStore
+    }
+});

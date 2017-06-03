@@ -167,7 +167,7 @@
         },
 
         methods: {
-            ...mapActions([
+            ...mapActions('helpers', [
                 'enableFitScreen',
                 'disableFitScreen'
             ]),

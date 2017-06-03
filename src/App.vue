@@ -27,7 +27,7 @@
         },
 
         computed: {
-            ...mapState([
+            ...mapState('helpers', [
                 'fitScreen'
             ]),
 

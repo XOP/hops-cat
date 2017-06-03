@@ -29,16 +29,16 @@
         },
 
         computed: {
-            ...mapState([
+            ...mapState('simple', [
                 'itemsCount'
             ]),
-            ...mapGetters([
+            ...mapGetters('simple', [
                 'isCatEmpty'
             ])
         },
 
         methods: {
-            ...mapActions([
+            ...mapActions('simple', [
                 'addItem',
                 'addItemAsync',
                 'removeItem'
