@@ -1,30 +1,30 @@
+import localStore from 'store2';
+
 const state = {
-    isDebugMode: false
+    isDebugMode: localStore('isDebugMode')
 };
 
 const mutations = {
     enableDebugMode (state) {
         state.isDebugMode = true;
-
-        // todo: cleanup
-        console.log(state.isDebugMode);
     },
 
     disableDebugMode (state) {
         state.isDebugMode = false;
-
-        // todo: cleanup
-        console.log(state.isDebugMode);
     }
 };
 
 const actions = {
     enableDebugMode ({ commit }) {
         commit('enableDebugMode');
+
+        localStore('isDebugMode', true);
     },
 
     disableDebugMode ({ commit }) {
         commit('disableDebugMode');
+
+        localStore('isDebugMode', false);
     }
 };
 
