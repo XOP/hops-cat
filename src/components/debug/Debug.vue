@@ -10,20 +10,20 @@
 <script>
     import cls from 'classnames';
 
+    import { mapActions, mapState } from 'vuex';
+
     export default {
         name: 'debug',
-
-        data () {
-            return {
-                isDebugMode: false
-            };
-        },
 
         beforeMount: function () {
 
         },
 
         computed: {
+            ...mapState('debug', [
+                'isDebugMode'
+            ]),
+
             buttonClassName: function () {
                 return cls('button is-small is-success is-outlined', {
                     'is-inverted': this.isDebugMode
@@ -32,8 +32,17 @@
         },
 
         methods: {
+            ...mapActions('debug', [
+                'enableDebugMode',
+                'disableDebugMode'
+            ]),
+
             toggleDebugMode: function () {
-                this.isDebugMode = !this.isDebugMode;
+                if (this.isDebugMode) {
+                    this.disableDebugMode();
+                } else {
+                    this.enableDebugMode();
+                }
             }
         }
     };

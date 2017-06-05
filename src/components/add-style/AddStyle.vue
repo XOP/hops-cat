@@ -81,14 +81,12 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
+    import { mapActions, mapState } from 'vuex';
 
     import _isEmpty from 'lodash/isEmpty';
     import _find from 'lodash/find';
 
     import db from '../../firebase';
-
-    import local from '../../../local.json';
 
     import {
         Styles as mockStyles
@@ -96,16 +94,12 @@
 
     const stylesRef = db.ref('styles');
 
-    const firebaseData = local.debug ?
-        (() => null) :
-        (() => ({
-            styles: stylesRef.orderByKey()
-        }));
-
     export default {
         name: 'add-style',
 
-        firebase: firebaseData,
+        firebase: () => ({
+            dbStyles: stylesRef.orderByKey()
+        }),
 
         props: {
             fitScreen: {
@@ -115,8 +109,6 @@
 
         data () {
             return {
-                styles: local.debug ? mockStyles : null,
-
                 newStyle: {
                     name: '',
                     category: '',
@@ -142,6 +134,12 @@
         },
 
         computed: {
+            ...mapState('debug', ['isDebugMode']),
+
+            styles: function () {
+                return this.isDebugMode ? mockStyles : this.dbStyles;
+            },
+
             isStyleUpdated: function () {
                 if (_isEmpty(this.selectedStyle)) return false;
 
@@ -166,6 +164,12 @@
             }
         },
 
+        watch: {
+            isDebugMode: function () {
+                this.$forceUpdate();
+            }
+        },
+
         methods: {
             ...mapActions('helpers', [
                 'enableFitScreen',
@@ -173,6 +177,8 @@
             ]),
 
             addStyle: function () {
+                if (this.isDebugMode) return;
+
                 const newStyle = this.newStyle;
                 const newStyleCode = `${newStyle.code}/${newStyle.sub_code}`;
 
@@ -213,6 +219,8 @@
             },
 
             removeStyle: function (dbStyle) {
+                if (this.isDebugMode) return;
+
                 this.$firebaseRefs.styles.child(dbStyle['.key']).remove().then(() => {
                     this.$snackbar.open({
                         message: `Deleted successfully`,
