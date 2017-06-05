@@ -13,7 +13,7 @@
         <div class="nav-center">
             <div class="nav-item">
                 <div class="image is-24x24">
-                    <img src="./assets/images/icon.png" alt="Hops Cat Logo" />
+                    <img src="../../assets/images/icon.png" alt="Hops Cat Logo" />
                 </div>
             </div>
         </div>
@@ -31,13 +31,22 @@
             <span class="nav-item">
                 <router-link to="/storage">Storage</router-link>
             </span>
+            <span class="nav-item">
+                <debug-toggle></debug-toggle>
+            </span>
         </div>
     </nav>
 </template>
 
 <script>
+    import Debug from '../debug';
+
     export default {
-        name: 'navi'
+        name: 'navi',
+
+        components: {
+            debugToggle: Debug
+        }
     };
 </script>
 

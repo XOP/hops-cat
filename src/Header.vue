@@ -7,7 +7,7 @@
 </template>
 
 <script>
-    import Navi from './Navi.vue';
+    import Navi from './components/navi';
 
     export default {
         name: 'app-header',
