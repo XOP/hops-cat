@@ -2,7 +2,7 @@
     <section>
         <h1 class="title is-3">Catalogue</h1>
 
-        <section class="section" v-if="!debug">
+        <section class="section" v-if="!isDebugMode">
             <h2 class="title is-4">Add new item</h2>
             <div>
                 <input type="text" v-model="newItem.name" />
@@ -60,9 +60,9 @@
 </template>
 
 <script>
-    import db from '../../firebase';
+    import { mapState } from 'vuex';
 
-    import local from '../../../local.json';
+    import db from '../../firebase';
 
     import CatalogueItem from '../catalogue-item';
 
@@ -74,19 +74,13 @@
     const itemsRef = db.ref('items');
     const stylesRef = db.ref('styles');
 
-    const firebaseData = local.debug ?
-        (() => null) :
-        (() => {
-            return {
-                items: itemsRef,
-                styles: stylesRef
-            };
-        });
-
     export default {
         name: 'catalogue',
 
-        firebase: firebaseData,
+        firebase: () => ({
+            dbItems: itemsRef,
+            dbStyles: stylesRef
+        }),
 
         components: {
             'catalogue-item': CatalogueItem
@@ -94,11 +88,6 @@
 
         data () {
             return {
-                debug: local.debug,
-
-                items: local.debug ? mockItems : null,
-                styles: local.debug ? mockStyles : null,
-
                 newItem: {},
 
                 defaultOrder: true,
@@ -107,6 +96,16 @@
         },
 
         computed: {
+            ...mapState('debug', ['isDebugMode']),
+
+            items: function () {
+                return this.isDebugMode ? mockItems : this.dbItems;
+            },
+
+            styles: function () {
+                return this.isDebugMode ? mockStyles : this.dbStyles;
+            },
+
             itemsKeys: function () {
                 return this.items.slice().map((item, key) => ({...item, key}));
             },
