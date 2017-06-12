@@ -7,6 +7,7 @@ import Catalogue from '@/components/catalogue/';
 import Storage from '@/components/storage/';
 
 import AddStyle from '@/components/add-style/';
+import AddFlag from '@/components/add-flag/';
 
 Vue.use(Router);
 
@@ -21,6 +22,14 @@ export default new Router({
             path: '/add-style',
             name: 'AddStyle',
             component: AddStyle,
+            props: {
+                fitScreen: true
+            }
+        },
+        {
+            path: '/add-flag',
+            name: 'AddFlag',
+            component: AddFlag,
             props: {
                 fitScreen: true
             }

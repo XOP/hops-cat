@@ -183,7 +183,7 @@
                 const newStyleCode = `${newStyle.code}/${newStyle.sub_code}`;
 
                 if (!_find(this.styles, {code: newStyle.code, sub_code: newStyle.sub_code})) {
-                    this.$firebaseRefs.styles.push(newStyle).then(() => {
+                    this.$firebaseRefs.dbStyles.push(newStyle).then(() => {
                         this.$snackbar.open({
                             message: `Style ${newStyleCode} successfully added!`,
                             actionText: 'OK',
@@ -201,7 +201,7 @@
                         type: 'is-warning',
                         duration: 2500,
                         onAction: () => {
-                            this.$firebaseRefs.styles
+                            this.$firebaseRefs.dbStyles
                                 .child(this.selectedStyle['.key'])
                                 .set({...newStyle}).then(() => {
                                     this.$snackbar.open({
@@ -221,7 +221,7 @@
             removeStyle: function (dbStyle) {
                 if (this.isDebugMode) return;
 
-                this.$firebaseRefs.styles.child(dbStyle['.key']).remove().then(() => {
+                this.$firebaseRefs.dbStyles.child(dbStyle['.key']).remove().then(() => {
                     this.$snackbar.open({
                         message: `Deleted successfully`,
                         type: 'is-warning',
