@@ -31,6 +31,12 @@
             <span class="nav-item">
                 <router-link to="/storage">Storage</router-link>
             </span>
+            <span  class="nav-item">
+                <router-link to="/auth">
+                    <b-icon v-if="!isAuthenticated" icon="sign-in"></b-icon>
+                    <b-icon v-if="isAuthenticated" icon="sign-out"></b-icon>
+                </router-link>
+            </span>
             <span class="nav-item">
                 <debug-toggle></debug-toggle>
             </span>
@@ -39,10 +45,16 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
+
     import Debug from '../debug';
 
     export default {
         name: 'navi',
+
+        computed: {
+            ...mapState('user', ['isAuthenticated'])
+        },
 
         components: {
             debugToggle: Debug

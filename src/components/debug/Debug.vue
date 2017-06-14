@@ -15,10 +15,6 @@
     export default {
         name: 'debug',
 
-        beforeMount: function () {
-
-        },
-
         computed: {
             ...mapState('debug', [
                 'isDebugMode'

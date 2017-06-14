@@ -25,6 +25,9 @@
 
         created () {
             firebaseApp.auth().onAuthStateChanged(user => {
+                console.log(user);
+
+
                 if (user) {
                     this.signIn();
                 } else {
