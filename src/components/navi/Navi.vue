@@ -1,19 +1,14 @@
 <template>
     <nav class="nav">
         <div class="nav-left">
-            <span class="nav-item">
-                <span class="title is-3">
+            <div class="nav-item">
+                <div class="title is-3">
                     <router-link to="/">
+                        <span class="image is-32x32">
+                            <img src="../../assets/images/icon.png" alt="Hops Cat Logo"/>
+                        </span>
                         <span>Hops Cat</span>
                     </router-link>
-                </span>
-            </span>
-        </div>
-
-        <div class="nav-center">
-            <div class="nav-item">
-                <div class="image is-24x24">
-                    <img src="../../assets/images/icon.png" alt="Hops Cat Logo" />
                 </div>
             </div>
         </div>
@@ -63,6 +58,11 @@
 </script>
 
 <style scoped>
+    .image {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
     .image img {
         filter: invert(100%);
     }

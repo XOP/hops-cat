@@ -1,20 +1,23 @@
 const state = {
-    isAuthenticated: false
+    isAuthenticated: false,
+    user: {}
 };
 
 const mutations = {
-    signIn (state) {
+    signIn (state, user) {
         state.isAuthenticated = true;
+        state.user = Object.assign({}, user);
     },
 
     signOut (state) {
         state.isAuthenticated = false;
+        state.user = {};
     }
 };
 
 const actions = {
-    signIn ({ commit }) {
-        commit('signIn');
+    signIn ({ commit }, user) {
+        commit('signIn', user);
     },
 
     signOut ({ commit }) {

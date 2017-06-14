@@ -25,6 +25,10 @@
                 </form>
 
                 <form v-if="isAuthenticated">
+                    <b-field label="E-mail" expanded>
+                        <b-input disabled name="email" :value="user.email"></b-input>
+                    </b-field>
+
                     <b-field>
                         <div class="control">
                             <button class="button is-primary is-fullwidth" @click.prevent="signOut">
@@ -57,7 +61,7 @@
         },
 
         computed: {
-            ...mapState('user', ['isAuthenticated'])
+            ...mapState('user', ['isAuthenticated', 'user'])
         },
 
         methods: {
