@@ -2,8 +2,12 @@
     <section>
         <h1 class="title is-3">Add new Country</h1>
 
+        <b-notification v-if="!isAuthenticated" type="is-info" :closable="false" :hasIcon="true">
+            <router-link to="/auth">Authorization</router-link> required to edit database
+        </b-notification>
+
         <div class="columns">
-            <div class="column is-half">
+            <div v-if="isAuthenticated" class="column is-half">
 
                 <form>
                     <b-field grouped>
@@ -33,7 +37,7 @@
 
             </div>
 
-            <div class="column is-half">
+            <div :class="`column ${isAuthenticated ? 'is-half' : ''}`">
                 <div class="is-auto-overflow-vertical">
 
                     <table class="add-flag__table table is-narrow">
@@ -41,14 +45,14 @@
                         <tr>
                             <th>Code</th>
                             <th>Name</th>
-                            <th></th>
+                            <th v-if="isAuthenticated"></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr @click="fillFormFields(flag)" v-for="flag in flagsProcessed">
                             <td>{{ flag.code }}</td>
                             <td>{{ flag.name }}</td>
-                            <td>
+                            <td v-if="isAuthenticated">
                                 <button class="button add-flag__delete" @click.stop="removeFlag(flag)">
                                     <b-icon icon="trash-o"></b-icon>
                                 </button>
@@ -115,6 +119,7 @@
 
         computed: {
             ...mapState('debug', ['isDebugMode']),
+            ...mapState('user', ['isAuthenticated']),
 
             flags: function () {
                 return this.isDebugMode ? mockFlags : this.dbFlags;

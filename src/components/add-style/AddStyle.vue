@@ -2,12 +2,12 @@
     <section>
         <h1 class="title is-3">Add new Style</h1>
 
-        <b-notification v-if="!isAuthenticated" type="is-warning" :closable="false" :hasIcon="true">
-            Authorization required to edit database
+        <b-notification v-if="!isAuthenticated" type="is-info" :closable="false" :hasIcon="true">
+            <router-link to="/auth">Authorization</router-link> required to edit database
         </b-notification>
 
         <div class="columns">
-            <div class="column is-half">
+            <div v-if="isAuthenticated" class="column is-half">
 
                 <form>
                     <b-field grouped>
@@ -50,7 +50,7 @@
 
             </div>
 
-            <div class="column is-half">
+            <div :class="`column ${isAuthenticated ? 'is-half' : ''}`">
                 <div class="is-auto-overflow-vertical">
 
                     <table class="add-style__table table is-narrow">
@@ -60,7 +60,7 @@
                             <th>Name</th>
                             <th>Category</th>
                             <th>Family</th>
-                            <th></th>
+                            <th v-if="isAuthenticated"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -69,7 +69,7 @@
                             <td>{{ style.name }}</td>
                             <td>{{ style.category }}</td>
                             <td>{{ style.family }}</td>
-                            <td>
+                            <td v-if="isAuthenticated">
                                 <button class="button add-style__delete" @click.stop="removeStyle(style)">
                                     <b-icon icon="trash-o"></b-icon>
                                 </button>
