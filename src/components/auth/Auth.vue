@@ -5,7 +5,7 @@
         <div class="columns">
             <div class="column is-4 is-offset-4">
 
-                <form>
+                <form v-if="!isAuthenticated">
                     <b-field label="E-mail" expanded>
                         <b-input type="email" placeholder="user@email.com" name="email" required v-model="email"></b-input>
                     </b-field>
@@ -16,9 +16,20 @@
 
                     <b-field>
                         <div class="control">
-                            <button class="button is-primary is-fullwidth" @click.prevent="authUser">
+                            <button class="button is-primary is-fullwidth" @click.prevent="signIn">
                                 <b-icon icon="database"></b-icon>
                                 <span>DB Authorize</span>
+                            </button>
+                        </div>
+                    </b-field>
+                </form>
+
+                <form v-if="isAuthenticated">
+                    <b-field>
+                        <div class="control">
+                            <button class="button is-primary is-fullwidth" @click.prevent="signOut">
+                                <b-icon icon="sign-out"></b-icon>
+                                <span>Log out</span>
                             </button>
                         </div>
                     </b-field>
@@ -33,6 +44,8 @@
 <script>
     import { firebaseApp } from '../../firebase';
 
+    import { mapState } from 'vuex';
+
     export default {
         name: 'auth',
 
@@ -43,8 +56,12 @@
             };
         },
 
+        computed: {
+            ...mapState('user', ['isAuthenticated'])
+        },
+
         methods: {
-            authUser: function () {
+            signIn: function () {
                 firebaseApp
                     .auth()
                     .signInWithEmailAndPassword(this.email, this.pass)
@@ -68,6 +85,12 @@
 
                         this.pass = '';
                     });
+            },
+
+            signOut: function () {
+                firebaseApp
+                    .auth()
+                    .signOut();
             }
         }
     };
