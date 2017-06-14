@@ -11,7 +11,9 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { firebaseApp } from './firebase';
+
+    import { mapActions, mapState } from 'vuex';
 
     import cls from 'classnames';
 
@@ -20,6 +22,16 @@
 
     export default {
         name: 'app',
+
+        created () {
+            firebaseApp.auth().onAuthStateChanged(user => {
+                if (user) {
+                    this.signIn();
+                } else {
+                    this.signOut();
+                }
+            });
+        },
 
         components: {
             'app-header': Header,
@@ -36,6 +48,13 @@
                     'is-fit-screen': this.fitScreen
                 });
             }
+        },
+
+        methods: {
+            ...mapActions('user', [
+                'signIn',
+                'signOut'
+            ]),
         }
     };
 </script>

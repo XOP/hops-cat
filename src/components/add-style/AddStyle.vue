@@ -2,6 +2,10 @@
     <section>
         <h1 class="title is-3">Add new Style</h1>
 
+        <b-notification v-if="!isAuthenticated" type="is-warning" :closable="false" :hasIcon="true">
+            Authorization required to edit database
+        </b-notification>
+
         <div class="columns">
             <div class="column is-half">
 
@@ -135,6 +139,7 @@
 
         computed: {
             ...mapState('debug', ['isDebugMode']),
+            ...mapState('user', ['isAuthenticated']),
 
             styles: function () {
                 return this.isDebugMode ? mockStyles : this.dbStyles;
