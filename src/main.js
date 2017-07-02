@@ -4,7 +4,7 @@ import Vue from 'vue';
 import VueFire from 'vuefire';
 import Buefy from 'buefy';
 
-import App from './App';
+import App from './App.vue';
 import router from './router';
 import store from './store';
 

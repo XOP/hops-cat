@@ -163,7 +163,7 @@
                         this.$snackbar.open({
                             message: `Country ${newFlag.name} successfully added!`,
                             actionText: 'OK',
-                            position: 'top',
+                            position: 'is-top',
                             duration: 1500
                         });
 
@@ -173,7 +173,7 @@
                     this.$snackbar.open({
                         message: `Country ${newFlag.name} already exists!`,
                         actionText: 'Override',
-                        position: 'top',
+                        position: 'is-top',
                         type: 'is-warning',
                         duration: 2500,
                         onAction: () => {
@@ -183,7 +183,7 @@
                                     this.$snackbar.open({
                                         message: `Country ${newFlag.name} successfully updated!`,
                                         actionText: 'OK',
-                                        position: 'top',
+                                        position: 'is-top',
                                         duration: 1500
                                     });
 
@@ -201,7 +201,7 @@
                     this.$snackbar.open({
                         message: `Deleted successfully`,
                         type: 'is-warning',
-                        position: 'top',
+                        position: 'is-top',
                         duration: 1500
                     });
                 });

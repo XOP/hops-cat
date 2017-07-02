@@ -73,7 +73,7 @@
                         this.$snackbar.open({
                             message: `User ${this.email} is now authorized!`,
                             actionText: 'OK',
-                            position: 'top'
+                            position: 'is-top'
                         });
 
                         this.email = '';
@@ -84,7 +84,7 @@
                             message: `Sorry, something is wrong: ${error}`,
                             actionText: 'Ouch!',
                             type: 'is-danger',
-                            position: 'top'
+                            position: 'is-top'
                         });
 
                         this.pass = '';

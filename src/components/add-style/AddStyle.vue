@@ -89,6 +89,7 @@
 
     import _isEmpty from 'lodash/isEmpty';
     import _find from 'lodash/find';
+    import _without from 'lodash/without';
 
     import db from '../../firebase';
 
@@ -121,7 +122,9 @@
                     family: ''
                 },
 
-                selectedStyle: {}
+                selectedStyle: {},
+
+                hiddenStylesKeys: []
             };
         },
 
@@ -165,7 +168,10 @@
             },
 
             stylesProcessed: function () {
-                return this.styles.slice().reverse();
+                return this.styles
+                    .slice()
+                    .reverse()
+                    .filter(i => this.hiddenStylesKeys.indexOf(i['.key']) === -1);
             }
         },
 
@@ -192,7 +198,7 @@
                         this.$snackbar.open({
                             message: `Style ${newStyleCode} successfully added!`,
                             actionText: 'OK',
-                            position: 'top',
+                            position: 'is-top',
                             duration: 1500
                         });
 
@@ -202,7 +208,7 @@
                     this.$snackbar.open({
                         message: `Style ${newStyleCode} already exists!`,
                         actionText: 'Override',
-                        position: 'top',
+                        position: 'is-top',
                         type: 'is-warning',
                         duration: 2500,
                         onAction: () => {
@@ -212,7 +218,7 @@
                                     this.$snackbar.open({
                                         message: `Style ${newStyleCode} successfully updated!`,
                                         actionText: 'OK',
-                                        position: 'top',
+                                        position: 'is-top',
                                         duration: 1500
                                     });
 
@@ -226,13 +232,25 @@
             removeStyle: function (dbStyle) {
                 if (this.isDebugMode) return;
 
-                this.$firebaseRefs.dbStyles.child(dbStyle['.key']).remove().then(() => {
-                    this.$snackbar.open({
-                        message: `Deleted successfully`,
-                        type: 'is-warning',
-                        position: 'top',
-                        duration: 1500
-                    });
+                const styleKey = dbStyle['.key'];
+
+                this.hiddenStylesKeys.push(styleKey);
+
+                const removeDelay = 3000;
+                const removeTimeout = setTimeout(() => {
+                    this.$firebaseRefs.dbStyles.child(styleKey).remove();
+                }, removeDelay);
+
+                this.$snackbar.open({
+                    message: `Deleted successfully`,
+                    type: 'is-warning',
+                    position: 'is-top',
+                    duration: removeDelay,
+                    actionText: 'Undo',
+                    onAction: () => {
+                        this.hiddenStylesKeys = _without(this.hiddenStylesKeys, styleKey);
+                        clearTimeout(removeTimeout);
+                    }
                 });
             },
 
