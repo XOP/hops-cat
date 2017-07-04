@@ -93,6 +93,8 @@
 
     import db from '../../../firebase';
 
+    import { DURATION } from '../../../constants/ui';
+
     import {
         Styles as mockStyles
     } from '../../../fixtures/index';
@@ -199,7 +201,7 @@
                             message: `Style ${newStyleCode} successfully added!`,
                             actionText: 'OK',
                             position: 'is-top',
-                            duration: 1500
+                            duration: DURATION.NOTIFICATION_SHORT
                         });
 
                         this.clearFields();
@@ -210,7 +212,7 @@
                         actionText: 'Override',
                         position: 'is-top',
                         type: 'is-warning',
-                        duration: 2500,
+                        duration: DURATION.NOTIFICATION_NORMAL,
                         onAction: () => {
                             this.$firebaseRefs.dbStyles
                                 .child(this.selectedStyle['.key'])
@@ -219,7 +221,7 @@
                                         message: `Style ${newStyleCode} successfully updated!`,
                                         actionText: 'OK',
                                         position: 'is-top',
-                                        duration: 1500
+                                        duration: DURATION.NOTIFICATION_SHORT
                                     });
 
                                     this.clearFields();
@@ -236,16 +238,15 @@
 
                 this.hiddenStylesKeys.push(styleKey);
 
-                const removeDelay = 3000;
                 const removeTimeout = setTimeout(() => {
                     this.$firebaseRefs.dbStyles.child(styleKey).remove();
-                }, removeDelay);
+                }, DURATION.NOTIFICATION_LONG);
 
                 this.$snackbar.open({
                     message: `Deleted successfully`,
                     type: 'is-warning',
                     position: 'is-top',
-                    duration: removeDelay,
+                    duration: DURATION.NOTIFICATION_LONG,
                     actionText: 'Undo',
                     onAction: () => {
                         this.hiddenStylesKeys = _without(this.hiddenStylesKeys, styleKey);

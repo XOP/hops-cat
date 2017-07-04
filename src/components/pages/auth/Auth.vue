@@ -50,6 +50,8 @@
 
     import { mapState } from 'vuex';
 
+    import { DURATION } from '../../../constants/ui';
+
     export default {
         name: 'auth',
 
@@ -73,7 +75,8 @@
                         this.$snackbar.open({
                             message: `User ${this.email} is now authorized!`,
                             actionText: 'OK',
-                            position: 'is-top'
+                            position: 'is-top',
+                            duration: DURATION.NOTIFICATION_NORMAL
                         });
 
                         this.email = '';
@@ -84,7 +87,8 @@
                             message: `Sorry, something is wrong: ${error}`,
                             actionText: 'Ouch!',
                             type: 'is-danger',
-                            position: 'is-top'
+                            position: 'is-top',
+                            duration: DURATION.NOTIFICATION_NORMAL
                         });
 
                         this.pass = '';

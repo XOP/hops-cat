@@ -75,6 +75,8 @@
 
     import db from '../../../firebase';
 
+    import { DURATION } from '../../../constants/ui';
+
     import {
         Flags as mockFlags
     } from '../../../fixtures/index';
@@ -164,7 +166,7 @@
                             message: `Country ${newFlag.name} successfully added!`,
                             actionText: 'OK',
                             position: 'is-top',
-                            duration: 1500
+                            duration: DURATION.NOTIFICATION_SHORT
                         });
 
                         this.clearFields();
@@ -175,7 +177,7 @@
                         actionText: 'Override',
                         position: 'is-top',
                         type: 'is-warning',
-                        duration: 2500,
+                        duration: DURATION.NOTIFICATION_NORMAL,
                         onAction: () => {
                             this.$firebaseRefs.dbFlags
                                 .child(this.selectedFlag['.key'])
@@ -184,7 +186,7 @@
                                         message: `Country ${newFlag.name} successfully updated!`,
                                         actionText: 'OK',
                                         position: 'is-top',
-                                        duration: 1500
+                                        duration: DURATION.NOTIFICATION_SHORT
                                     });
 
                                     this.clearFields();
@@ -202,7 +204,7 @@
                         message: `Deleted successfully`,
                         type: 'is-warning',
                         position: 'is-top',
-                        duration: 1500
+                        duration: DURATION.NOTIFICATION_SHORT
                     });
                 });
             },
