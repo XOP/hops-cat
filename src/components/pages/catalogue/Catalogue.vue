@@ -64,7 +64,7 @@
 
     import db from '../../../firebase';
 
-    import CatalogueItem from '../../catalogue-item/index';
+    import CatalogueItem from '../../catalogue-item';
 
     import {
         Items as mockItems,
