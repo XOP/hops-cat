@@ -73,11 +73,11 @@
     import _isEmpty from 'lodash/isEmpty';
     import _find from 'lodash/find';
 
-    import db from '../../firebase';
+    import db from '../../../firebase';
 
     import {
         Flags as mockFlags
-    } from '../../fixtures';
+    } from '../../../fixtures/index';
 
     const flagsRef = db.ref('flags');
 

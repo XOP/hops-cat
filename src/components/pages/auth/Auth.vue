@@ -46,7 +46,7 @@
 </template>
 
 <script>
-    import { firebaseApp } from '../../firebase';
+    import { firebaseApp } from '../../../firebase';
 
     import { mapState } from 'vuex';
 
@@ -101,5 +101,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import 'auth.scss';
+    @import 'auth';
 </style>

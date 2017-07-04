@@ -48,5 +48,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import './storage.scss';
+    @import 'storage';
 </style>

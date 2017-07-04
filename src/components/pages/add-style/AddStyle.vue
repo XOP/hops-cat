@@ -91,11 +91,11 @@
     import _find from 'lodash/find';
     import _without from 'lodash/without';
 
-    import db from '../../firebase';
+    import db from '../../../firebase';
 
     import {
         Styles as mockStyles
-    } from '../../fixtures';
+    } from '../../../fixtures/index';
 
     const stylesRef = db.ref('styles');
 
@@ -286,5 +286,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import './add-style.scss';
+    @import 'add-style';
 </style>

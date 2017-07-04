@@ -62,14 +62,14 @@
 <script>
     import { mapState } from 'vuex';
 
-    import db from '../../firebase';
+    import db from '../../../firebase';
 
-    import CatalogueItem from '../catalogue-item';
+    import CatalogueItem from '../../catalogue-item/index';
 
     import {
         Items as mockItems,
         Styles as mockStyles
-    } from '../../fixtures';
+    } from '../../../fixtures/index';
 
     const itemsRef = db.ref('items');
     const stylesRef = db.ref('styles');
@@ -159,5 +159,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import './catalogue.scss';
+    @import 'catalogue';
 </style>

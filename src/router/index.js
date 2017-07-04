@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Auth from '@/components/auth/';
+import Auth from '@/components/pages/auth/';
 
-import Catalogue from '@/components/catalogue/';
-import Storage from '@/components/storage/';
+import Catalogue from '@/components/pages/catalogue/';
+import Storage from '@/components/pages/storage/';
 
-import AddStyle from '@/components/add-style/';
-import AddFlag from '@/components/add-flag/';
+import AddStyle from '@/components/pages/add-style/';
+import AddFlag from '@/components/pages/add-flag/';
 
 Vue.use(Router);
 
