@@ -6,6 +6,7 @@ import Auth from '@/components/pages/auth/';
 import Catalogue from '@/components/pages/catalogue/';
 import Storage from '@/components/pages/storage/';
 
+import AddHops from '@/components/pages/add-hops/';
 import AddStyle from '@/components/pages/add-style/';
 import AddFlag from '@/components/pages/add-flag/';
 
@@ -17,6 +18,11 @@ export default new Router({
             path: '/',
             name: 'Catalogue',
             component: Catalogue
+        },
+        {
+            path: '/add-hops',
+            name: 'AddHops',
+            component: AddHops
         },
         {
             path: '/add-style',
