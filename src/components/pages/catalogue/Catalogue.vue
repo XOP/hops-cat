@@ -2,13 +2,9 @@
     <section>
         <h1 class="title is-3">Catalogue</h1>
 
-        <section class="section" v-if="!isDebugMode">
-            <h2 class="title is-4">Add new item</h2>
-            <div>
-                <input type="text" v-model="newItem.name" />
-                <button @click.prevent="addItem">Add Item</button>
-            </div>
-        </section>
+        <b-notification v-if="isAuthenticated" type="is-info" :closable="false">
+            <router-link to="/add-hops">Add Hops here</router-link>
+        </b-notification>
 
         <section>
             <div class="box">
@@ -67,19 +63,16 @@
     import CatalogueItem from '../../catalogue-item';
 
     import {
-        Items as mockItems,
-        Styles as mockStyles
+        Items as mockHops
     } from '../../../fixtures/index';
 
     const itemsRef = db.ref('items');
-    const stylesRef = db.ref('styles');
 
     export default {
         name: 'catalogue',
 
         firebase: () => ({
-            dbItems: itemsRef,
-            dbStyles: stylesRef
+            dbHops: itemsRef
         }),
 
         components: {
@@ -88,8 +81,6 @@
 
         data () {
             return {
-                newItem: {},
-
                 defaultOrder: true,
                 sortingOrderAZ: 1
             };
@@ -97,13 +88,10 @@
 
         computed: {
             ...mapState('debug', ['isDebugMode']),
+            ...mapState('user', ['isAuthenticated']),
 
             items: function () {
-                return this.isDebugMode ? mockItems : this.dbItems;
-            },
-
-            styles: function () {
-                return this.isDebugMode ? mockStyles : this.dbStyles;
+                return this.isDebugMode ? mockHops : this.dbHops;
             },
 
             itemsKeys: function () {
