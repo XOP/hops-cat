@@ -22,13 +22,23 @@
                 <table class="add-hops__table table is-narrow">
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th class="table-cell --w-min has-text-centered">#</th>
+                        <th class="table-cell --w-max">Name</th>
+                        <th class="table-cell --w-min has-text-centered">Usage</th>
+                        <th class="table-cell --w-min has-text-centered">alpha, %</th>
+                        <th class="table-cell --w-min has-text-centered">beta, %</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="hops in hopsProcessed">
-                        <td>{{ hops.name }}</td>
-                    </tr>
+                    <catalogue-item
+                        v-for="(hops, index) in hopsProcessed"
+                        :key="hops.key"
+                        :index="index + 1"
+                        :name="hops.name"
+                        :usage="hops.usage"
+                        :alpha="hops.alpha"
+                        :beta="hops.beta"
+                    ></catalogue-item>
                     </tbody>
                 </table>
             </section>
@@ -47,6 +57,8 @@
 
     import db from '../../../firebase';
 
+    import CatalogueItem from '../../catalogue-item';
+
 //    import { DURATION } from '../../../constants/ui';
 
     import {
@@ -61,6 +73,10 @@
         firebase: () => ({
             dbHops: itemsRef.orderByKey()
         }),
+
+        components: {
+            'catalogue-item': CatalogueItem
+        },
 
         props: {
         },
