@@ -15,6 +15,11 @@
             <section class="add-hops__form">
                 <form>
                     Add hops form
+
+                    <hr>
+
+                    Selected: {{selectedHops.name}}
+
                 </form>
             </section>
 
@@ -38,6 +43,7 @@
                         :usage="hops.usage"
                         :alpha="hops.alpha"
                         :beta="hops.beta"
+                        :onClick="selectHops"
                     ></catalogue-item>
                     </tbody>
                 </table>
@@ -118,6 +124,9 @@
         },
 
         methods: {
+            selectHops: function (hops) {
+                this.selectedHops = {...hops};
+            }
         }
     };
 </script>

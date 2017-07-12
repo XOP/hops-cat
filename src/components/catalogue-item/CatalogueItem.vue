@@ -1,5 +1,8 @@
 <template>
-    <tr :class="componentClassname">
+    <tr
+        :class="componentClassname"
+        @click="handleClick"
+    >
         <td class="table-cell">
             {{index}}
         </td>
@@ -51,6 +54,10 @@
             beta: {
                 type: Object,
                 default: 'NA'
+            },
+
+            onClick: {
+                type: Function
             }
         },
 
@@ -96,6 +103,10 @@
         methods: {
             average: (min, max) => {
                 return ((min + max) / 2).toFixed(1);
+            },
+
+            handleClick: function (e) {
+                return this.onClick(this.$props, e);
             }
         }
     };
