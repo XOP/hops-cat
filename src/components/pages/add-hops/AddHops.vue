@@ -14,11 +14,23 @@
 
             <section class="add-hops__form">
                 <form>
-                    Add hops form
-
+                    New Hops: {{newHops.usage}}
                     <hr>
 
-                    Selected: {{selectedHops.name}}
+                    <b-field grouped>
+                        <b-field label="Name" expanded>
+                            <b-input placeholder="Cascade" name="name" required v-model="newHops.name"></b-input>
+                        </b-field>
+
+                        <b-field label="Usage">
+                            <b-select expanded v-model="newHopsUsage">
+                                <option value="dual">Dual</option>
+                                <option value="aroma">Aroma</option>
+                                <option value="bitter">Bitter</option>
+                            </b-select>
+                        </b-field>
+                    </b-field>
+
 
                 </form>
             </section>
@@ -90,13 +102,17 @@
         data () {
             return {
                 newHops: {
+                    usage: {}
                 },
+
+                newHopsUsage: 'dual',
 
                 selectedHops: {}
             };
         },
 
         beforeMount: function () {
+            this.newHops.usage = this._newHopsUsage;
         },
 
         beforeDestroy: function () {
@@ -114,12 +130,31 @@
                 return this.hops
                     .slice()
                     .reverse();
+            },
+
+            _newHopsUsage: function () {
+                const usage = {
+                    aroma: true,
+                    bitter: true
+                };
+
+                if (this.newHopsUsage === 'aroma') {
+                    usage.bitter = false;
+                } else if (this.newHopsUsage === 'bitter') {
+                    usage.aroma = false;
+                }
+
+                return usage;
             }
         },
 
         watch: {
             isDebugMode: function () {
                 this.$forceUpdate();
+            },
+
+            _newHopsUsage: function () {
+                this.newHops.usage = this._newHopsUsage;
             }
         },
 

@@ -2,10 +2,10 @@ export default [
     {
         name: "Cascade",
         alias: [],
-        usage: [
-            "A",
-            "B"
-        ],
+        usage: {
+            aroma: true,
+            bitter: true
+        },
         country: [
             "USA",
             "GER",
@@ -73,15 +73,16 @@ export default [
         },
         notes: "One of the most popular American hops, extremely versatile"
     },
+
     {
         name: "Amarillo",
         alias: [
             "VGXP01"
         ],
-        usage: [
-            "A",
-            "B"
-        ],
+        usage: {
+            aroma: true,
+            bitter: true
+        },
         country: [
             "USA"
         ],

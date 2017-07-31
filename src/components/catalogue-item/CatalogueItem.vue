@@ -42,8 +42,8 @@
             },
 
             usage: {
-                type: Array,
-                default: []
+                type: Object,
+                default: 'NA'
             },
 
             alpha: {
