@@ -2,10 +2,7 @@ export default [
     {
         name: "Cascade",
         alias: [],
-        usage: {
-            aroma: true,
-            bitter: true
-        },
+        usage: "AB",
         country: [
             "USA",
             "GER",
@@ -79,10 +76,7 @@ export default [
         alias: [
             "VGXP01"
         ],
-        usage: {
-            aroma: true,
-            bitter: true
-        },
+        usage: "AB",
         country: [
             "USA"
         ],

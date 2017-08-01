@@ -23,10 +23,10 @@
                         </b-field>
 
                         <b-field label="Usage">
-                            <b-select expanded v-model="newHopsUsage">
-                                <option value="dual">Dual</option>
-                                <option value="aroma">Aroma</option>
-                                <option value="bitter">Bitter</option>
+                            <b-select expanded v-model="newHops.usage">
+                                <option value="AB">Dual</option>
+                                <option value="A">Aroma</option>
+                                <option value="B">Bitter</option>
                             </b-select>
                         </b-field>
                     </b-field>
@@ -101,18 +101,13 @@
 
         data () {
             return {
-                newHops: {
-                    usage: {}
-                },
-
-                newHopsUsage: 'dual',
+                newHops: {},
 
                 selectedHops: {}
             };
         },
 
         beforeMount: function () {
-            this.newHops.usage = this._newHopsUsage;
         },
 
         beforeDestroy: function () {
@@ -130,31 +125,12 @@
                 return this.hops
                     .slice()
                     .reverse();
-            },
-
-            _newHopsUsage: function () {
-                const usage = {
-                    aroma: true,
-                    bitter: true
-                };
-
-                if (this.newHopsUsage === 'aroma') {
-                    usage.bitter = false;
-                } else if (this.newHopsUsage === 'bitter') {
-                    usage.aroma = false;
-                }
-
-                return usage;
             }
         },
 
         watch: {
             isDebugMode: function () {
                 this.$forceUpdate();
-            },
-
-            _newHopsUsage: function () {
-                this.newHops.usage = this._newHopsUsage;
             }
         },
 
