@@ -42,7 +42,7 @@
             },
 
             usage: {
-                type: Object,
+                type: String,
                 default: 'NA'
             },
 
