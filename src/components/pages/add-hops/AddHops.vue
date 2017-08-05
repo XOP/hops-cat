@@ -14,7 +14,7 @@
 
             <section class="add-hops__form">
                 <form>
-                    New Hops: {{newHops.usage}}
+                    New Hops: {{newHops.name}}
                     <hr>
 
                     <b-field grouped>
@@ -31,6 +31,20 @@
                         </b-field>
                     </b-field>
 
+                    <b-field grouped>
+                        <div class="control is-expanded">
+                            <button class="button is-primary is-fullwidth" @click.prevent="addHops">
+                                <b-icon icon="plus"></b-icon>
+                                <span>Add Hops</span>
+                            </button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-fullwidth" @click.prevent="setDefaultItem">
+                                <b-icon icon="eraser"></b-icon>
+                                <span>Clear Fields</span>
+                            </button>
+                        </div>
+                    </b-field>
 
                 </form>
             </section>
@@ -70,14 +84,14 @@
     import { mapState } from 'vuex';
 
 //    import _isEmpty from 'lodash/isEmpty';
-//    import _find from 'lodash/find';
+    import _find from 'lodash/find';
 //    import _without from 'lodash/without';
 
     import db from '../../../firebase';
 
     import CatalogueItem from '../../catalogue-item';
 
-//    import { DURATION } from '../../../constants/ui';
+    import { DURATION } from '../../../constants/ui';
 
     import {
         Items as mockHops
@@ -108,6 +122,7 @@
         },
 
         beforeMount: function () {
+            this.setDefaultItem();
         },
 
         beforeDestroy: function () {
@@ -135,6 +150,57 @@
         },
 
         methods: {
+            addHops: function () {
+                if (this.isDebugMode) return;
+
+                const newHops = this.newHops;
+                const newHopsName = newHops.name;
+
+                const currentHops = _find(this.hops, {name: newHopsName});
+
+                if (!currentHops) {
+                    this.$firebaseRefs.dbHops.push(newHops).then(() => {
+                        this.$snackbar.open({
+                            message: `Hops ${newHopsName} successfully added!`,
+                            actionText: 'OK',
+                            position: 'is-top',
+                            duration: DURATION.NOTIFICATION_SHORT
+                        });
+
+                        this.clearFields();
+                    });
+                } else {
+                    this.$snackbar.open({
+                        message: `Hops ${newHopsName} already exists!`,
+                        actionText: 'Override',
+                        position: 'is-top',
+                        type: 'is-warning',
+                        duration: DURATION.NOTIFICATION_NORMAL,
+                        onAction: () => {
+                            this.$firebaseRefs.dbHops
+                                .child(currentHops['.key'])
+                                .set({...newHops}).then(() => {
+                                this.$snackbar.open({
+                                    message: `Hops ${newHopsName} successfully updated!`,
+                                    actionText: 'OK',
+                                    position: 'is-top',
+                                    duration: DURATION.NOTIFICATION_SHORT
+                                });
+
+                                this.clearFields();
+                            });
+                        }
+                    });
+                }
+            },
+
+            setDefaultItem: function () {
+                this.newHops = {
+                    name: '',
+                    usage: 'AB'
+                };
+            },
+
             selectHops: function (hops) {
                 this.selectedHops = {...hops};
             }
