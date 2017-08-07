@@ -132,7 +132,7 @@
         },
 
         beforeMount: function () {
-            this.setDefaultItem();
+            this.clearFields();
         },
 
         beforeDestroy: function () {

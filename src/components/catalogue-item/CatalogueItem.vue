@@ -24,6 +24,8 @@
 <script>
     import cls from 'classnames';
 
+    import _isEmpty from 'lodash/isEmpty';
+
     export default {
         name: 'catalogue-item',
 
@@ -48,12 +50,16 @@
 
             alpha: {
                 type: Object,
-                default: 'NA'
+                default: function () {
+                    return {};
+                }
             },
 
             beta: {
                 type: Object,
-                default: 'NA'
+                default: function () {
+                    return {};
+                }
             },
 
             onClick: {
@@ -88,13 +94,17 @@
             },
 
             alphaFormatted: function () {
-                // todo: check if empty
+                if (_isEmpty(this.alpha)) {
+                    return 'NA';
+                }
 
                 return this.average(this.alpha.min, this.alpha.max);
             },
 
             betaFormatted: function () {
-                // todo: check if empty
+                if (_isEmpty(this.beta)) {
+                    return 'NA';
+                }
 
                 return this.average(this.beta.min, this.beta.max);
             }
