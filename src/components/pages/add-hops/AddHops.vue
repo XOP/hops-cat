@@ -91,6 +91,8 @@
 
     import CatalogueItem from '../../catalogue-item';
 
+    import hopsSchema from './hops-schema';
+
     import { DURATION } from '../../../constants/ui';
 
     import {
@@ -167,7 +169,7 @@
                             duration: DURATION.NOTIFICATION_SHORT
                         });
 
-                        this.clearFields();
+                        this.setDefaultItem();
                     });
                 } else {
                     this.$snackbar.open({
@@ -187,7 +189,7 @@
                                     duration: DURATION.NOTIFICATION_SHORT
                                 });
 
-                                this.clearFields();
+                                this.setDefaultItem();
                             });
                         }
                     });
@@ -195,14 +197,13 @@
             },
 
             setDefaultItem: function () {
-                this.newHops = {
-                    name: '',
-                    usage: 'AB'
-                };
+                this.newHops = hopsSchema;
             },
 
             selectHops: function (hops) {
                 this.selectedHops = {...hops};
+
+                this.newHops.name = this.selectedHops.name;
             }
         }
     };
