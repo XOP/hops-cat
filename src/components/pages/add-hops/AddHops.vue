@@ -83,6 +83,8 @@
 <script>
     import { mapState } from 'vuex';
 
+    import clone from 'clone';
+
 //    import _isEmpty from 'lodash/isEmpty';
     import _find from 'lodash/find';
 //    import _without from 'lodash/without';
@@ -197,13 +199,18 @@
             },
 
             setDefaultItem: function () {
-                this.newHops = hopsSchema;
+                this.newHops = clone(hopsSchema);
             },
 
             selectHops: function (hops) {
                 this.selectedHops = {...hops};
 
                 this.newHops.name = this.selectedHops.name;
+                this.newHops.usage = this.selectedHops.usage;
+            },
+
+            clearSelected: function () {
+                this.selectedHops = {};
             }
         }
     };
