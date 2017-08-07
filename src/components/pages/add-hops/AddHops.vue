@@ -39,9 +39,15 @@
                             </button>
                         </div>
                         <div class="control">
-                            <button class="button is-fullwidth" @click.prevent="setDefaultItem">
+                            <button class="button is-fullwidth" @click.prevent="clearFields">
                                 <b-icon icon="eraser"></b-icon>
                                 <span>Clear Fields</span>
+                            </button>
+                        </div>
+                        <div class="control" v-if="isHopsSelected">
+                            <button class="button is-fullwidth is-danger" @click.prevent="removeHops">
+                                <b-icon icon="trash"></b-icon>
+                                <span>Delete</span>
                             </button>
                         </div>
                     </b-field>
@@ -85,7 +91,7 @@
 
     import clone from 'clone';
 
-//    import _isEmpty from 'lodash/isEmpty';
+    import _isEmpty from 'lodash/isEmpty';
     import _find from 'lodash/find';
 //    import _without from 'lodash/without';
 
@@ -144,6 +150,10 @@
                 return this.hops
                     .slice()
                     .reverse();
+            },
+
+            isHopsSelected: function () {
+                return !_isEmpty(this.selectedHops);
             }
         },
 
@@ -171,7 +181,7 @@
                             duration: DURATION.NOTIFICATION_SHORT
                         });
 
-                        this.setDefaultItem();
+                        this.clearFields();
                     });
                 } else {
                     this.$snackbar.open({
@@ -191,15 +201,11 @@
                                     duration: DURATION.NOTIFICATION_SHORT
                                 });
 
-                                this.setDefaultItem();
+                                this.clearFields();
                             });
                         }
                     });
                 }
-            },
-
-            setDefaultItem: function () {
-                this.newHops = clone(hopsSchema);
             },
 
             selectHops: function (hops) {
@@ -209,8 +215,34 @@
                 this.newHops.usage = this.selectedHops.usage;
             },
 
-            clearSelected: function () {
+            clearFields: function () {
+                this.newHops = clone(hopsSchema);
                 this.selectedHops = {};
+            },
+
+            removeHops: function () {
+
+                // todo: immediate visual deletion
+
+                if (this.isDebugMode) return;
+
+                const currentHops = _find(this.hops, {name: this.selectedHops.name});
+                const key = currentHops['.key'];
+
+                const removeTimeout = setTimeout(() => {
+                    this.$firebaseRefs.dbHops.child(key).remove();
+                }, DURATION.NOTIFICATION_LONG);
+
+                this.$snackbar.open({
+                    message: `Deleted successfully`,
+                    type: 'is-warning',
+                    position: 'is-top',
+                    duration: DURATION.NOTIFICATION_LONG,
+                    actionText: 'Undo',
+                    onAction: () => {
+                        clearTimeout(removeTimeout);
+                    }
+                });
             }
         }
     };
