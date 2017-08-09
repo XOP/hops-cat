@@ -126,7 +126,7 @@
 
                 selectedStyle: {},
 
-                hiddenStylesKeys: []
+                hiddenKeys: []
             };
         },
 
@@ -173,7 +173,7 @@
                 return this.styles
                     .slice()
                     .reverse()
-                    .filter(i => this.hiddenStylesKeys.indexOf(i['.key']) === -1);
+                    .filter(i => this.hiddenKeys.indexOf(i['.key']) === -1);
             }
         },
 
@@ -236,7 +236,7 @@
 
                 const styleKey = dbStyle['.key'];
 
-                this.hiddenStylesKeys.push(styleKey);
+                this.hiddenKeys.push(styleKey);
 
                 const removeTimeout = setTimeout(() => {
                     this.$firebaseRefs.dbStyles.child(styleKey).remove();
@@ -249,7 +249,7 @@
                     duration: DURATION.NOTIFICATION_LONG,
                     actionText: 'Undo',
                     onAction: () => {
-                        this.hiddenStylesKeys = _without(this.hiddenStylesKeys, styleKey);
+                        this.hiddenKeys = _without(this.hiddenKeys, styleKey);
                         clearTimeout(removeTimeout);
                     }
                 });

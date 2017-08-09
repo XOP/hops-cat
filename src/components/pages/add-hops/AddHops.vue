@@ -93,7 +93,7 @@
 
     import _isEmpty from 'lodash/isEmpty';
     import _find from 'lodash/find';
-//    import _without from 'lodash/without';
+    import _without from 'lodash/without';
 
     import db from '../../../firebase';
 
@@ -127,7 +127,9 @@
             return {
                 newHops: {},
 
-                selectedHops: {}
+                selectedHops: {},
+
+                hiddenKeys: []
             };
         },
 
@@ -149,7 +151,8 @@
             hopsProcessed: function () {
                 return this.hops
                     .slice()
-                    .reverse();
+                    .reverse()
+                    .filter(i => this.hiddenKeys.indexOf(i['.key']) === -1);
             },
 
             isHopsSelected: function () {
@@ -221,13 +224,12 @@
             },
 
             removeHops: function () {
-
-                // todo: immediate visual deletion
-
                 if (this.isDebugMode) return;
 
                 const currentHops = _find(this.hops, {name: this.selectedHops.name});
                 const key = currentHops['.key'];
+
+                this.hiddenKeys.push(key);
 
                 const removeTimeout = setTimeout(() => {
                     this.$firebaseRefs.dbHops.child(key).remove();
@@ -240,6 +242,7 @@
                     duration: DURATION.NOTIFICATION_LONG,
                     actionText: 'Undo',
                     onAction: () => {
+                        this.hiddenKeys = _without(this.hiddenKeys, key);
                         clearTimeout(removeTimeout);
                     }
                 });
