@@ -26,6 +26,8 @@
 
     import _isEmpty from 'lodash/isEmpty';
 
+    import { USAGE_MAP } from '../pages/add-hops/hops-schema';
+
     export default {
         name: 'catalogue-item',
 
@@ -79,18 +81,7 @@
             },
 
             usageFormatted: function () {
-                const usageArray = this.usage;
-                let usage = 'Dual';
-
-                if (!usageArray.length) {
-                    usage = 'NA';
-                }
-
-                if (usageArray.length === 1) {
-                    usage = usageArray[0];
-                }
-
-                return usage;
+                return USAGE_MAP[this.usage];
             },
 
             alphaFormatted: function () {

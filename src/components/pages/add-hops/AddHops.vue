@@ -87,6 +87,8 @@
 </template>
 
 <script>
+    /* eslint-disable */
+
     import { mapState } from 'vuex';
 
     import clone from 'clone';
@@ -173,6 +175,10 @@
                 const newHops = this.newHops;
                 const newHopsName = newHops.name;
 
+                console.log(newHops);
+
+                return false;
+
                 const currentHops = _find(this.hops, {name: newHopsName});
 
                 if (!currentHops) {
@@ -212,6 +218,9 @@
             },
 
             selectHops: function (hops) {
+                // fixme: universal selection method
+                // this.selectedHops = _find(this.hops, {name: hops.name});
+
                 this.selectedHops = {...hops};
 
                 this.newHops.name = this.selectedHops.name;
