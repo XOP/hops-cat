@@ -1,6 +1,14 @@
 export default {
     name: '',
-    usage: 'AB'
+    usage: 'AB',
+    alpha: {
+        min: 0,
+        max: 100
+    },
+    beta: {
+        min: 0,
+        max: 100
+    }
 };
 
 export const USAGE_MAP = {

@@ -14,8 +14,7 @@
 
             <section class="add-hops__form">
                 <form>
-                    New Hops: {{newHops.name}}
-                    <hr>
+                    <h4 class="title is-4">Selected: {{newHops.name}}</h4>
 
                     <b-field grouped>
                         <b-field label="Name" expanded>
@@ -23,13 +22,51 @@
                         </b-field>
 
                         <b-field label="Usage">
-                            <b-select expanded v-model="newHops.usage">
+                            <b-select required expanded v-model="newHops.usage">
                                 <option value="AB">Dual</option>
                                 <option value="A">Aroma</option>
                                 <option value="B">Bitter</option>
                             </b-select>
                         </b-field>
                     </b-field>
+
+                    <b-field :addons="false">
+                        <div class="label">Acid, %</div>
+
+                        <div class="columns">
+
+                            <div class="column">
+                                <div class="label">Alpha</div>
+
+                                <b-field :addons="false" grouped>
+                                    <b-field expanded>
+                                        <b-input placeholder="Min" type="number" name="alphaMin" required v-model="newHops.alpha.min"></b-input>
+                                    </b-field>
+                                    <b-field>-</b-field>
+                                    <b-field expanded>
+                                        <b-input placeholder="Max" type="number" name="alphaMax" required v-model="newHops.alpha.max"></b-input>
+                                    </b-field>
+                                </b-field>
+                            </div>
+
+                            <div class="column">
+                                <div class="label">Beta</div>
+
+                                <b-field :addons="false" grouped>
+                                    <b-field expanded>
+                                        <b-input placeholder="Min" type="number" name="betaMin" v-model="newHops.beta.min"></b-input>
+                                    </b-field>
+                                    <b-field>-</b-field>
+                                    <b-field expanded>
+                                        <b-input placeholder="Max" type="number" name="betaMax" v-model="newHops.beta.max"></b-input>
+                                    </b-field>
+                                </b-field>
+                            </div>
+
+                        </div>
+                    </b-field>
+
+                    <hr>
 
                     <b-field grouped>
                         <div class="control is-expanded">
@@ -175,10 +212,6 @@
                 const newHops = this.newHops;
                 const newHopsName = newHops.name;
 
-                console.log(newHops);
-
-                return false;
-
                 const currentHops = _find(this.hops, {name: newHopsName});
 
                 if (!currentHops) {
@@ -223,8 +256,13 @@
 
                 this.selectedHops = {...hops};
 
+                // general
                 this.newHops.name = this.selectedHops.name;
                 this.newHops.usage = this.selectedHops.usage;
+
+                // chemistry
+                this.newHops.alpha = clone(this.selectedHops.alpha);
+                this.newHops.beta = clone(this.selectedHops.beta);
             },
 
             clearFields: function () {

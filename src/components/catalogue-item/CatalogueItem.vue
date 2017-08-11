@@ -50,6 +50,7 @@
                 default: 'NA'
             },
 
+            // todo: number validation
             alpha: {
                 type: Object,
                 default: function () {
@@ -57,6 +58,7 @@
                 }
             },
 
+            // todo: number validation
             beta: {
                 type: Object,
                 default: function () {
@@ -89,7 +91,7 @@
                     return 'NA';
                 }
 
-                return this.average(this.alpha.min, this.alpha.max);
+                return this.average(+this.alpha.min, +this.alpha.max);
             },
 
             betaFormatted: function () {
@@ -97,7 +99,7 @@
                     return 'NA';
                 }
 
-                return this.average(this.beta.min, this.beta.max);
+                return this.average(+this.beta.min, +this.beta.max);
             }
         },
 
