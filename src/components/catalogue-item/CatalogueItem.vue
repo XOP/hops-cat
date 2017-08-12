@@ -4,6 +4,11 @@
         @click="handleClick"
     >
         <td class="table-cell">
+            <div :class="'catalogue-item__status' + ' ' + statusFormatted">
+                <b-icon icon="bar-chart"></b-icon>
+            </div>
+        </td>
+        <td class="table-cell">
             {{index}}
         </td>
         <td class="table-cell">
@@ -26,7 +31,7 @@
 
     import _isEmpty from 'lodash/isEmpty';
 
-    import { USAGE_MAP } from '../pages/add-hops/hops-schema';
+    import { USAGE_MAP, STATUS_MAP } from '../pages/add-hops/hops-schema';
 
     export default {
         name: 'catalogue-item',
@@ -66,6 +71,11 @@
                 }
             },
 
+            status: {
+                type: Number,
+                default: 2
+            },
+
             onClick: {
                 type: Function
             }
@@ -100,6 +110,10 @@
                 }
 
                 return this.average(+this.beta.min, +this.beta.max);
+            },
+
+            statusFormatted: function () {
+                return STATUS_MAP[this.getStatusInfo(this)];
             }
         },
 
@@ -110,6 +124,19 @@
 
             handleClick: function (e) {
                 return this.onClick(this.$props, e);
+            },
+
+            getStatusInfo: hops => {
+                if (
+                    hops.name &&
+                    hops.usage &&
+                    !_isEmpty(hops.alpha) &&
+                    !_isEmpty(hops.beta)
+                ) {
+                    return 1;
+                } else {
+                    return 2;
+                }
             }
         }
     };

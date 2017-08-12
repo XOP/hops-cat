@@ -31,6 +31,9 @@
             <table class="catalogue__table table">
                 <thead>
                     <tr>
+                        <th class="table-cell --w-min has-text-centered">
+                            <b-icon icon="bar-chart"></b-icon>
+                        </th>
                         <th class="table-cell --w-min has-text-centered">#</th>
                         <th class="table-cell --w-max">Name</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>

@@ -16,3 +16,8 @@ export const USAGE_MAP = {
     'B': 'Bitter',
     'AB': 'Dual'
 };
+
+export const STATUS_MAP = {
+    1: 'ok',
+    2: 'warning'
+};

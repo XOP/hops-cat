@@ -96,6 +96,9 @@
                 <table class="add-hops__table table is-narrow">
                     <thead>
                     <tr>
+                        <th class="table-cell --w-min has-text-centered">
+                            <b-icon icon="bar-chart"></b-icon>
+                        </th>
                         <th class="table-cell --w-min has-text-centered">#</th>
                         <th class="table-cell --w-max">Name</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>
@@ -255,6 +258,9 @@
                 // this.selectedHops = _find(this.hops, {name: hops.name});
 
                 this.selectedHops = {...hops};
+
+                // debug
+                console.info('selected: ', this.selectedHops);
 
                 // general
                 this.newHops.name = this.selectedHops.name;
