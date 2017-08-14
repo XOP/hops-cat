@@ -93,7 +93,7 @@
             </section>
 
             <section class="add-hops__section">
-                <table class="add-hops__table table is-narrow">
+                <table class="add-hops__table table is-narrow is-fullwidth is-narrow">
                     <thead>
                     <tr>
                         <th class="table-cell --w-min has-text-centered">

@@ -28,7 +28,7 @@
                 </button>
             </div>
 
-            <table class="catalogue__table table">
+            <table class="catalogue__table table is-fullwidth is-narrow">
                 <thead>
                     <tr>
                         <th class="table-cell --w-min has-text-centered">
