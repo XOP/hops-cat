@@ -126,12 +126,6 @@
         },
 
         methods: {
-            addItem: function () {
-                itemsRef.push(this.newItem);
-
-                this.newItem.name = '';
-            },
-
             setDefaultOrder: function () {
                 this.defaultOrder = true;
             },

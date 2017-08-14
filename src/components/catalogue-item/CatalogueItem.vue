@@ -97,19 +97,25 @@
             },
 
             alphaFormatted: function () {
-                if (_isEmpty(this.alpha)) {
+                const min = +this.alpha.min;
+                const max = +this.alpha.max;
+
+                if (!this.isRangeValid(this.alpha)) {
                     return 'NA';
                 }
 
-                return this.average(+this.alpha.min, +this.alpha.max);
+                return this.average(min, max);
             },
 
             betaFormatted: function () {
-                if (_isEmpty(this.beta)) {
+                const min = +this.beta.min;
+                const max = +this.beta.max;
+
+                if (!this.isRangeValid(this.beta)) {
                     return 'NA';
                 }
 
-                return this.average(+this.beta.min, +this.beta.max);
+                return this.average(min, max);
             },
 
             statusFormatted: function () {
@@ -122,16 +128,23 @@
                 return ((min + max) / 2).toFixed(1);
             },
 
+            isRangeValid: (obj) => {
+                if (_isEmpty(obj)) return false;
+
+                // soft validation, one property can be different from default
+                return obj.min !== 0 || obj.max !== 100;
+            },
+
             handleClick: function (e) {
                 return this.onClick(this.$props, e);
             },
 
-            getStatusInfo: hops => {
+            getStatusInfo: function (hops) {
                 if (
                     hops.name &&
                     hops.usage &&
-                    !_isEmpty(hops.alpha) &&
-                    !_isEmpty(hops.beta)
+                    this.isRangeValid(hops.alpha) &&
+                    this.isRangeValid(hops.beta)
                 ) {
                     return 1;
                 } else {

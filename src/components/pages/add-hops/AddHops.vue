@@ -13,16 +13,16 @@
         <div v-if="isAuthenticated">
 
             <section class="add-hops__form">
-                <form>
+                <form @submit.prevent="addHops">
                     <h4 class="title is-4">Selected: {{newHops.name}}</h4>
 
                     <b-field grouped>
                         <b-field label="Name" expanded>
-                            <b-input placeholder="Cascade" name="name" required v-model="newHops.name"></b-input>
+                            <b-input placeholder="Cascade" name="name" required v-model.trim="newHops.name"></b-input>
                         </b-field>
 
                         <b-field label="Usage">
-                            <b-select required expanded v-model="newHops.usage">
+                            <b-select expanded v-model="newHops.usage">
                                 <option value="AB">Dual</option>
                                 <option value="A">Aroma</option>
                                 <option value="B">Bitter</option>
@@ -40,11 +40,11 @@
 
                                 <b-field :addons="false" grouped>
                                     <b-field expanded>
-                                        <b-input placeholder="Min" type="number" name="alphaMin" required v-model="newHops.alpha.min"></b-input>
+                                        <b-input placeholder="Min" type="number" name="alphaMin" required v-model.number="newHops.alpha.min"></b-input>
                                     </b-field>
                                     <b-field>-</b-field>
                                     <b-field expanded>
-                                        <b-input placeholder="Max" type="number" name="alphaMax" required v-model="newHops.alpha.max"></b-input>
+                                        <b-input placeholder="Max" type="number" name="alphaMax" required v-model.number="newHops.alpha.max"></b-input>
                                     </b-field>
                                 </b-field>
                             </div>
@@ -54,11 +54,11 @@
 
                                 <b-field :addons="false" grouped>
                                     <b-field expanded>
-                                        <b-input placeholder="Min" type="number" name="betaMin" v-model="newHops.beta.min"></b-input>
+                                        <b-input placeholder="Min" type="number" name="betaMin" v-model.number="newHops.beta.min"></b-input>
                                     </b-field>
                                     <b-field>-</b-field>
                                     <b-field expanded>
-                                        <b-input placeholder="Max" type="number" name="betaMax" v-model="newHops.beta.max"></b-input>
+                                        <b-input placeholder="Max" type="number" name="betaMax" v-model.number="newHops.beta.max"></b-input>
                                     </b-field>
                                 </b-field>
                             </div>
@@ -70,7 +70,7 @@
 
                     <b-field grouped>
                         <div class="control is-expanded">
-                            <button class="button is-primary is-fullwidth" @click.prevent="addHops">
+                            <button class="button is-primary is-fullwidth" type="submit">
                                 <b-icon icon="plus"></b-icon>
                                 <span>Add Hops</span>
                             </button>
@@ -142,6 +142,7 @@
     import CatalogueItem from '../../catalogue-item';
 
     import hopsSchema from './hops-schema';
+    import locale from './locale';
 
     import { DURATION } from '../../../constants/ui';
 
@@ -199,6 +200,12 @@
 
             isHopsSelected: function () {
                 return !_isEmpty(this.selectedHops);
+            },
+
+            isFormValid: function () {
+                // todo: proper validation
+
+                return this.newHops.name.trim();
             }
         },
 
@@ -211,6 +218,12 @@
         methods: {
             addHops: function () {
                 if (this.isDebugMode) return;
+
+                if (!this.isFormValid) {
+                    this.throwError(locale.errors.nameNotSpecified);
+
+                    return;
+                }
 
                 const newHops = this.newHops;
                 const newHopsName = newHops.name;
@@ -269,6 +282,15 @@
                 // chemistry
                 this.newHops.alpha = clone(this.selectedHops.alpha);
                 this.newHops.beta = clone(this.selectedHops.beta);
+            },
+
+            throwError: function (message) {
+                this.$toast.open({
+                    duration: DURATION.NOTIFICATION_SHORT,
+                    message: message || locale.errors._default,
+                    position: 'is-top',
+                    type: 'is-danger'
+                })
             },
 
             clearFields: function () {
