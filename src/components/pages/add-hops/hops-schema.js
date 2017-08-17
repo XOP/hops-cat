@@ -3,7 +3,7 @@ export default {
 
     usage: 'AB',
 
-    country: [],
+    country: '', // [], fixme when multiple countries supported
 
     alpha: {
         min: 0,

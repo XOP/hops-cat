@@ -14,7 +14,7 @@
         <td class="table-cell">
             {{name}}
         </td>
-        <td class="table-cell">
+        <td class="table-cell has-text-centered">
             <div v-if="country.length">
                 <span class="content is-large" v-for="flag in countryFormatted">{{flag}}</span>
             </div>

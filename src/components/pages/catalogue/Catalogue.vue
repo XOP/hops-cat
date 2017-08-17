@@ -36,6 +36,7 @@
                         </th>
                         <th class="table-cell --w-min has-text-centered">#</th>
                         <th class="table-cell --w-max">Name</th>
+                        <th class="table-cell --w-min has-text-centered">Country</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>
                         <th class="table-cell --w-min has-text-centered">alpha, %</th>
                         <th class="table-cell --w-min has-text-centered">beta, %</th>
@@ -47,6 +48,7 @@
                         :key="item.key"
                         :index="index + 1"
                         :name="item.name"
+                        :country="item.country"
                         :usage="item.usage"
                         :alpha="item.alpha"
                         :beta="item.beta"

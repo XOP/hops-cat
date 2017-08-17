@@ -12,85 +12,102 @@
 
         <div v-if="isAuthenticated">
 
-            <section class="add-hops__form">
-                <form @submit.prevent="addHops">
-                    <h4 class="title is-4">Selected: {{newHops.name}}</h4>
+            <div class="columns">
+                <div class="column is-8-desktop">
 
-                    <b-field grouped>
-                        <b-field label="Name" expanded>
-                            <b-input placeholder="Cascade" name="name" required v-model.trim="newHops.name"></b-input>
-                        </b-field>
-
-                        <b-field label="Usage">
-                            <b-select expanded v-model="newHops.usage">
-                                <option value="AB">Dual</option>
-                                <option value="A">Aroma</option>
-                                <option value="B">Bitter</option>
-                            </b-select>
-                        </b-field>
-                    </b-field>
-
-                    <b-field :addons="false">
-                        <div class="label">Acid, %</div>
-
-                        <div class="columns">
-
-                            <div class="column">
-                                <div class="label">Alpha</div>
-
-                                <b-field :addons="false" grouped>
-                                    <b-field expanded>
-                                        <b-input placeholder="Min" type="number" name="alphaMin" required v-model.number="newHops.alpha.min"></b-input>
-                                    </b-field>
-                                    <b-field>-</b-field>
-                                    <b-field expanded>
-                                        <b-input placeholder="Max" type="number" name="alphaMax" required v-model.number="newHops.alpha.max"></b-input>
-                                    </b-field>
+                    <section class="add-hops__form">
+                        <form @submit.prevent="addHops">
+                            <b-field grouped>
+                                <b-field label="Name" expanded>
+                                    <b-input placeholder="Cascade" name="name" required v-model.trim="newHops.name"></b-input>
                                 </b-field>
-                            </div>
 
-                            <div class="column">
-                                <div class="label">Beta</div>
-
-                                <b-field :addons="false" grouped>
-                                    <b-field expanded>
-                                        <b-input placeholder="Min" type="number" name="betaMin" v-model.number="newHops.beta.min"></b-input>
-                                    </b-field>
-                                    <b-field>-</b-field>
-                                    <b-field expanded>
-                                        <b-input placeholder="Max" type="number" name="betaMax" v-model.number="newHops.beta.max"></b-input>
-                                    </b-field>
+                                <b-field label="Country">
+                                    <b-select expanded v-model="newHops.country">
+                                        <option value="us">USA</option>
+                                        <option value="de">Germany</option>
+                                        <option value="nz">New Zealand</option>
+                                    </b-select>
                                 </b-field>
-                            </div>
 
-                        </div>
-                    </b-field>
+                                <b-field label="Usage">
+                                    <b-select expanded v-model="newHops.usage">
+                                        <option value="AB">Dual</option>
+                                        <option value="A">Aroma</option>
+                                        <option value="B">Bitter</option>
+                                    </b-select>
+                                </b-field>
+                            </b-field>
 
-                    <hr>
+                            <b-field :addons="false">
+                                <div class="label">Acid, %</div>
 
-                    <b-field grouped>
-                        <div class="control is-expanded">
-                            <button class="button is-primary is-fullwidth" type="submit">
-                                <b-icon icon="plus"></b-icon>
-                                <span>Add Hops</span>
-                            </button>
-                        </div>
-                        <div class="control">
-                            <button class="button is-fullwidth" @click.prevent="clearFields">
-                                <b-icon icon="eraser"></b-icon>
-                                <span>Clear Fields</span>
-                            </button>
-                        </div>
-                        <div class="control" v-if="isHopsSelected">
-                            <button class="button is-fullwidth is-danger" @click.prevent="removeHops">
-                                <b-icon icon="trash"></b-icon>
-                                <span>Delete</span>
-                            </button>
-                        </div>
-                    </b-field>
+                                <div class="columns">
 
-                </form>
-            </section>
+                                    <div class="column">
+                                        <div class="label">Alpha</div>
+
+                                        <b-field :addons="false" grouped>
+                                            <b-field expanded>
+                                                <b-input placeholder="Min" type="number" name="alphaMin" required v-model.number="newHops.alpha.min"></b-input>
+                                            </b-field>
+                                            <b-field>-</b-field>
+                                            <b-field expanded>
+                                                <b-input placeholder="Max" type="number" name="alphaMax" required v-model.number="newHops.alpha.max"></b-input>
+                                            </b-field>
+                                        </b-field>
+                                    </div>
+
+                                    <div class="column">
+                                        <div class="label">Beta</div>
+
+                                        <b-field :addons="false" grouped>
+                                            <b-field expanded>
+                                                <b-input placeholder="Min" type="number" name="betaMin" v-model.number="newHops.beta.min"></b-input>
+                                            </b-field>
+                                            <b-field>-</b-field>
+                                            <b-field expanded>
+                                                <b-input placeholder="Max" type="number" name="betaMax" v-model.number="newHops.beta.max"></b-input>
+                                            </b-field>
+                                        </b-field>
+                                    </div>
+
+                                </div>
+                            </b-field>
+
+                            <hr>
+
+                            <b-field grouped>
+                                <div class="control is-expanded">
+                                    <button class="button is-primary is-fullwidth" type="submit">
+                                        <b-icon icon="plus"></b-icon>
+                                        <span>Add Hops</span>
+                                    </button>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-fullwidth" @click.prevent="clearFields">
+                                        <b-icon icon="eraser"></b-icon>
+                                        <span>Clear Fields</span>
+                                    </button>
+                                </div>
+                                <div class="control" v-if="isHopsSelected">
+                                    <button class="button is-fullwidth is-danger" @click.prevent="removeHops">
+                                        <b-icon icon="trash"></b-icon>
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+                            </b-field>
+
+                        </form>
+                    </section>
+
+                </div>
+                <div class="column">
+
+                    <pre><code>{{ JSON.stringify(transformHops(newHops), null, 2) }}</code></pre>
+
+                </div>
+            </div>
 
             <section class="add-hops__section">
                 <table class="add-hops__table table is-narrow is-fullwidth is-narrow">
@@ -101,7 +118,7 @@
                         </th>
                         <th class="table-cell --w-min has-text-centered">#</th>
                         <th class="table-cell --w-max">Name</th>
-                        <th class="table-cell --w-max">Country</th>
+                        <th class="table-cell --w-min has-text-centered">Country</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>
                         <th class="table-cell --w-min has-text-centered">alpha, %</th>
                         <th class="table-cell --w-min has-text-centered">beta, %</th>
@@ -231,9 +248,10 @@
                 const newHopsName = newHops.name;
 
                 const currentHops = _find(this.hops, {name: newHopsName});
+                const transformedHops = this.transformHops(newHops);
 
                 if (!currentHops) {
-                    this.$firebaseRefs.dbHops.push(newHops).then(() => {
+                    this.$firebaseRefs.dbHops.push(transformedHops).then(() => {
                         this.$snackbar.open({
                             message: `Hops ${newHopsName} successfully added!`,
                             actionText: 'OK',
@@ -253,7 +271,7 @@
                         onAction: () => {
                             this.$firebaseRefs.dbHops
                                 .child(currentHops['.key'])
-                                .set({...newHops}).then(() => {
+                                .set({...transformedHops}).then(() => {
                                 this.$snackbar.open({
                                     message: `Hops ${newHopsName} successfully updated!`,
                                     actionText: 'OK',
@@ -279,6 +297,10 @@
 
                 // general
                 this.newHops.name = this.selectedHops.name;
+
+                // todo: update selected
+                this.newHops.country = this.selectedHops.country.length ? this.selectedHops.country[0] : '';
+
                 this.newHops.usage = this.selectedHops.usage;
 
                 // chemistry
@@ -323,6 +345,12 @@
                         clearTimeout(removeTimeout);
                     }
                 });
+            },
+
+            transformHops: hops => {
+                return Object.assign({}, hops, {
+                    country: [hops.country]
+                })
             }
         }
     };
