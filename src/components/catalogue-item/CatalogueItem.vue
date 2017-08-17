@@ -14,6 +14,14 @@
         <td class="table-cell">
             {{name}}
         </td>
+        <td class="table-cell">
+            <div v-if="country.length">
+                <span class="content is-large" v-for="flag in countryFormatted">{{flag}}</span>
+            </div>
+            <div v-else>
+                {{countryFormatted}}
+            </div>
+        </td>
         <td class="table-cell has-text-centered">
             {{usageFormatted}}
         </td>
@@ -28,6 +36,7 @@
 
 <script>
     import cls from 'classnames';
+    import emoji from 'node-emoji';
 
     import _isEmpty from 'lodash/isEmpty';
 
@@ -53,6 +62,13 @@
             usage: {
                 type: String,
                 default: 'NA'
+            },
+
+            country: {
+                type: Array,
+                default: function () {
+                    return [];
+                }
             },
 
             // todo: number validation
@@ -94,6 +110,16 @@
 
             usageFormatted: function () {
                 return USAGE_MAP[this.usage];
+            },
+
+            countryFormatted: function () {
+                const flagCodes = this.country;
+
+                if (!flagCodes.length) {
+                    return 'NA';
+                }
+
+                return flagCodes.map(flagCode => emoji.emojify(`:flag-${flagCode}:`));
             },
 
             alphaFormatted: function () {

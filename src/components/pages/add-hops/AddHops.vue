@@ -101,6 +101,7 @@
                         </th>
                         <th class="table-cell --w-min has-text-centered">#</th>
                         <th class="table-cell --w-max">Name</th>
+                        <th class="table-cell --w-max">Country</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>
                         <th class="table-cell --w-min has-text-centered">alpha, %</th>
                         <th class="table-cell --w-min has-text-centered">beta, %</th>
@@ -112,6 +113,7 @@
                         :key="hops.key"
                         :index="index + 1"
                         :name="hops.name"
+                        :country="hops.country"
                         :usage="hops.usage"
                         :alpha="hops.alpha"
                         :beta="hops.beta"

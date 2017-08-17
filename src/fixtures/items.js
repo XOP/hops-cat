@@ -4,9 +4,9 @@ export default [
         alias: [],
         usage: "AB",
         country: [
-            "USA",
-            "GER",
-            "NZ"
+            "us",
+            "de",
+            "nz"
         ],
         similar: [
             "Columbus",
@@ -78,7 +78,7 @@ export default [
         ],
         usage: "AB",
         country: [
-            "USA"
+            "us"
         ],
         similar: [
             "Cascade",

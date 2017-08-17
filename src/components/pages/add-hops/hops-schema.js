@@ -1,10 +1,15 @@
 export default {
     name: '',
+
     usage: 'AB',
+
+    country: [],
+
     alpha: {
         min: 0,
         max: 100
     },
+
     beta: {
         min: 0,
         max: 100
