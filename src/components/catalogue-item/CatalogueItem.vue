@@ -119,7 +119,7 @@
                     return 'NA';
                 }
 
-                return flagCodes.map(flagCode => emoji.emojify(`:flag-${flagCode}:`));
+                return flagCodes.map(flagCode => emoji.emojify(`:flag-${flagCode.toLowerCase()}:`));
             },
 
             alphaFormatted: function () {
