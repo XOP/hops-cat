@@ -22,14 +22,6 @@
                                     <b-input placeholder="Cascade" name="name" required v-model.trim="newHops.name"></b-input>
                                 </b-field>
 
-                                <b-field label="Country">
-                                    <b-select expanded v-model="newHops.country">
-                                        <option value="us">USA</option>
-                                        <option value="de">Germany</option>
-                                        <option value="nz">New Zealand</option>
-                                    </b-select>
-                                </b-field>
-
                                 <b-field label="Usage">
                                     <b-select expanded v-model="newHops.usage">
                                         <option value="AB">Dual</option>
@@ -37,6 +29,33 @@
                                         <option value="B">Bitter</option>
                                     </b-select>
                                 </b-field>
+                            </b-field>
+
+                            <b-field :addons="false">
+                                <div class="label">Countries of origin</div>
+                                <div class="columns">
+                                    <div class="column">
+                                        <b-select expanded v-model="newHops.country[0]">
+                                            <option value="us">USA</option>
+                                            <option value="de">Germany</option>
+                                            <option value="nz">New Zealand</option>
+                                        </b-select>
+                                    </div>
+                                    <div class="column">
+                                        <b-select expanded v-model="newHops.country[1]" v-if="newHops.country.length > 0">
+                                            <option value="us">USA</option>
+                                            <option value="de">Germany</option>
+                                            <option value="nz">New Zealand</option>
+                                        </b-select>
+                                    </div>
+                                    <div class="column">
+                                        <b-select expanded v-model="newHops.country[2]" v-if="newHops.country.length > 1">
+                                            <option value="us">USA</option>
+                                            <option value="de">Germany</option>
+                                            <option value="nz">New Zealand</option>
+                                        </b-select>
+                                    </div>
+                                </div>
                             </b-field>
 
                             <b-field :addons="false">
@@ -159,6 +178,7 @@
     import db from '../../../firebase';
 
     import CatalogueItem from '../../catalogue-item';
+    import Tag from '../../tag';
 
     import hopsSchema from './hops-schema';
     import locale from './locale';
@@ -179,7 +199,8 @@
         }),
 
         components: {
-            'catalogue-item': CatalogueItem
+            'catalogue-item': CatalogueItem,
+            'tag': Tag
         },
 
         props: {
@@ -297,10 +318,7 @@
 
                 // general
                 this.newHops.name = this.selectedHops.name;
-
-                // todo: update selected
-                this.newHops.country = this.selectedHops.country.length ? this.selectedHops.country[0] : '';
-
+                this.newHops.country = this.selectedHops.country;
                 this.newHops.usage = this.selectedHops.usage;
 
                 // chemistry
@@ -348,9 +366,11 @@
             },
 
             transformHops: hops => {
-                return Object.assign({}, hops, {
-                    country: [hops.country]
-                })
+                return hops;
+            },
+
+            removeFlag: function (flag, e) {
+                console.log(flag, e);
             }
         }
     };
