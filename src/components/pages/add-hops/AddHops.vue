@@ -16,7 +16,7 @@
                 <div class="column is-8-desktop">
 
                     <section class="add-hops__form">
-                        <form @submit.prevent="addHops">
+                        <form>
                             <b-field grouped>
                                 <b-field label="Name" expanded>
                                     <b-input placeholder="Cascade" name="name" required v-model.trim="newHops.name"></b-input>
@@ -34,26 +34,76 @@
                             <b-field :addons="false">
                                 <div class="label">Countries of origin</div>
                                 <div class="columns">
-                                    <div class="column">
-                                        <b-select expanded v-model="newHops.country[0]">
-                                            <option value="us">USA</option>
-                                            <option value="de">Germany</option>
-                                            <option value="nz">New Zealand</option>
-                                        </b-select>
+                                    <div class="column is-narrow">
+
+                                        <b-field>
+                                            <p class="control">
+                                                <b-dropdown v-model="newHops.country[0]">
+                                                    <button class="button" type="button" slot="trigger">
+                                                        <span v-text="getFlagNameByCode(newHops.country[0]) || 'Select'"></span>
+                                                        <b-icon icon="caret-down" size="is-small"></b-icon>
+                                                    </button>
+
+                                                    <b-dropdown-item value="us">USA</b-dropdown-item>
+                                                    <b-dropdown-item value="de">Germany</b-dropdown-item>
+                                                    <b-dropdown-item value="nz">New Zealand</b-dropdown-item>
+                                                </b-dropdown>
+                                            </p>
+                                            <p class="control" v-if="newHops.country[0]">
+                                                <button class="button is-warning" type="button">
+                                                    <b-icon icon="times" size="is-small"></b-icon>
+                                                </button>
+                                            </p>
+                                        </b-field>
+
                                     </div>
-                                    <div class="column">
-                                        <b-select expanded v-model="newHops.country[1]" v-if="newHops.country.length > 0">
-                                            <option value="us">USA</option>
-                                            <option value="de">Germany</option>
-                                            <option value="nz">New Zealand</option>
-                                        </b-select>
+
+                                    <div class="column is-narrow" v-if="newHops.country.length > 0">
+
+                                        <b-field>
+                                            <p class="control">
+                                                <b-dropdown v-model="newHops.country[1]">
+                                                    <button class="button" type="button" slot="trigger">
+                                                        <span v-text="getFlagNameByCode(newHops.country[1]) || 'Select'"></span>
+                                                        <b-icon icon="caret-down" size="is-small"></b-icon>
+                                                    </button>
+
+                                                    <b-dropdown-item value="us">USA</b-dropdown-item>
+                                                    <b-dropdown-item value="de">Germany</b-dropdown-item>
+                                                    <b-dropdown-item value="nz">New Zealand</b-dropdown-item>
+                                                </b-dropdown>
+                                            </p>
+                                            <p class="control" v-if="newHops.country[1]">
+                                                <button class="button is-warning" type="button">
+                                                    <b-icon icon="times" size="is-small"></b-icon>
+                                                </button>
+                                            </p>
+                                        </b-field>
+
                                     </div>
-                                    <div class="column">
-                                        <b-select expanded v-model="newHops.country[2]" v-if="newHops.country.length > 1">
-                                            <option value="us">USA</option>
-                                            <option value="de">Germany</option>
-                                            <option value="nz">New Zealand</option>
-                                        </b-select>
+
+                                    <div class="column is-narrow" v-if="newHops.country.length > 1">
+
+                                        <b-field>
+                                            <p class="control">
+                                                <b-dropdown v-model="newHops.country[2]">
+                                                    <button class="button" type="button" slot="trigger">
+                                                        <span v-text="getFlagNameByCode(newHops.country[2]) || 'Select'"></span>
+                                                        <b-icon icon="caret-down" size="is-small"></b-icon>
+                                                    </button>
+
+                                                    <b-dropdown-item value="us">USA</b-dropdown-item>
+                                                    <b-dropdown-item value="de">Germany</b-dropdown-item>
+                                                    <b-dropdown-item value="nz">New Zealand</b-dropdown-item>
+                                                </b-dropdown>
+                                            </p>
+                                            <p class="control" v-if="newHops.country[2]">
+                                                <button class="button is-warning" type="button">
+                                                    <b-icon icon="times" size="is-small"></b-icon>
+                                                </button>
+                                            </p>
+                                        </b-field>
+
                                     </div>
                                 </div>
                             </b-field>
@@ -98,9 +148,15 @@
 
                             <b-field grouped>
                                 <div class="control is-expanded">
-                                    <button class="button is-primary is-fullwidth" type="submit">
-                                        <b-icon icon="plus"></b-icon>
-                                        <span>Add Hops</span>
+                                    <button class="button is-primary is-fullwidth" @click.prevent="addHops">
+                                        <span v-if="isHopsUpdated">
+                                            <b-icon icon="wrench"></b-icon>
+                                            <span>Update Hops</span>
+                                        </span>
+                                        <span v-else>
+                                            <b-icon icon="plus"></b-icon>
+                                            <span>Add Hops</span>
+                                        </span>
                                     </button>
                                 </div>
                                 <div class="control">
@@ -186,16 +242,19 @@
     import { DURATION } from '../../../constants/ui';
 
     import {
+        Flags as mockFlags,
         Items as mockHops
     } from '../../../fixtures/index';
 
     const itemsRef = db.ref('items');
+    const flagsRef = db.ref('flags');
 
     export default {
         name: 'add-hops',
 
         firebase: () => ({
-            dbHops: itemsRef.orderByKey()
+            dbHops: itemsRef.orderByKey(),
+            dbFlags: flagsRef.orderByKey()
         }),
 
         components: {
@@ -227,6 +286,10 @@
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
 
+            flags: function () {
+                return this.isDebugMode ? mockFlags : this.dbFlags;
+            },
+
             hops: function () {
                 return this.isDebugMode ? mockHops : this.dbHops;
             },
@@ -240,6 +303,12 @@
 
             isHopsSelected: function () {
                 return !_isEmpty(this.selectedHops);
+            },
+
+            isHopsUpdated: function () {
+                // todo: updated state
+
+                return false;
             },
 
             isFormValid: function () {
@@ -371,6 +440,14 @@
 
             removeFlag: function (flag, e) {
                 console.log(flag, e);
+            },
+
+            getFlagNameByCode: function (code) {
+                const flag = _find(this.flags, { code });
+
+                if (flag) {
+                    return flag['name'];
+                }
             }
         }
     };
