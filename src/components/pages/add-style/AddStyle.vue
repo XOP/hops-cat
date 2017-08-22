@@ -171,7 +171,7 @@
 
             stylesProcessed: function () {
                 return this.styles
-                    .slice()
+                    .slice(0)
                     .reverse()
                     .filter(i => this.hiddenKeys.indexOf(i['.key']) === -1);
             }

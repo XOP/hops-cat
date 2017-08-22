@@ -139,7 +139,7 @@
             },
 
             flagsProcessed: function () {
-                return this.flags.slice().reverse();
+                return this.flags.slice(0).reverse();
             }
         },
 

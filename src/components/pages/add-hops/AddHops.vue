@@ -58,7 +58,7 @@
 
                                     </div>
 
-                                    <div class="column is-narrow" v-if="newHops.country.length > 0">
+                                    <div class="column is-narrow" v-if="newHops.country[0]">
 
                                         <b-field>
                                             <p class="control">
@@ -82,7 +82,7 @@
 
                                     </div>
 
-                                    <div class="column is-narrow" v-if="newHops.country.length > 1">
+                                    <div class="column is-narrow" v-if="newHops.country[1]">
 
                                         <b-field>
                                             <p class="control">
@@ -161,8 +161,14 @@
                                 </div>
                                 <div class="control">
                                     <button class="button is-fullwidth" @click.prevent="clearFields">
-                                        <b-icon icon="eraser"></b-icon>
-                                        <span>Clear Fields</span>
+                                        <span v-if="isHopsSelected">
+                                            <b-icon icon="times"></b-icon>
+                                            <span>Deselect</span>
+                                        </span>
+                                        <span v-else>
+                                            <b-icon icon="eraser"></b-icon>
+                                            <span>Clear Fields</span>
+                                        </span>
                                     </button>
                                 </div>
                                 <div class="control" v-if="isHopsSelected">
@@ -202,7 +208,8 @@
                     <tbody>
                     <catalogue-item
                         v-for="(hops, index) in hopsProcessed"
-                        :key="hops.key"
+                        :key="index"
+                        :dbKey="hops['.key']"
                         :index="index + 1"
                         :name="hops.name"
                         :country="hops.country"
@@ -228,6 +235,7 @@
     import clone from 'clone';
 
     import _isEmpty from 'lodash/isEmpty';
+    import _isEqual from 'lodash/isEqual';
     import _find from 'lodash/find';
     import _without from 'lodash/without';
 
@@ -296,7 +304,7 @@
 
             hopsProcessed: function () {
                 return this.hops
-                    .slice()
+                    .slice(0)
                     .reverse()
                     .filter(i => this.hiddenKeys.indexOf(i['.key']) === -1);
             },
@@ -306,7 +314,23 @@
             },
 
             isHopsUpdated: function () {
-                // todo: updated state
+                if (_isEmpty(this.selectedHops)) return false;
+
+                const selected = this.selectedHops;
+                const edited = this.newHops;
+
+                if (
+                    selected['.key'] &&
+                    (
+                        selected.name !== edited.name ||
+                        selected.usage !== edited.usage ||
+                        !_isEqual(selected.country, edited.country) ||
+                        !_isEqual(selected.alpha, edited.alpha) ||
+                        !_isEqual(selected.beta, edited.beta)
+                    )
+                ) {
+                    return true;
+                }
 
                 return false;
             },
@@ -334,11 +358,22 @@
                     return;
                 }
 
+                // new hops data
                 const newHops = this.newHops;
                 const newHopsName = newHops.name;
 
-                const currentHops = _find(this.hops, {name: newHopsName});
+                // check if selected / modified
+                // fixme: selectedHops?
+                const currentKey = newHops['.key'];
+                const currentHops = _find(this.hops, {'.key': currentKey});
+
+                // enhance if needed
                 const transformedHops = this.transformHops(newHops);
+
+                // delete db key to prevent firebase conflict
+                if (currentKey) {
+                    delete transformedHops['.key'];
+                }
 
                 if (!currentHops) {
                     this.$firebaseRefs.dbHops.push(transformedHops).then(() => {
@@ -360,7 +395,7 @@
                         duration: DURATION.NOTIFICATION_NORMAL,
                         onAction: () => {
                             this.$firebaseRefs.dbHops
-                                .child(currentHops['.key'])
+                                .child(currentKey)
                                 .set({...transformedHops}).then(() => {
                                 this.$snackbar.open({
                                     message: `Hops ${newHopsName} successfully updated!`,
@@ -377,22 +412,26 @@
             },
 
             selectHops: function (hops) {
-                // fixme: universal selection method
-                // this.selectedHops = _find(this.hops, {name: hops.name});
-
-                this.selectedHops = {...hops};
+                this.selectedHops = _find(this.hops, {['.key']: hops.dbKey});
 
                 // debug
                 console.info('selected: ', this.selectedHops);
 
-                // general
-                this.newHops.name = this.selectedHops.name;
-                this.newHops.country = this.selectedHops.country;
-                this.newHops.usage = this.selectedHops.usage;
+                this.newHops = clone(this.selectedHops);
 
-                // chemistry
-                this.newHops.alpha = clone(this.selectedHops.alpha);
-                this.newHops.beta = clone(this.selectedHops.beta);
+                // backwards compatibility
+                // fixme: information tip about default props
+                if (!this.newHops.alpha) {
+                    this.newHops.alpha = clone(hopsSchema.alpha);
+                }
+
+                if (!this.newHops.beta) {
+                    this.newHops.beta = clone(hopsSchema.beta);
+                }
+
+                if (!this.newHops.country) {
+                    this.newHops.country = clone(hopsSchema.country);
+                }
             },
 
             throwError: function (message) {
@@ -405,8 +444,9 @@
             },
 
             clearFields: function () {
-                this.newHops = clone(hopsSchema);
                 this.selectedHops = {};
+
+                this.newHops = clone(hopsSchema);
             },
 
             removeHops: function () {
@@ -435,7 +475,7 @@
             },
 
             transformHops: hops => {
-                return hops;
+                return Object.assign({}, {}, hops);
             },
 
             removeFlag: function (flag, e) {
