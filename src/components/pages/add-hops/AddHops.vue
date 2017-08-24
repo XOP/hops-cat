@@ -44,9 +44,14 @@
                                                         <b-icon icon="caret-down" size="is-small"></b-icon>
                                                     </button>
 
-                                                    <b-dropdown-item value="us">USA</b-dropdown-item>
-                                                    <b-dropdown-item value="de">Germany</b-dropdown-item>
-                                                    <b-dropdown-item value="nz">New Zealand</b-dropdown-item>
+                                                    <b-dropdown-item
+                                                        v-for="(flag, index) in flags"
+                                                        :key="index"
+                                                        :disabled="flag.isSelected"
+                                                        :value="flag.code"
+                                                    >
+                                                        {{ flag.name }}
+                                                    </b-dropdown-item>
                                                 </b-dropdown>
                                             </p>
                                             <p class="control" v-if="newHops.country[0]">
@@ -68,9 +73,14 @@
                                                         <b-icon icon="caret-down" size="is-small"></b-icon>
                                                     </button>
 
-                                                    <b-dropdown-item value="us">USA</b-dropdown-item>
-                                                    <b-dropdown-item value="de">Germany</b-dropdown-item>
-                                                    <b-dropdown-item value="nz">New Zealand</b-dropdown-item>
+                                                    <b-dropdown-item
+                                                        v-for="(flag, index) in flags"
+                                                        :key="index"
+                                                        :disabled="flag.isSelected"
+                                                        :value="flag.code"
+                                                    >
+                                                        {{ flag.name }}
+                                                    </b-dropdown-item>
                                                 </b-dropdown>
                                             </p>
                                             <p class="control" v-if="newHops.country[1]">
@@ -92,9 +102,14 @@
                                                         <b-icon icon="caret-down" size="is-small"></b-icon>
                                                     </button>
 
-                                                    <b-dropdown-item value="us">USA</b-dropdown-item>
-                                                    <b-dropdown-item value="de">Germany</b-dropdown-item>
-                                                    <b-dropdown-item value="nz">New Zealand</b-dropdown-item>
+                                                    <b-dropdown-item
+                                                        v-for="(flag, index) in flags"
+                                                        :key="index"
+                                                        :disabled="flag.isSelected"
+                                                        :value="flag.code"
+                                                    >
+                                                        {{ flag.name }}
+                                                    </b-dropdown-item>
                                                 </b-dropdown>
                                             </p>
                                             <p class="control" v-if="newHops.country[2]">
@@ -296,6 +311,16 @@
 
             flags: function () {
                 return this.isDebugMode ? mockFlags : this.dbFlags;
+            },
+
+            flagsProcessed: function () {
+                //const markSelected = () => {};
+
+                return this.flags
+                    .slice(0)
+                    .map((flag) => {
+
+                    });
             },
 
             hops: function () {

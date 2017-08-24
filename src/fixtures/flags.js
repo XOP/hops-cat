@@ -8,7 +8,7 @@ export default [
         code: "de"
     },
     {
-        name: "Australia",
-        code: "au"
+        name: "New Zealand",
+        code: "nz"
     }
 ];
