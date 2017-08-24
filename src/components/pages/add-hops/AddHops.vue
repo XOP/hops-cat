@@ -55,7 +55,7 @@
                                                 </b-dropdown>
                                             </p>
                                             <p class="control" v-if="newHops.country[0]">
-                                                <button class="button is-warning" type="button">
+                                                <button @click.prevent="removeFlag(0)" class="button is-warning" type="button">
                                                     <b-icon icon="times" size="is-small"></b-icon>
                                                 </button>
                                             </p>
@@ -84,7 +84,7 @@
                                                 </b-dropdown>
                                             </p>
                                             <p class="control" v-if="newHops.country[1]">
-                                                <button class="button is-warning" type="button">
+                                                <button @click.prevent="removeFlag(1)" class="button is-warning" type="button">
                                                     <b-icon icon="times" size="is-small"></b-icon>
                                                 </button>
                                             </p>
@@ -113,7 +113,7 @@
                                                 </b-dropdown>
                                             </p>
                                             <p class="control" v-if="newHops.country[2]">
-                                                <button class="button is-warning" type="button">
+                                                <button @click.prevent="removeFlag(2)" class="button is-warning" type="button">
                                                     <b-icon icon="times" size="is-small"></b-icon>
                                                 </button>
                                             </p>
@@ -508,8 +508,16 @@
                 return Object.assign({}, {}, hops);
             },
 
-            removeFlag: function (flag, e) {
-                console.log(flag, e);
+            removeFlag: function (idx) {
+                const updatedFlags = this.newHops.country.slice(0);
+
+                updatedFlags[idx] = null;
+                updatedFlags.sort((a, b) => {
+                    if (a === null) return 1;
+                    if (b === null) return -1;
+                });
+
+                this.newHops.country = updatedFlags;
             },
 
             getFlagNameByCode: function (code) {
