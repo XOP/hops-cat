@@ -45,7 +45,7 @@
                                                     </button>
 
                                                     <b-dropdown-item
-                                                        v-for="(flag, index) in flags"
+                                                        v-for="(flag, index) in flagsProcessed"
                                                         :key="index"
                                                         :disabled="flag.isSelected"
                                                         :value="flag.code"
@@ -74,7 +74,7 @@
                                                     </button>
 
                                                     <b-dropdown-item
-                                                        v-for="(flag, index) in flags"
+                                                        v-for="(flag, index) in flagsProcessed"
                                                         :key="index"
                                                         :disabled="flag.isSelected"
                                                         :value="flag.code"
@@ -103,7 +103,7 @@
                                                     </button>
 
                                                     <b-dropdown-item
-                                                        v-for="(flag, index) in flags"
+                                                        v-for="(flag, index) in flagsProcessed"
                                                         :key="index"
                                                         :disabled="flag.isSelected"
                                                         :value="flag.code"
@@ -314,13 +314,18 @@
             },
 
             flagsProcessed: function () {
-                //const markSelected = () => {};
+                const flagsSelected = this.newHops.country;
+                const isFlagSelected = flag => {
+                    return flagsSelected.indexOf(flag.code) > -1;
+                };
 
                 return this.flags
                     .slice(0)
-                    .map((flag) => {
-
-                    });
+                    .map((flag) => (
+                        Object.assign({}, flag, {
+                            isSelected: isFlagSelected(flag)
+                        })
+                    ));
             },
 
             hops: function () {
