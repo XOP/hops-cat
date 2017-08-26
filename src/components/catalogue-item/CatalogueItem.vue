@@ -55,8 +55,7 @@
             },
 
             dbKey: {
-                type: String,
-                required: true
+                type: String
             },
 
             name: {
