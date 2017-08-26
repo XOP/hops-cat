@@ -1,0 +1,33 @@
+/* Core
+---------------------------------------------------------------------------------- */
+
+html {
+    height: 100%;
+
+    font-size: 14px;
+}
+
+body {
+    display: flex;
+    flex-flow: column;
+
+    height: 100%;
+
+    line-height: 1.5;
+}
+
+main.is-fit-screen {
+    display: flex;
+
+    flex: 1 1 100%;
+    flex-flow: column;
+
+    & > section {
+        display: flex;
+
+        flex-flow: column;
+    }
+}
+
+/* /Core
+---------------------------------------------------------------------------------- */
