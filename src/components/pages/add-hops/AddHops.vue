@@ -161,6 +161,14 @@
 
                             <hr>
 
+                            <b-notification
+                                :active.sync="isDefaultPropsNotification"
+                                type="is-info"
+                                @click="hideDefaultPropsNotification"
+                            >
+                                Some fields were changed to new hops defaults
+                            </b-notification>
+
                             <b-field grouped>
                                 <div class="control is-expanded">
                                     <button class="button is-primary is-fullwidth" @click.prevent="addHops">
@@ -291,10 +299,16 @@
         data () {
             return {
                 newHops: {},
-
                 selectedHops: {},
 
-                hiddenKeys: []
+                hiddenKeys: [],
+                isDefaultPropsNotification: false,
+                predefinedProps: [
+                    'usage',
+                    'alpha',
+                    'beta',
+                    'country'
+                ]
             };
         },
 
@@ -450,18 +464,21 @@
                 this.newHops = clone(this.selectedHops);
 
                 // backwards compatibility
-                // fixme: information tip about default props
-                if (!this.newHops.alpha) {
-                    this.newHops.alpha = clone(hopsSchema.alpha);
-                }
+                const newHops = this.newHops;
 
-                if (!this.newHops.beta) {
-                    this.newHops.beta = clone(hopsSchema.beta);
-                }
+                this.predefinedProps.forEach(key => {
+                    if (!newHops[key]) {
+                        console.log(this.isDefaultPropsNotification);
 
-                if (!this.newHops.country) {
-                    this.newHops.country = clone(hopsSchema.country);
-                }
+                        this.isDefaultPropsNotification = true;
+
+                        console.log(this.isDefaultPropsNotification);
+
+
+                        // assign default value
+                        newHops[key] = clone(hopsSchema[key]);
+                    }
+                });
             },
 
             throwError: function (message) {
@@ -526,6 +543,10 @@
                 if (flag) {
                     return flag['name'];
                 }
+            },
+
+            hideDefaultPropsNotification: function () {
+                this.isDefaultPropsNotification = false;
             }
         }
     };
