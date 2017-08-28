@@ -228,7 +228,12 @@
                         <th class="table-cell --w-max">Name</th>
                         <th class="table-cell --w-min has-text-centered">Country</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>
-                        <th class="table-cell --w-min has-text-centered">Shelf life(?)</th>
+                        <th class="table-cell --w-min has-text-centered">
+                            <span class="u-t-nowrap">Shelf life</span>
+                            <b-tooltip :label="locale.tooltips.shelfLife">
+                                <b-icon icon="question-circle" size="is-small"/>
+                            </b-tooltip>
+                        </th>
                         <th class="table-cell --w-min has-text-centered">alpha, %</th>
                         <th class="table-cell --w-min has-text-centered">beta, %</th>
                     </tr>
@@ -274,8 +279,8 @@
     import Tag from '../../tag';
 
     import hopsSchema from './hops-schema';
-    import locale from './locale';
 
+    import locale from '../../../locale';
     import { DURATION } from '../../../constants/ui';
 
     import {
@@ -304,6 +309,8 @@
 
         data () {
             return {
+                locale,
+
                 newHops: {},
                 selectedHops: {},
 

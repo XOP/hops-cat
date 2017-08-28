@@ -38,7 +38,12 @@
                         <th class="table-cell --w-max">Name</th>
                         <th class="table-cell --w-min has-text-centered">Country</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>
-                        <th class="table-cell --w-min has-text-centered">Shelf life(?)</th>
+                        <th class="table-cell --w-min has-text-centered">
+                            <span class="u-t-nowrap">Shelf life</span>
+                            <b-tooltip :label="locale.tooltips.shelfLife">
+                                <b-icon icon="question-circle" size="is-small"/>
+                            </b-tooltip>
+                        </th>
                         <th class="table-cell --w-min has-text-centered">alpha, %</th>
                         <th class="table-cell --w-min has-text-centered">beta, %</th>
                     </tr>
@@ -73,6 +78,8 @@
         Items as mockHops
     } from '../../../fixtures/index';
 
+    import locale from '../../../locale';
+
     const itemsRef = db.ref('items');
 
     export default {
@@ -88,6 +95,8 @@
 
         data () {
             return {
+                locale,
+
                 defaultOrder: true,
                 sortingOrderAZ: 1
             };
