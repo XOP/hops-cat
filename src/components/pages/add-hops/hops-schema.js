@@ -5,6 +5,8 @@ export default {
 
     country: [null, null, null],
 
+    shelfLife: 0,
+
     alpha: {
         min: 0,
         max: 100

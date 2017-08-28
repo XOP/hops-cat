@@ -29,6 +29,10 @@
                                         <option value="B">Bitter</option>
                                     </b-select>
                                 </b-field>
+
+                                <b-field label="Shelf life">
+                                    <b-input placeholder="0 - 10" type="number" name="shelfLife" required v-model.number="newHops.shelfLife"></b-input>
+                                </b-field>
                             </b-field>
 
                             <b-field :addons="false">
@@ -224,6 +228,7 @@
                         <th class="table-cell --w-max">Name</th>
                         <th class="table-cell --w-min has-text-centered">Country</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>
+                        <th class="table-cell --w-min has-text-centered">Shelf life(?)</th>
                         <th class="table-cell --w-min has-text-centered">alpha, %</th>
                         <th class="table-cell --w-min has-text-centered">beta, %</th>
                     </tr>
@@ -237,6 +242,7 @@
                         :name="hops.name"
                         :country="hops.country"
                         :usage="hops.usage"
+                        :shelfLife="hops.shelfLife"
                         :alpha="hops.alpha"
                         :beta="hops.beta"
                         :onClick="selectHops"
@@ -305,6 +311,7 @@
                 isDefaultPropsNotification: false,
                 predefinedProps: [
                     'usage',
+                    'shelfLife',
                     'alpha',
                     'beta',
                     'country'
@@ -368,6 +375,7 @@
                     (
                         selected.name !== edited.name ||
                         selected.usage !== edited.usage ||
+                        selected.shelfLife !== edited.shelfLife ||
                         !_isEqual(selected.country, edited.country) ||
                         !_isEqual(selected.alpha, edited.alpha) ||
                         !_isEqual(selected.beta, edited.beta)
@@ -432,7 +440,7 @@
                     });
                 } else {
                     this.$snackbar.open({
-                        message: `Hops ${newHopsName} already exists!`,
+                        message: `Confirm new data for ${newHopsName}!`,
                         actionText: 'Override',
                         position: 'is-top',
                         type: 'is-warning',
@@ -468,12 +476,7 @@
 
                 this.predefinedProps.forEach(key => {
                     if (!newHops[key]) {
-                        console.log(this.isDefaultPropsNotification);
-
                         this.isDefaultPropsNotification = true;
-
-                        console.log(this.isDefaultPropsNotification);
-
 
                         // assign default value
                         newHops[key] = clone(hopsSchema[key]);

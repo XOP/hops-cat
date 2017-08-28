@@ -21,7 +21,7 @@ export default [
             "pellet",
             "leaf/whole"
         ],
-        shelf_life: 1,
+        shelfLife: 1,
         aroma: {
             primary: [
                 "flower"
@@ -92,7 +92,7 @@ export default [
             "pellet",
             "leaf/whole"
         ],
-        shelf_life: 5,
+        shelfLife: 5,
         aroma: {
             primary: [
                 "flower"

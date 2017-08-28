@@ -38,6 +38,7 @@
                         <th class="table-cell --w-max">Name</th>
                         <th class="table-cell --w-min has-text-centered">Country</th>
                         <th class="table-cell --w-min has-text-centered">Usage</th>
+                        <th class="table-cell --w-min has-text-centered">Shelf life(?)</th>
                         <th class="table-cell --w-min has-text-centered">alpha, %</th>
                         <th class="table-cell --w-min has-text-centered">beta, %</th>
                     </tr>
@@ -50,6 +51,7 @@
                         :name="item.name"
                         :country="item.country"
                         :usage="item.usage"
+                        :shelfLife="item.shelfLife"
                         :alpha="item.alpha"
                         :beta="item.beta"
                     >

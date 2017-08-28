@@ -26,6 +26,9 @@
             {{usageFormatted}}
         </td>
         <td class="table-cell has-text-centered">
+            {{shelfLifeFormatted}}
+        </td>
+        <td class="table-cell has-text-centered">
             {{alphaFormatted}}
         </td>
         <td class="table-cell has-text-centered">
@@ -75,6 +78,10 @@
                 }
             },
 
+            shelfLife: {
+                type: Number
+            },
+
             // todo: number validation
             alpha: {
                 type: Object,
@@ -116,6 +123,10 @@
                 return USAGE_MAP[this.usage];
             },
 
+            shelfLifeFormatted: function () {
+                return Number(this.shelfLife) || 'NA';
+            },
+
             countryFormatted: function () {
                 const flagCodes = this.country;
 
@@ -131,8 +142,8 @@
             },
 
             alphaFormatted: function () {
-                const min = +this.alpha.min;
-                const max = +this.alpha.max;
+                const min = Number(this.alpha.min);
+                const max = Number(this.alpha.max);
 
                 if (!this.isRangeValid(this.alpha)) {
                     return 'NA';
@@ -142,8 +153,8 @@
             },
 
             betaFormatted: function () {
-                const min = +this.beta.min;
-                const max = +this.beta.max;
+                const min = Number(this.beta.min);
+                const max = Number(this.beta.max);
 
                 if (!this.isRangeValid(this.beta)) {
                     return 'NA';
