@@ -167,7 +167,6 @@
 
                             <b-notification
                                 :active.sync="isDefaultPropsNotification"
-                                type="is-info"
                                 @click="hideDefaultPropsNotification"
                             >
                                 Some fields were changed to new hops defaults
@@ -244,6 +243,7 @@
                         :key="index"
                         :dbKey="hops['.key']"
                         :index="index + 1"
+                        :isSelected="hops.isSelected"
                         :name="hops.name"
                         :country="hops.country"
                         :usage="hops.usage"
@@ -349,7 +349,7 @@
 
                 return this.flags
                     .slice(0)
-                    .map((flag) => (
+                    .map(flag => (
                         Object.assign({}, flag, {
                             isSelected: isFlagSelected(flag)
                         })
@@ -361,9 +361,18 @@
             },
 
             hopsProcessed: function () {
+                const isHopsSelected = hops => {
+                    return _isEqual(this.selectedHops, hops);
+                };
+
                 return this.hops
                     .slice(0)
                     .reverse()
+                    .map(hops => (
+                        Object.assign({}, hops, {
+                            isSelected: isHopsSelected(hops)
+                        })
+                    ))
                     .filter(i => this.hiddenKeys.indexOf(i['.key']) === -1);
             },
 
@@ -502,8 +511,10 @@
 
             clearFields: function () {
                 this.selectedHops = {};
-
                 this.newHops = clone(hopsSchema);
+
+                // remove notifications and errors
+                this.hideDefaultPropsNotification();
             },
 
             removeHops: function () {

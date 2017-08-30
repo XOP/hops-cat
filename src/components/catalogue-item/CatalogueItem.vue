@@ -15,7 +15,7 @@
             {{name}}
         </td>
         <td class="table-cell has-text-centered">
-            <div v-if="country.length" class="u-t-nowrap">
+            <div v-if="country.length" class="u-t-nowrap u-lh-reset">
                 <span class="content is-large" v-for="flag in countryFormatted">{{flag}}</span>
             </div>
             <div v-else>
@@ -55,6 +55,10 @@
                 validator: function (i) {
                     return i > 0;
                 }
+            },
+
+            isSelected: {
+                type: Boolean
             },
 
             dbKey: {
@@ -116,7 +120,9 @@
 
         computed: {
             componentClassname: function () {
-                return cls('catalogue-item', 'table-row', {});
+                return cls('catalogue-item', 'table-row', {
+                    'is-selected': this.isSelected
+                });
             },
 
             usageFormatted: function () {
