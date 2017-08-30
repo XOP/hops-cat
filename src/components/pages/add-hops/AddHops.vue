@@ -31,7 +31,7 @@
                                 </b-field>
 
                                 <b-field label="Shelf life">
-                                    <b-input placeholder="0 - 10" type="number" name="shelfLife" required v-model.number="newHops.shelfLife"></b-input>
+                                    <b-input placeholder="0 - 10" type="number" name="shelfLife" v-model.number="newHops.shelfLife"></b-input>
                                 </b-field>
                             </b-field>
 
