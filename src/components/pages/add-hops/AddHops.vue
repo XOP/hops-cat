@@ -39,90 +39,51 @@
                                 <div class="label">Countries of origin</div>
                                 <div class="columns">
                                     <div class="column is-narrow">
-
-                                        <b-field>
-                                            <p class="control">
-                                                <b-dropdown v-model="newHops.country[0]">
-                                                    <button class="button" type="button" slot="trigger">
-                                                        <span v-text="getFlagNameByCode(newHops.country[0]) || 'Select'"></span>
-                                                        <b-icon icon="caret-down" size="is-small"></b-icon>
-                                                    </button>
-
-                                                    <b-dropdown-item
-                                                        v-for="(flag, index) in flagsProcessed"
-                                                        :key="index"
-                                                        :disabled="flag.isSelected"
-                                                        :value="flag.code"
-                                                    >
-                                                        {{ flag.name }}
-                                                    </b-dropdown-item>
-                                                </b-dropdown>
-                                            </p>
-                                            <p class="control" v-if="newHops.country[0]">
-                                                <button @click.prevent="removeFlag(0)" class="button is-warning" type="button">
-                                                    <b-icon icon="times" size="is-small"></b-icon>
-                                                </button>
-                                            </p>
-                                        </b-field>
-
+                                        <select-tag
+                                            :id="0"
+                                            :value="newHops.country[0]"
+                                            :label="getFlagNameByCode(newHops.country[0])"
+                                            :items="flagsProcessed"
+                                            :itemsMap="{
+                                                value: 'code',
+                                                name: 'name',
+                                                disabled: 'isSelected'
+                                            }"
+                                            @remove="removeFlag"
+                                            @select="selectFlag"
+                                        ></select-tag>
                                     </div>
 
                                     <div class="column is-narrow" v-if="newHops.country[0]">
-
-                                        <b-field>
-                                            <p class="control">
-                                                <b-dropdown v-model="newHops.country[1]">
-                                                    <button class="button" type="button" slot="trigger">
-                                                        <span v-text="getFlagNameByCode(newHops.country[1]) || 'Select'"></span>
-                                                        <b-icon icon="caret-down" size="is-small"></b-icon>
-                                                    </button>
-
-                                                    <b-dropdown-item
-                                                        v-for="(flag, index) in flagsProcessed"
-                                                        :key="index"
-                                                        :disabled="flag.isSelected"
-                                                        :value="flag.code"
-                                                    >
-                                                        {{ flag.name }}
-                                                    </b-dropdown-item>
-                                                </b-dropdown>
-                                            </p>
-                                            <p class="control" v-if="newHops.country[1]">
-                                                <button @click.prevent="removeFlag(1)" class="button is-warning" type="button">
-                                                    <b-icon icon="times" size="is-small"></b-icon>
-                                                </button>
-                                            </p>
-                                        </b-field>
-
+                                        <select-tag
+                                            :id="1"
+                                            :value="newHops.country[1]"
+                                            :label="getFlagNameByCode(newHops.country[1])"
+                                            :items="flagsProcessed"
+                                            :itemsMap="{
+                                                value: 'code',
+                                                name: 'name',
+                                                disabled: 'isSelected'
+                                            }"
+                                            @remove="removeFlag"
+                                            @select="selectFlag"
+                                        ></select-tag>
                                     </div>
 
                                     <div class="column is-narrow" v-if="newHops.country[1]">
-
-                                        <b-field>
-                                            <p class="control">
-                                                <b-dropdown v-model="newHops.country[2]">
-                                                    <button class="button" type="button" slot="trigger">
-                                                        <span v-text="getFlagNameByCode(newHops.country[2]) || 'Select'"></span>
-                                                        <b-icon icon="caret-down" size="is-small"></b-icon>
-                                                    </button>
-
-                                                    <b-dropdown-item
-                                                        v-for="(flag, index) in flagsProcessed"
-                                                        :key="index"
-                                                        :disabled="flag.isSelected"
-                                                        :value="flag.code"
-                                                    >
-                                                        {{ flag.name }}
-                                                    </b-dropdown-item>
-                                                </b-dropdown>
-                                            </p>
-                                            <p class="control" v-if="newHops.country[2]">
-                                                <button @click.prevent="removeFlag(2)" class="button is-warning" type="button">
-                                                    <b-icon icon="times" size="is-small"></b-icon>
-                                                </button>
-                                            </p>
-                                        </b-field>
-
+                                        <select-tag
+                                            :id="2"
+                                            :value="newHops.country[2]"
+                                            :label="getFlagNameByCode(newHops.country[2])"
+                                            :items="flagsProcessed"
+                                            :itemsMap="{
+                                                value: 'code',
+                                                name: 'name',
+                                                disabled: 'isSelected'
+                                            }"
+                                            @remove="removeFlag"
+                                            @select="selectFlag"
+                                        ></select-tag>
                                     </div>
                                 </div>
                             </b-field>
@@ -259,6 +220,7 @@
 
     import CatalogueItem from '../../catalogue-item';
     import CatalogueTableHead from '../../catalogue-table-head';
+    import SelectTag from '../../select-tag';
     import Tag from '../../tag';
 
     import hopsSchema from './hops-schema';
@@ -285,6 +247,7 @@
         components: {
             'catalogue-item': CatalogueItem,
             'catalogue-table-head': CatalogueTableHead,
+            'select-tag': SelectTag,
             'tag': Tag
         },
 
@@ -538,6 +501,16 @@
                     if (a === null) return 1;
                     if (b === null) return -1;
                 });
+
+                this.newHops.country = updatedFlags;
+            },
+
+            selectFlag: function (value, idx) {
+                if (!value) return;
+
+                const updatedFlags = this.newHops.country.slice(0);
+
+                updatedFlags[idx] = value;
 
                 this.newHops.country = updatedFlags;
             },
