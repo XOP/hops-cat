@@ -1,5 +1,6 @@
 export default {
     name: '',
+    alias: [],
 
     usage: 'AB',
 

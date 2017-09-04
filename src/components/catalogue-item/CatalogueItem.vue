@@ -12,7 +12,8 @@
             {{index}}
         </td>
         <td class="table-cell">
-            {{name}}
+            <div>{{name}}</div>
+            <div class="content is-small" v-if="aliasFormatted">({{aliasFormatted}})</div>
         </td>
         <td class="table-cell has-text-centered">
             <div v-if="country.length" class="u-t-nowrap u-lh-reset">
@@ -70,6 +71,13 @@
                 required: true
             },
 
+            alias: {
+                type: Array,
+                default: function () {
+                    return [];
+                }
+            },
+
             usage: {
                 type: String,
                 default: 'NA'
@@ -108,7 +116,10 @@
             },
 
             onClick: {
-                type: Function
+                type: Function,
+                default: function () {
+                    return null;
+                }
             }
         },
 
@@ -127,6 +138,14 @@
 
             usageFormatted: function () {
                 return USAGE_MAP[this.usage];
+            },
+
+            aliasFormatted: function () {
+                const aliases = this.alias;
+
+                if (!aliases.length) return null;
+
+                return aliases.join(',');
             },
 
             shelfLifeFormatted: function () {

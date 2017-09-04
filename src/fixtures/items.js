@@ -1,5 +1,7 @@
 export default [
     {
+        ".key": "fixture-0",
+
         name: "Cascade",
         alias: [],
         usage: "AB",
@@ -72,6 +74,8 @@ export default [
     },
 
     {
+        ".key": "fixture-1",
+
         name: "Amarillo",
         alias: [
             "VGXP01"

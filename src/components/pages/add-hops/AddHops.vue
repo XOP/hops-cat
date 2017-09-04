@@ -35,6 +35,10 @@
                                 </b-field>
                             </b-field>
 
+                            <!--<b-field>-->
+                                <!--<b-input placeholder="X133" name="alias" v-model.trim="newHops._alias"></b-input>-->
+                            <!--</b-field>-->
+
                             <b-field :addons="false">
                                 <div class="label">Countries of origin</div>
                                 <div class="columns">
@@ -188,6 +192,7 @@
                         :index="index + 1"
                         :isSelected="hops.isSelected"
                         :name="hops.name"
+                        :alias="hops.alias"
                         :country="hops.country"
                         :usage="hops.usage"
                         :shelfLife="hops.shelfLife"
@@ -427,6 +432,9 @@
             },
 
             selectHops: function (hops) {
+                // remove notifications and errors
+                this.hideDefaultPropsNotification();
+
                 this.selectedHops = _find(this.hops, {['.key']: hops.dbKey});
 
                 // debug
@@ -490,7 +498,12 @@
             },
 
             transformHops: hops => {
-                return Object.assign({}, {}, hops);
+                const transformedHops = clone(hops);
+
+                // remove redundant props
+                delete transformedHops._alias;
+
+                return Object.assign({}, {}, transformedHops);
             },
 
             removeFlag: function (idx) {
