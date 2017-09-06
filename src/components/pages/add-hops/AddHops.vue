@@ -35,9 +35,28 @@
                                 </b-field>
                             </b-field>
 
-                            <!--<b-field>-->
-                                <!--<b-input placeholder="X133" name="alias" v-model.trim="newHops._alias"></b-input>-->
-                            <!--</b-field>-->
+                            <b-field :addons="false">
+                                <div class="label">Alias</div>
+                                <div class="columns">
+                                    <div class="column is-narrow">
+                                        <b-input placeholder="X133" name="alias" value=""
+                                             @keydown.native.enter.prevent="handleAddAlias"
+                                        ></b-input>
+                                    </div>
+                                    <div class="column">
+                                        <b-taglist>
+                                            <b-tag
+                                                size="is-medium"
+                                                type="is-info"
+                                                v-for="(alias, index) in newHops.alias"
+                                                :key="index"
+                                            >
+                                                {{alias}}
+                                            </b-tag>
+                                        </b-taglist>
+                                    </div>
+                                </div>
+                            </b-field>
 
                             <b-field :addons="false">
                                 <div class="label">Countries of origin</div>
@@ -534,6 +553,31 @@
                 if (flag) {
                     return flag['name'];
                 }
+            },
+
+            handleAddAlias: function (e) {
+                const alias = e.target.value;
+
+                if (this.newHops.alias.indexOf(alias) === -1) {
+                    this.addAlias(alias);
+                    this.clearAliasField(e.target);
+                } else {
+                    // todo: throw notification
+                }
+            },
+
+            addAlias: function (value) {
+                this.newHops.alias.push(value);
+            },
+
+            clearAliasField: (input) => {
+                setTimeout(() => {
+                    input.value = '';
+                }, 0);
+            },
+
+            removeAlias: function (value) {
+
             },
 
             hideDefaultPropsNotification: function () {
