@@ -30,85 +30,97 @@
                                     </b-select>
                                 </b-field>
 
-                                <b-field label="Shelf life">
-                                    <b-input placeholder="0 - 10" type="number" name="shelfLife" v-model.number="newHops.shelfLife"></b-input>
+                                <b-field :addons="false">
+                                    <div class="label">Alias</div>
+                                    <div class="columns">
+                                        <div class="column is-narrow">
+                                            <b-input placeholder="X133" name="alias" value=""
+                                                     @keydown.native.enter.prevent="handleAddAlias"
+                                                     ref="input-alias"
+                                            ></b-input>
+                                        </div>
+                                        <div class="column">
+                                            <b-field grouped>
+                                                <div
+                                                    class="control"
+                                                    v-for="(alias, index) in newHops.alias"
+                                                >
+                                                    <b-tag
+                                                        size="is-medium"
+                                                        attached
+                                                        closable
+                                                        @close="removeAlias(alias)"
+                                                        :key="index"
+                                                    >
+                                                        {{alias}}
+                                                    </b-tag>
+                                                </div>
+                                            </b-field>
+                                        </div>
+                                    </div>
                                 </b-field>
                             </b-field>
 
-                            <b-field :addons="false">
-                                <div class="label">Alias</div>
-                                <div class="columns">
-                                    <div class="column is-narrow">
-                                        <b-input placeholder="X133" name="alias" value=""
-                                             @keydown.native.enter.prevent="handleAddAlias"
-                                        ></b-input>
-                                    </div>
-                                    <div class="column">
-                                        <b-taglist>
-                                            <b-tag
-                                                size="is-medium"
-                                                type="is-info"
-                                                v-for="(alias, index) in newHops.alias"
-                                                :key="index"
-                                            >
-                                                {{alias}}
-                                            </b-tag>
-                                        </b-taglist>
-                                    </div>
-                                </div>
-                            </b-field>
+                            <b-field :addons="false" grouped>
 
-                            <b-field :addons="false">
-                                <div class="label">Countries of origin</div>
-                                <div class="columns">
-                                    <div class="column is-narrow">
-                                        <select-tag
-                                            :id="0"
-                                            :value="newHops.country[0]"
-                                            :label="getFlagNameByCode(newHops.country[0])"
-                                            :items="flagsProcessed"
-                                            :itemsMap="{
-                                                value: 'code',
-                                                name: 'name',
-                                                disabled: 'isSelected'
-                                            }"
-                                            @remove="removeFlag"
-                                            @select="selectFlag"
-                                        ></select-tag>
-                                    </div>
+                                <b-field :addons="false">
+                                    <b-field label="Shelf life">
+                                        <b-input placeholder="0 - 10" type="number" name="shelfLife" v-model.number="newHops.shelfLife"></b-input>
+                                    </b-field>
+                                </b-field>
 
-                                    <div class="column is-narrow" v-if="newHops.country[0]">
-                                        <select-tag
-                                            :id="1"
-                                            :value="newHops.country[1]"
-                                            :label="getFlagNameByCode(newHops.country[1])"
-                                            :items="flagsProcessed"
-                                            :itemsMap="{
-                                                value: 'code',
-                                                name: 'name',
-                                                disabled: 'isSelected'
-                                            }"
-                                            @remove="removeFlag"
-                                            @select="selectFlag"
-                                        ></select-tag>
-                                    </div>
+                                <b-field :addons="false">
+                                    <div class="label">Countries of origin</div>
+                                    <div class="columns">
+                                        <div class="column is-narrow">
+                                            <select-tag
+                                                :id="0"
+                                                :value="newHops.country[0]"
+                                                :label="getFlagNameByCode(newHops.country[0])"
+                                                :items="flagsProcessed"
+                                                :itemsMap="{
+                                                    value: 'code',
+                                                    name: 'name',
+                                                    disabled: 'isSelected'
+                                                }"
+                                                    @remove="removeFlag"
+                                                    @select="selectFlag"
+                                            ></select-tag>
+                                        </div>
 
-                                    <div class="column is-narrow" v-if="newHops.country[1]">
-                                        <select-tag
-                                            :id="2"
-                                            :value="newHops.country[2]"
-                                            :label="getFlagNameByCode(newHops.country[2])"
-                                            :items="flagsProcessed"
-                                            :itemsMap="{
-                                                value: 'code',
-                                                name: 'name',
-                                                disabled: 'isSelected'
-                                            }"
-                                            @remove="removeFlag"
-                                            @select="selectFlag"
-                                        ></select-tag>
+                                        <div class="column is-narrow" v-if="newHops.country[0]">
+                                            <select-tag
+                                                :id="1"
+                                                :value="newHops.country[1]"
+                                                :label="getFlagNameByCode(newHops.country[1])"
+                                                :items="flagsProcessed"
+                                                :itemsMap="{
+                                                    value: 'code',
+                                                    name: 'name',
+                                                    disabled: 'isSelected'
+                                                }"
+                                                    @remove="removeFlag"
+                                                    @select="selectFlag"
+                                            ></select-tag>
+                                        </div>
+
+                                        <div class="column is-narrow" v-if="newHops.country[1]">
+                                            <select-tag
+                                                :id="2"
+                                                :value="newHops.country[2]"
+                                                :label="getFlagNameByCode(newHops.country[2])"
+                                                :items="flagsProcessed"
+                                                :itemsMap="{
+                                                    value: 'code',
+                                                    name: 'name',
+                                                    disabled: 'isSelected'
+                                                }"
+                                                    @remove="removeFlag"
+                                                    @select="selectFlag"
+                                            ></select-tag>
+                                        </div>
                                     </div>
-                                </div>
+                                </b-field>
                             </b-field>
 
                             <b-field :addons="false">
@@ -555,12 +567,13 @@
                 }
             },
 
-            handleAddAlias: function (e) {
-                const alias = e.target.value;
+            handleAddAlias: function () {
+                const input = this.$refs['input-alias'].$refs.input;
+                const alias = input.value;
 
                 if (this.newHops.alias.indexOf(alias) === -1) {
                     this.addAlias(alias);
-                    this.clearAliasField(e.target);
+                    this.clearAliasField();
                 } else {
                     // todo: throw notification
                 }
@@ -570,14 +583,17 @@
                 this.newHops.alias.push(value);
             },
 
-            clearAliasField: (input) => {
+            clearAliasField: function () {
+                const input = this.$refs['input-alias'].$refs.input;
+
                 setTimeout(() => {
                     input.value = '';
                 }, 0);
             },
 
             removeAlias: function (value) {
-
+                this.newHops.alias = _without(this.newHops.alias.slice(0), value);
+                this.clearAliasField();
             },
 
             hideDefaultPropsNotification: function () {
