@@ -78,13 +78,9 @@
                                                 :value="newHops.country[0]"
                                                 :label="getFlagNameByCode(newHops.country[0])"
                                                 :items="flagsProcessed"
-                                                :itemsMap="{
-                                                    value: 'code',
-                                                    name: 'name',
-                                                    disabled: 'isSelected'
-                                                }"
-                                                    @remove="removeFlag"
-                                                    @select="selectFlag"
+                                                :itemsMap="countryItemMap"
+                                                @remove="removeFlag"
+                                                @select="selectFlag"
                                             ></select-tag>
                                         </div>
 
@@ -94,13 +90,9 @@
                                                 :value="newHops.country[1]"
                                                 :label="getFlagNameByCode(newHops.country[1])"
                                                 :items="flagsProcessed"
-                                                :itemsMap="{
-                                                    value: 'code',
-                                                    name: 'name',
-                                                    disabled: 'isSelected'
-                                                }"
-                                                    @remove="removeFlag"
-                                                    @select="selectFlag"
+                                                :itemsMap="countryItemMap"
+                                                @remove="removeFlag"
+                                                @select="selectFlag"
                                             ></select-tag>
                                         </div>
 
@@ -110,13 +102,9 @@
                                                 :value="newHops.country[2]"
                                                 :label="getFlagNameByCode(newHops.country[2])"
                                                 :items="flagsProcessed"
-                                                :itemsMap="{
-                                                    value: 'code',
-                                                    name: 'name',
-                                                    disabled: 'isSelected'
-                                                }"
-                                                    @remove="removeFlag"
-                                                    @select="selectFlag"
+                                                :itemsMap="countryItemMap"
+                                                @remove="removeFlag"
+                                                @select="selectFlag"
                                             ></select-tag>
                                         </div>
                                     </div>
@@ -305,7 +293,13 @@
                     'alpha',
                     'beta',
                     'country'
-                ]
+                ],
+
+                countryItemMap: {
+                    value: 'code',
+                    name: 'name',
+                    disabled: 'isSelected'
+                }
             };
         },
 
