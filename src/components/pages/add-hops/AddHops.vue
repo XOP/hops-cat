@@ -288,6 +288,7 @@
                 hiddenKeys: [],
                 isDefaultPropsNotification: false,
                 predefinedProps: [
+                    'alias',
                     'usage',
                     'shelfLife',
                     'alpha',
@@ -369,6 +370,7 @@
                         selected.name !== edited.name ||
                         selected.usage !== edited.usage ||
                         selected.shelfLife !== edited.shelfLife ||
+                        !_isEqual(selected.alias, edited.alias) ||
                         !_isEqual(selected.country, edited.country) ||
                         !_isEqual(selected.alpha, edited.alpha) ||
                         !_isEqual(selected.beta, edited.beta)
@@ -457,15 +459,16 @@
             },
 
             selectHops: function (hops) {
-                // remove notifications and errors
-                this.hideDefaultPropsNotification();
+
+                // clear previous selection and notifications
+                this.clearFields();
 
                 this.selectedHops = _find(this.hops, {['.key']: hops.dbKey});
 
                 // debug
                 console.info('selected: ', this.selectedHops);
 
-                this.newHops = clone(this.selectedHops);
+                this.newHops = {...this.newHops, ...this.selectedHops};
 
                 // backwards compatibility
                 const newHops = this.newHops;
@@ -480,23 +483,6 @@
                 });
             },
 
-            throwError: function (message) {
-                this.$toast.open({
-                    duration: DURATION.NOTIFICATION_SHORT,
-                    message: message || locale.errors._default,
-                    position: 'is-top',
-                    type: 'is-danger'
-                })
-            },
-
-            clearFields: function () {
-                this.selectedHops = {};
-                this.newHops = clone(hopsSchema);
-
-                // remove notifications and errors
-                this.hideDefaultPropsNotification();
-            },
-
             removeHops: function () {
                 if (this.isDebugMode) return;
 
@@ -508,6 +494,8 @@
                 const removeTimeout = setTimeout(() => {
                     this.$firebaseRefs.dbHops.child(key).remove();
                 }, DURATION.NOTIFICATION_LONG);
+
+                this.clearFields();
 
                 this.$snackbar.open({
                     message: `Deleted successfully`,
@@ -525,10 +513,27 @@
             transformHops: hops => {
                 const transformedHops = clone(hops);
 
-                // remove redundant props
-                delete transformedHops._alias;
-
                 return Object.assign({}, {}, transformedHops);
+            },
+
+            throwError: function (message) {
+                this.$toast.open({
+                    duration: DURATION.NOTIFICATION_SHORT,
+                    message: message || locale.errors._default,
+                    position: 'is-top',
+                    type: 'is-danger'
+                })
+            },
+
+            clearFields: function () {
+                this.selectedHops = {};
+                this.newHops = clone(hopsSchema);
+
+                // clear non-model fields
+                this.clearAliasField();
+
+                // remove notifications and errors
+                this.hideDefaultPropsNotification();
             },
 
             removeFlag: function (idx) {
@@ -578,6 +583,8 @@
             },
 
             clearAliasField: function () {
+                if (!this.$refs['input-alias']) return;
+
                 const input = this.$refs['input-alias'].$refs.input;
 
                 setTimeout(() => {
