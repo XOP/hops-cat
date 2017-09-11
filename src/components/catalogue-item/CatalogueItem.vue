@@ -35,6 +35,9 @@
         <td class="table-cell has-text-centered">
             {{betaFormatted}}
         </td>
+        <td class="table-cell has-text-centered">
+            {{coFormatted}}
+        </td>
     </tr>
 </template>
 
@@ -104,6 +107,14 @@
 
             // todo: number validation
             beta: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+
+            // todo: number validation
+            co: {
                 type: Object,
                 default: function () {
                     return {};
@@ -182,6 +193,17 @@
                 const max = Number(this.beta.max);
 
                 if (!this.isRangeValid(this.beta)) {
+                    return 'NA';
+                }
+
+                return this.average(min, max);
+            },
+
+            coFormatted: function () {
+                const min = Number(this.co.min);
+                const max = Number(this.co.max);
+
+                if (!this.isRangeValid(this.co)) {
                     return 'NA';
                 }
 

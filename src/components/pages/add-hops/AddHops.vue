@@ -144,6 +144,20 @@
                                         </b-field>
                                     </div>
 
+                                    <div class="column">
+                                        <div class="label">Co-Humulone</div>
+
+                                        <b-field :addons="false" grouped>
+                                            <b-field expanded>
+                                                <b-input placeholder="Min" type="number" name="coMin" v-model.number="newHops.co.min"></b-input>
+                                            </b-field>
+                                            <b-field>-</b-field>
+                                            <b-field expanded>
+                                                <b-input placeholder="Max" type="number" name="coMax" v-model.number="newHops.co.max"></b-input>
+                                            </b-field>
+                                        </b-field>
+                                    </div>
+
                                 </div>
                             </b-field>
 
@@ -217,6 +231,7 @@
                         :shelfLife="hops.shelfLife"
                         :alpha="hops.alpha"
                         :beta="hops.beta"
+                        :co="hops.co"
                         :onClick="selectHops"
                     ></catalogue-item>
                     </tbody>
@@ -373,7 +388,8 @@
                         !_isEqual(selected.alias, edited.alias) ||
                         !_isEqual(selected.country, edited.country) ||
                         !_isEqual(selected.alpha, edited.alpha) ||
-                        !_isEqual(selected.beta, edited.beta)
+                        !_isEqual(selected.beta, edited.beta) ||
+                        !_isEqual(selected.co, edited.co)
                     )
                 ) {
                     return true;

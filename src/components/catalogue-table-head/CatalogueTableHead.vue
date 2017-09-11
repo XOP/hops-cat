@@ -1,39 +1,49 @@
 <template>
     <thead>
     <tr>
-        <th class="table-cell --w-min has-text-centered">
+        <th rowspan="2" class="table-cell --w-min has-text-centered">
             <b-icon icon="bar-chart"></b-icon>
         </th>
 
-        <th class="table-cell --w-min has-text-centered">
+        <th rowspan="2" class="table-cell --w-min has-text-centered">
             #
         </th>
 
-        <th class="table-cell --w-max">
+        <th rowspan="2" class="table-cell --w-max">
             Name
         </th>
 
-        <th class="table-cell --w-min has-text-centered">
+        <th rowspan="2" class="table-cell --w-min has-text-centered">
             Country
         </th>
 
-        <th class="table-cell --w-min has-text-centered">
+        <th rowspan="2" class="table-cell --w-min has-text-centered">
             Usage
         </th>
 
-        <th class="table-cell --w-min has-text-centered">
-            <span class="u-t-nowrap">Shelf life</span>
+        <th rowspan="2" class="table-cell --w-min has-text-centered">
             <b-tooltip :label="locale.tooltips.shelfLife">
                 <b-icon icon="question-circle" size="is-small"/>
             </b-tooltip>
+
+            <span class="u-t-nowrap">Shelf life</span>
+        </th>
+
+        <th colspan="3" class="table-cell has-text-centered">
+            Acid composition, %
+        </th>
+    </tr>
+    <tr>
+        <th class="table-cell --w-min has-text-centered">
+            <span class="u-t-nowrap">alpha</span>
         </th>
 
         <th class="table-cell --w-min has-text-centered">
-            alpha, %
+            <span class="u-t-nowrap">beta</span>
         </th>
 
         <th class="table-cell --w-min has-text-centered">
-            beta, %
+            <span class="u-t-nowrap">co-hum</span>
         </th>
     </tr>
     </thead>
@@ -60,3 +70,9 @@
         }
     };
 </script>
+
+<style scoped>
+    th.table-cell {
+        vertical-align: bottom;
+    }
+</style>

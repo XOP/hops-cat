@@ -16,7 +16,12 @@ export default {
     beta: {
         min: 0,
         max: 100
-    }
+    },
+
+    co: {
+        min: 0,
+        max: 100
+    },
 };
 
 export const USAGE_MAP = {
