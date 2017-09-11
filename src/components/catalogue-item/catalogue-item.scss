@@ -6,10 +6,14 @@
 
 .catalogue-item__status {
     &.ok {
-        color: $green;
+        color: $success;
     }
 
     &.warning {
-        color: $orange;
+        color: $warning;
+    }
+
+    &.danger {
+        color: $danger;
     }
 }

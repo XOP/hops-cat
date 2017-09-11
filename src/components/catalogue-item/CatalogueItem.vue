@@ -227,21 +227,35 @@
                 return obj.min !== 0 || obj.max !== 100;
             },
 
+            isCountryValid: (arr) => {
+                if (!arr.length) return false;
+
+                return arr[0] !== null;
+            },
+
             handleClick: function (e) {
                 return this.onClick(this.$props, e);
             },
 
             getStatusInfo: function (hops) {
+                let status = 0;
+
                 if (
                     hops.name &&
                     hops.usage &&
                     this.isRangeValid(hops.alpha) &&
                     this.isRangeValid(hops.beta)
+                ) { status = 1; }
+
+                if (
+                    status === 1 &&
+                    this.isCountryValid(hops.country) &&
+                    this.isRangeValid(hops.co)
                 ) {
-                    return 1;
-                } else {
-                    return 2;
+                    status = 2;
                 }
+
+                return status;
             }
         }
     };

@@ -31,6 +31,7 @@ export const USAGE_MAP = {
 };
 
 export const STATUS_MAP = {
-    1: 'ok',
-    2: 'warning'
+    0: 'danger',
+    1: 'warning',
+    2: 'ok'
 };
