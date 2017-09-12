@@ -1,13 +1,19 @@
 <template>
-    <div class="app">
+    <v-app>
         <app-header></app-header>
 
+        <v-alert v-model="isDebugMode" warning hide-icon>
+            Debug mode
+        </v-alert>
+
+        <!--
         <main role="main" :class="mainClassname">
             <router-view></router-view>
         </main>
 
         <app-footer></app-footer>
-    </div>
+        -->
+    </v-app>
 </template>
 
 <script>
@@ -39,6 +45,8 @@
         },
 
         computed: {
+            ...mapState('debug', ['isDebugMode']),
+
             ...mapState('helpers', [
                 'fitScreen'
             ]),

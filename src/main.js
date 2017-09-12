@@ -4,12 +4,18 @@ import Vue from 'vue';
 import VueFire from 'vuefire';
 import Buefy from 'buefy';
 
+import Vuetify from 'vuetify';
+
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import 'buefy/lib/buefy.css';
+// import 'buefy/lib/buefy.css';
+
 import './assets/styles/font-awesome.min.css';
+
+import 'vuetify/dist/vuetify.min.css';
+
 import './main.scss';
 
 Vue.config.productionTip = false;
@@ -18,6 +24,8 @@ Vue.use(VueFire);
 Vue.use(Buefy, {
     defaultIconPack: 'fa'
 });
+
+Vue.use(Vuetify);
 
 /* eslint-disable no-new */
 new Vue({
