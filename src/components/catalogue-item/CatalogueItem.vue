@@ -9,15 +9,12 @@
             </div>
         </td>
         <td class="table-cell">
-            {{index}}
-        </td>
-        <td class="table-cell">
             <div>{{name}}</div>
             <div class="content is-small" v-if="aliasFormatted">({{aliasFormatted}})</div>
         </td>
         <td class="table-cell has-text-centered">
             <div v-if="country.length" class="u-t-nowrap u-lh-reset">
-                <span class="content is-large" v-for="flag in countryFormatted">{{flag}}</span>
+                <span class="title" v-for="flag in countryFormatted">{{flag}}</span>
             </div>
             <div v-else>
                 {{countryFormatted}}
@@ -53,14 +50,6 @@
         name: 'catalogue-item',
 
         props: {
-            index: {
-                type: Number,
-                required: true,
-                validator: function (i) {
-                    return i > 0;
-                }
-            },
-
             isSelected: {
                 type: Boolean
             },

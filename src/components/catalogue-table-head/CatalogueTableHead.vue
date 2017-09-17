@@ -1,27 +1,22 @@
 <template>
-    <thead>
     <tr>
-        <th rowspan="2" class="table-cell --w-min has-text-centered">
-            <b-icon icon="bar-chart"></b-icon>
+        <th class="">
+            <v-icon>insert_chart</v-icon>
         </th>
 
-        <th rowspan="2" class="table-cell --w-min has-text-centered">
-            #
-        </th>
-
-        <th rowspan="2" class="table-cell --w-max">
+        <th class="">
             Name
         </th>
 
-        <th rowspan="2" class="table-cell --w-min has-text-centered">
+        <th class="">
             Country
         </th>
 
-        <th rowspan="2" class="table-cell --w-min has-text-centered">
+        <th class="">
             Usage
         </th>
 
-        <th rowspan="2" class="table-cell --w-min has-text-centered">
+        <th class="">
             <b-tooltip :label="locale.tooltips.shelfLife">
                 <b-icon icon="question-circle" size="is-small"/>
             </b-tooltip>
@@ -29,24 +24,18 @@
             <span class="u-t-nowrap">Shelf life</span>
         </th>
 
-        <th colspan="3" class="table-cell has-text-centered">
-            Acid composition, %
-        </th>
-    </tr>
-    <tr>
-        <th class="table-cell --w-min has-text-centered">
+        <th class="">
             <span class="u-t-nowrap">alpha</span>
         </th>
 
-        <th class="table-cell --w-min has-text-centered">
+        <th class="">
             <span class="u-t-nowrap">beta</span>
         </th>
 
-        <th class="table-cell --w-min has-text-centered">
+        <th class="">
             <span class="u-t-nowrap">co-hum</span>
         </th>
     </tr>
-    </thead>
 </template>
 
 <script>

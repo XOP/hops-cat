@@ -27,23 +27,44 @@
                 </v-card-title>
             </v-card>
 
-            <table class="catalogue__table table is-fullwidth is-narrow">
-                <catalogue-table-head />
-                <tbody>
+            <v-data-table
+                class="elevation-1"
+                v-bind:headers="headers"
+                :items="itemsProcessed"
+            >
+                <template slot="items" scope="props">
                     <catalogue-item
-                        v-for="(item, index) in itemsProcessed"
-                        :key="item.key"
-                        :index="index + 1"
-                        :name="item.name"
-                        :country="item.country"
-                        :usage="item.usage"
-                        :shelfLife="item.shelfLife"
-                        :alpha="item.alpha"
-                        :beta="item.beta"
+                        :key="props.item.key"
+                        :index="props.item.index"
+                        :name="props.item.name"
+                        :country="props.item.country"
+                        :usage="props.item.usage"
+                        :shelfLife="props.item.shelfLife"
+                        :alpha="props.item.alpha"
+                        :beta="props.item.beta"
+                        :co="props.item.co"
                     >
                     </catalogue-item>
-                </tbody>
-            </table>
+                </template>
+            </v-data-table>
+
+            <!--<table class="catalogue__table table is-fullwidth is-narrow">-->
+                <!--<catalogue-table-head />-->
+                <!--<tbody>-->
+                    <!--<catalogue-item-->
+                        <!--v-for="(item, index) in itemsProcessed"-->
+                        <!--:key="item.key"-->
+                        <!--:index="index + 1"-->
+                        <!--:name="item.name"-->
+                        <!--:country="item.country"-->
+                        <!--:usage="item.usage"-->
+                        <!--:shelfLife="item.shelfLife"-->
+                        <!--:alpha="item.alpha"-->
+                        <!--:beta="item.beta"-->
+                    <!--&gt;-->
+                    <!--</catalogue-item>-->
+                <!--</tbody>-->
+            <!--</table>-->
         </section>
     </section>
 </template>
@@ -88,6 +109,58 @@
         computed: {
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
+
+            headers: function () {
+                return [
+                    {
+                        value: 'status',
+                        text: 'Status',
+                        align: 'left'
+                    },
+                    {
+                        value: 'name',
+                        text: 'Name',
+                        align: 'left',
+                        hint: ''
+                    },
+                    {
+                        value: 'country',
+                        text: 'Country',
+                        align: 'center',
+                        hint: ''
+                    },
+                    {
+                        value: 'usage',
+                        text: 'Usage',
+                        align: 'center',
+                        hint: ''
+                    },
+                    {
+                        value: 'shelfLife',
+                        text: 'Shelf Life',
+                        align: 'center',
+                        hint: locale.tooltips.shelfLife
+                    },
+                    {
+                        value: 'alpha',
+                        text: 'Alpha',
+                        align: 'center',
+                        hint: 'Acid composition, %'
+                    },
+                    {
+                        value: 'beta',
+                        text: 'Beta',
+                        align: 'center',
+                        hint: 'Acid composition, %'
+                    },
+                    {
+                        value: 'co',
+                        text: 'Co-hum',
+                        align: 'center',
+                        hint: 'Acid composition, %'
+                    }
+                ];
+            },
 
             items: function () {
                 return this.isDebugMode ? mockHops : this.dbHops;
