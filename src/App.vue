@@ -2,13 +2,13 @@
     <v-app>
         <app-header></app-header>
 
-        <v-alert v-model="isDebugMode" warning>
+        <v-alert v-model="isDebugMode" warning icon="bug_report">
             Debug mode
         </v-alert>
 
         <main>
             <v-container fluid>
-                <!--<router-view></router-view>-->
+                <router-view></router-view>
             </v-container>
         </main>
 
@@ -20,8 +20,6 @@
     import { firebaseApp } from './firebase';
 
     import { mapActions, mapState } from 'vuex';
-
-    import cls from 'classnames';
 
     import Header from './Header.vue';
     import Footer from './Footer.vue';
@@ -49,13 +47,7 @@
 
             ...mapState('helpers', [
                 'fitScreen'
-            ]),
-
-            mainClassname: function () {
-                return cls('main section', {
-                    'is-fit-screen': this.fitScreen
-                });
-            }
+            ])
         },
 
         methods: {
@@ -68,22 +60,4 @@
 </script>
 
 <style scoped>
-    /*.app {*/
-        /*display: flex;*/
-        /*flex-flow: column;*/
-
-        /*height: 100%;*/
-    /*}*/
-
-    /*header {*/
-        /*flex: 0 1 auto;*/
-    /*}*/
-
-    /*main {*/
-        /*flex: 1 0 auto;*/
-    /*}*/
-
-    /*footer {*/
-        /*flex: 0 1 auto;*/
-    /*}*/
 </style>

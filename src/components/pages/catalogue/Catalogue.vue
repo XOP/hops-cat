@@ -1,32 +1,31 @@
 <template>
     <section>
-        <h1 class="title is-3">Catalogue</h1>
-
-        <b-notification v-if="isAuthenticated" type="is-info" :closable="false">
-            <router-link to="/add-hops">Add Hops here</router-link>
-        </b-notification>
+        <h1 class="display-1">
+            Catalogue
+            <v-btn v-if="isAuthenticated" to="/add-hops" class="amber lighten-1">Add Hops</v-btn>
+        </h1>
 
         <section>
-            <div class="box">
-                Sort:
+            <v-card>
+                <v-card-title>
+                    Apply sorting:
 
-                <button
-                    class="button is-small is-warning"
-                    @click="setDefaultOrder"
-                >
-                    Reset
-                </button>
+                    <v-btn
+                        icon
+                        @click="toggleSortingOrderAz"
+                    >
+                        <v-icon>sort_by_alpha</v-icon>
+                    </v-btn>
 
-                <button
-                    class="button is-small is-info"
-                    @click="toggleSortingOrderAz"
-                >
-                    <b-icon
-                        size="is-small"
-                        :icon="sortingOrderAZ > 0 ? 'sort-alpha-asc' : 'sort-alpha-desc'">
-                    </b-icon>
-                </button>
-            </div>
+                    <v-btn
+                        v-if="!defaultOrder"
+                        icon
+                        @click="setDefaultOrder"
+                    >
+                        <v-icon>restore</v-icon>
+                    </v-btn>
+                </v-card-title>
+            </v-card>
 
             <table class="catalogue__table table is-fullwidth is-narrow">
                 <catalogue-table-head />
