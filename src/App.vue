@@ -2,17 +2,17 @@
     <v-app>
         <app-header></app-header>
 
-        <v-alert v-model="isDebugMode" warning hide-icon>
+        <v-alert v-model="isDebugMode" warning>
             Debug mode
         </v-alert>
 
-        <!--
-        <main role="main" :class="mainClassname">
-            <router-view></router-view>
+        <main>
+            <v-container fluid>
+                <!--<router-view></router-view>-->
+            </v-container>
         </main>
 
         <app-footer></app-footer>
-        -->
     </v-app>
 </template>
 
@@ -68,22 +68,22 @@
 </script>
 
 <style scoped>
-    .app {
-        display: flex;
-        flex-flow: column;
+    /*.app {*/
+        /*display: flex;*/
+        /*flex-flow: column;*/
 
-        height: 100%;
-    }
+        /*height: 100%;*/
+    /*}*/
 
-    header {
-        flex: 0 1 auto;
-    }
+    /*header {*/
+        /*flex: 0 1 auto;*/
+    /*}*/
 
-    main {
-        flex: 1 0 auto;
-    }
+    /*main {*/
+        /*flex: 1 0 auto;*/
+    /*}*/
 
-    footer {
-        flex: 0 1 auto;
-    }
+    /*footer {*/
+        /*flex: 0 1 auto;*/
+    /*}*/
 </style>

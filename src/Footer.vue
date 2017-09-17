@@ -1,20 +1,17 @@
 <template>
-    <footer>
-        <section class="hero is-dark">
-            <div class="section">
-                <div class="level">
-                    <div class="level-item">
-                        <a href="https://github.com/XOP/hops-cat" target="_blank">
-                            <b-icon icon="github"></b-icon> Github
-                        </a>
-                    </div>
-                    <div class="level-item">
-                        Hops Cat <b-icon icon="copyright"></b-icon> 2017
-                    </div>
-                </div>
-            </div>
-        </section>
-    </footer>
+    <v-footer dark class="pa-2 grey darken-4 grey--text text--lighten-4">
+
+        <v-btn small flat dark class="" href="https://github.com/XOP/hops-cat" target="_blank">
+            Github
+            <v-icon right>open_in_new</v-icon>
+        </v-btn>
+
+        <v-spacer></v-spacer>
+
+        <div>
+            Hops Cat © {{ new Date().getFullYear() }}
+        </div>
+    </v-footer>
 </template>
 
 <script>
