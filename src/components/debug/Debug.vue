@@ -1,15 +1,14 @@
 <template>
-    <span
-        :class="buttonClassName"
+    <v-btn
         @click="toggleDebugMode"
+        :outline="isDebugMode"
+        icon
     >
-        <b-icon icon="bug"></b-icon>
-    </span>
+        <v-icon>bug_report</v-icon>
+    </v-btn>
 </template>
 
 <script>
-    import cls from 'classnames';
-
     import { mapActions, mapState } from 'vuex';
 
     export default {
@@ -18,13 +17,7 @@
         computed: {
             ...mapState('debug', [
                 'isDebugMode'
-            ]),
-
-            buttonClassName: function () {
-                return cls('button is-small is-success is-outlined', {
-                    'is-inverted': this.isDebugMode
-                });
-            }
+            ])
         },
 
         methods: {

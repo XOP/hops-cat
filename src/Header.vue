@@ -8,42 +8,25 @@
                 <span>Hops Cat</span>
             </router-link>
         </v-toolbar-title>
+
         <v-spacer></v-spacer>
+
         <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn flat to="/">
+            <v-btn flat to="/" exact>
                 Catalogue
             </v-btn>
             <v-btn flat to="/add-hops">
                 Add Hops
             </v-btn>
         </v-toolbar-items>
+
+        <v-btn icon to="/auth">
+            <v-icon v-if="!isAuthenticated">account_box</v-icon>
+            <v-icon v-if="isAuthenticated">lock_open</v-icon>
+        </v-btn>
+
+        <debug-toggle></debug-toggle>
     </v-toolbar>
-
-    <!--<v-toolbar dense dark>-->
-
-        <!--<v-spacer></v-spacer>-->
-
-        <!--<nav class="nav">-->
-            <!--<div class="nav-right nav-menu">-->
-                <!--<span class="nav-item">-->
-                    <!--<router-link to="/">Catalogue</router-link>-->
-                <!--</span>-->
-                    <!--<span class="nav-item">-->
-                    <!--<router-link to="/storage">Storage</router-link>-->
-                <!--</span>-->
-                    <!--<span  class="nav-item">-->
-                    <!--<router-link to="/auth">-->
-                        <!--<b-icon v-if="!isAuthenticated" icon="sign-in"></b-icon>-->
-                        <!--<b-icon v-if="isAuthenticated" icon="sign-out"></b-icon>-->
-                    <!--</router-link>-->
-                <!--</span>-->
-                    <!--<span class="nav-item">-->
-                    <!--<debug-toggle></debug-toggle>-->
-                <!--</span>-->
-            <!--</div>-->
-        <!--</nav>-->
-
-    <!--</v-toolbar>-->
 </template>
 
 <script>
