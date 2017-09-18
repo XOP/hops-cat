@@ -3,16 +3,16 @@
         :class="componentClassname"
         @click="handleClick"
     >
-        <td class="table-cell">
+        <td class="text-xs-left">
             <div :class="'catalogue-item__status' + ' ' + statusFormatted">
                 <b-icon icon="bar-chart"></b-icon>
             </div>
         </td>
-        <td class="table-cell">
+        <td class="text-xs-left">
             <div>{{name}}</div>
             <div class="content is-small" v-if="aliasFormatted">({{aliasFormatted}})</div>
         </td>
-        <td class="table-cell has-text-centered">
+        <td class="text-xs-right">
             <div v-if="country.length" class="u-t-nowrap u-lh-reset">
                 <span class="title" v-for="flag in countryFormatted">{{flag}}</span>
             </div>
@@ -20,19 +20,19 @@
                 {{countryFormatted}}
             </div>
         </td>
-        <td class="table-cell has-text-centered">
+        <td class="text-xs-right">
             {{usageFormatted}}
         </td>
-        <td class="table-cell has-text-centered">
+        <td class="text-xs-right">
             {{shelfLifeFormatted}}
         </td>
-        <td class="table-cell has-text-centered">
+        <td class="text-xs-right">
             {{alphaFormatted}}
         </td>
-        <td class="table-cell has-text-centered">
+        <td class="text-xs-right">
             {{betaFormatted}}
         </td>
-        <td class="table-cell has-text-centered">
+        <td class="text-xs-right">
             {{coFormatted}}
         </td>
     </tr>

@@ -32,10 +32,17 @@
                 v-bind:headers="headers"
                 :items="itemsProcessed"
             >
+                <template slot="headerCell" scope="props">
+                    <span v-if="props.header.hint" v-tooltip:bottom="{ 'html': props.header.hint }">
+                        <span class="u-t-pseudo">{{ props.header.text }}</span>
+                    </span>
+                    <span v-else>
+                        {{ props.header.text }}
+                    </span>
+                </template>
                 <template slot="items" scope="props">
                     <catalogue-item
                         :key="props.item.key"
-                        :index="props.item.index"
                         :name="props.item.name"
                         :country="props.item.country"
                         :usage="props.item.usage"
@@ -47,24 +54,6 @@
                     </catalogue-item>
                 </template>
             </v-data-table>
-
-            <!--<table class="catalogue__table table is-fullwidth is-narrow">-->
-                <!--<catalogue-table-head />-->
-                <!--<tbody>-->
-                    <!--<catalogue-item-->
-                        <!--v-for="(item, index) in itemsProcessed"-->
-                        <!--:key="item.key"-->
-                        <!--:index="index + 1"-->
-                        <!--:name="item.name"-->
-                        <!--:country="item.country"-->
-                        <!--:usage="item.usage"-->
-                        <!--:shelfLife="item.shelfLife"-->
-                        <!--:alpha="item.alpha"-->
-                        <!--:beta="item.beta"-->
-                    <!--&gt;-->
-                    <!--</catalogue-item>-->
-                <!--</tbody>-->
-            <!--</table>-->
         </section>
     </section>
 </template>
@@ -76,6 +65,8 @@
 
     import CatalogueItem from '../../catalogue-item';
     import CatalogueTableHead from '../../catalogue-table-head';
+
+    import catalogueTableHeadData from '../../catalogue-table-head/data';
 
     import {
         Items as mockHops
@@ -110,57 +101,7 @@
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
 
-            headers: function () {
-                return [
-                    {
-                        value: 'status',
-                        text: 'Status',
-                        align: 'left'
-                    },
-                    {
-                        value: 'name',
-                        text: 'Name',
-                        align: 'left',
-                        hint: ''
-                    },
-                    {
-                        value: 'country',
-                        text: 'Country',
-                        align: 'center',
-                        hint: ''
-                    },
-                    {
-                        value: 'usage',
-                        text: 'Usage',
-                        align: 'center',
-                        hint: ''
-                    },
-                    {
-                        value: 'shelfLife',
-                        text: 'Shelf Life',
-                        align: 'center',
-                        hint: locale.tooltips.shelfLife
-                    },
-                    {
-                        value: 'alpha',
-                        text: 'Alpha',
-                        align: 'center',
-                        hint: 'Acid composition, %'
-                    },
-                    {
-                        value: 'beta',
-                        text: 'Beta',
-                        align: 'center',
-                        hint: 'Acid composition, %'
-                    },
-                    {
-                        value: 'co',
-                        text: 'Co-hum',
-                        align: 'center',
-                        hint: 'Acid composition, %'
-                    }
-                ];
-            },
+            headers: catalogueTableHeadData(locale),
 
             items: function () {
                 return this.isDebugMode ? mockHops : this.dbHops;
