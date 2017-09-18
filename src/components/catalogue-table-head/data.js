@@ -3,54 +3,54 @@ export default function (locale) {
         return [
             {
                 value: 'status',
-                text: 'Status',
+                text: locale.tableHops.status,
                 align: 'left',
                 sortable: false
             },
             {
                 value: 'name',
-                text: 'Name',
+                text: locale.tableHops.name,
                 align: 'left',
                 sortable: true
             },
             {
                 value: 'country',
-                text: 'Country',
+                text: locale.tableHops.country,
                 align: 'right',
                 sortable: true
             },
             {
                 value: 'usage',
-                text: 'Usage',
+                text: locale.tableHops.usage,
                 align: 'right',
                 sortable: true
             },
             {
                 value: 'shelfLife',
-                text: 'Shelf Life',
+                text: locale.tableHops.shelfLife,
                 align: 'right',
                 hint: locale.tooltips.shelfLife,
                 sortable: true
             },
             {
                 value: 'alpha.min',
-                text: 'Alpha',
+                text: locale.tableHops.alpha,
                 align: 'right',
-                hint: 'Acid composition, %',
+                hint: locale.tooltips.acid,
                 sortable: true
             },
             {
                 value: 'beta.min',
-                text: 'Beta',
+                text: locale.tableHops.beta,
                 align: 'right',
-                hint: 'Acid composition, %',
+                hint: locale.tooltips.acid,
                 sortable: true
             },
             {
                 value: 'co.min',
-                text: 'Co-hum',
+                text: locale.tableHops.co,
                 align: 'right',
-                hint: 'Acid composition, %',
+                hint: locale.tooltips.acid,
                 sortable: true
             }
         ];

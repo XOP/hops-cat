@@ -5,57 +5,56 @@
             <v-btn v-if="isAuthenticated" to="/add-hops" class="amber lighten-1">Add Hops</v-btn>
         </h1>
 
-        <section>
-            <v-card>
-                <v-card-title>
-                    Apply sorting:
+        <v-card class="mb-2 elevation-1">
+            <v-card-title class="py-1">
+                Apply sorting:
 
-                    <v-btn
-                        icon
-                        @click="toggleSortingOrderAz"
-                    >
-                        <v-icon>sort_by_alpha</v-icon>
-                    </v-btn>
+                <v-btn
+                    icon
+                    @click="toggleSortingOrderAz"
+                >
+                    <v-icon>sort_by_alpha</v-icon>
+                </v-btn>
 
-                    <v-btn
-                        v-if="!defaultOrder"
-                        icon
-                        @click="setDefaultOrder"
-                    >
-                        <v-icon>restore</v-icon>
-                    </v-btn>
-                </v-card-title>
-            </v-card>
+                <v-btn
+                    v-if="!defaultOrder"
+                    icon
+                    @click="setDefaultOrder"
+                >
+                    <v-icon>restore</v-icon>
+                </v-btn>
+            </v-card-title>
+        </v-card>
 
-            <v-data-table
-                class="elevation-1"
-                v-bind:headers="headers"
-                :items="itemsProcessed"
-            >
-                <template slot="headerCell" scope="props">
-                    <span v-if="props.header.hint" v-tooltip:bottom="{ 'html': props.header.hint }">
-                        <span class="u-t-pseudo">{{ props.header.text }}</span>
-                    </span>
-                    <span v-else>
-                        {{ props.header.text }}
-                    </span>
-                </template>
-                <template slot="items" scope="props">
-                    <catalogue-item
-                        :key="props.item.key"
-                        :name="props.item.name"
-                        :country="props.item.country"
-                        :usage="props.item.usage"
-                        :shelfLife="props.item.shelfLife"
-                        :alpha="props.item.alpha"
-                        :beta="props.item.beta"
-                        :co="props.item.co"
-                    >
-                    </catalogue-item>
-                </template>
-            </v-data-table>
-        </section>
+        <v-data-table
+            class="elevation-1"
+            v-bind:headers="headers"
+            :items="itemsProcessed"
+        >
+            <template slot="headerCell" scope="props">
+                <span v-if="props.header.hint" v-tooltip:bottom="{ 'html': props.header.hint }">
+                    <span class="u-t-pseudo">{{ props.header.text }}</span>
+                </span>
+                <span v-else>
+                    {{ props.header.text }}
+                </span>
+            </template>
+            <template slot="items" scope="props">
+                <catalogue-item
+                    :key="props.item.key"
+                    :name="props.item.name"
+                    :country="props.item.country"
+                    :usage="props.item.usage"
+                    :shelfLife="props.item.shelfLife"
+                    :alpha="props.item.alpha"
+                    :beta="props.item.beta"
+                    :co="props.item.co"
+                >
+                </catalogue-item>
+            </template>
+        </v-data-table>
     </section>
+
 </template>
 
 <script>
