@@ -2,7 +2,7 @@
     <v-app>
         <app-header></app-header>
 
-        <v-alert v-model="isDebugMode" warning icon="bug_report">
+        <v-alert class="ma-0 py-2" v-model="isDebugMode" warning icon="bug_report">
             Debug mode
         </v-alert>
 

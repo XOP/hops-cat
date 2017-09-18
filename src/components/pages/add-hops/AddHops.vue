@@ -1,18 +1,21 @@
 <template>
     <section>
-        <h1 class="title is-3">Add new Hops</h1>
+        <h1 class="display-1">Add new Hops</h1>
 
-        <b-notification v-if="!isAuthenticated" type="is-info" :closable="false" :hasIcon="true">
-            <router-link to="/auth">Authorization</router-link> required to edit database
+        <v-alert v-if="!isAuthenticated" :value="true" info>
+            <v-btn to="/auth">
+                <v-icon left>lock_open</v-icon>
+                Authorize
+            </v-btn>
 
-            <hr>
+            to add hops or
 
-            <router-link to="/">Go to Hops Catalogue</router-link>
-        </b-notification>
+            <v-btn to="/" exact>Go to Catalogue</v-btn>
+        </v-alert>
 
-        <div v-if="isAuthenticated">
+        <div v-else>
 
-            <div class="columns">
+            <div v-show="false" class="columns">
                 <div class="column is-8-desktop">
 
                     <section class="add-hops__form">
@@ -214,29 +217,62 @@
                 </div>
             </div>
 
-            <section class="add-hops__section">
-                <table class="add-hops__table table is-narrow is-fullwidth is-narrow">
-                    <catalogue-table-head />
-                    <tbody>
+
+            <v-data-table
+                class="elevation-1"
+                v-bind:headers="headers"
+                :items="hopsProcessed"
+            >
+                <template slot="headerCell" scope="props">
+                    <span v-if="props.header.hint" v-tooltip:bottom="{ 'html': props.header.hint }">
+                        <span class="u-t-pseudo">{{ props.header.text }}</span>
+                    </span>
+                        <span v-else>
+                        {{ props.header.text }}
+                    </span>
+                </template>
+                <template slot="items" scope="props">
                     <catalogue-item
-                        v-for="(hops, index) in hopsProcessed"
-                        :key="index"
-                        :dbKey="hops['.key']"
-                        :index="index + 1"
-                        :isSelected="hops.isSelected"
-                        :name="hops.name"
-                        :alias="hops.alias"
-                        :country="hops.country"
-                        :usage="hops.usage"
-                        :shelfLife="hops.shelfLife"
-                        :alpha="hops.alpha"
-                        :beta="hops.beta"
-                        :co="hops.co"
+                        :key="props.item.key"
+                        :dbKey="props.item['.key']"
+                        :isSelected="props.item.isSelected"
+                        :name="props.item.name"
+                        :alias="props.item.alias"
+                        :country="props.item.country"
+                        :usage="props.item.usage"
+                        :shelfLife="props.item.shelfLife"
+                        :alpha="props.item.alpha"
+                        :beta="props.item.beta"
+                        :co="props.item.co"
                         :onClick="selectHops"
-                    ></catalogue-item>
-                    </tbody>
-                </table>
-            </section>
+                    >
+                    </catalogue-item>
+                </template>
+            </v-data-table>
+
+            <!--<section class="add-hops__section">-->
+                <!--<table class="add-hops__table table is-narrow is-fullwidth is-narrow">-->
+                    <!--<catalogue-table-head />-->
+                    <!--<tbody>-->
+                    <!--<catalogue-item-->
+                        <!--v-for="(hops, index) in hopsProcessed"-->
+                        <!--:key="index"-->
+                        <!--:dbKey="hops['.key']"-->
+                        <!--:index="index + 1"-->
+                        <!--:isSelected="hops.isSelected"-->
+                        <!--:name="hops.name"-->
+                        <!--:alias="hops.alias"-->
+                        <!--:country="hops.country"-->
+                        <!--:usage="hops.usage"-->
+                        <!--:shelfLife="hops.shelfLife"-->
+                        <!--:alpha="hops.alpha"-->
+                        <!--:beta="hops.beta"-->
+                        <!--:co="hops.co"-->
+                        <!--:onClick="selectHops"-->
+                    <!--&gt;</catalogue-item>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</section>-->
 
         </div>
 
@@ -258,9 +294,10 @@
     import db from '../../../firebase';
 
     import CatalogueItem from '../../catalogue-item';
-    import CatalogueTableHead from '../../catalogue-table-head';
     import SelectTag from '../../select-tag';
     import Tag from '../../tag';
+
+    import catalogueTableHeadData from '../../catalogue-table-head/data';
 
     import hopsSchema from './hops-schema';
 
@@ -285,7 +322,6 @@
 
         components: {
             'catalogue-item': CatalogueItem,
-            'catalogue-table-head': CatalogueTableHead,
             'select-tag': SelectTag,
             'tag': Tag
         },
@@ -329,6 +365,8 @@
         computed: {
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
+
+            headers: catalogueTableHeadData(locale),
 
             flags: function () {
                 return this.isDebugMode ? mockFlags : this.dbFlags;

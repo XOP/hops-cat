@@ -43,6 +43,7 @@
                 <catalogue-item
                     :key="props.item.key"
                     :name="props.item.name"
+                    :alias="props.item.alias"
                     :country="props.item.country"
                     :usage="props.item.usage"
                     :shelfLife="props.item.shelfLife"
@@ -63,7 +64,6 @@
     import db from '../../../firebase';
 
     import CatalogueItem from '../../catalogue-item';
-    import CatalogueTableHead from '../../catalogue-table-head';
 
     import catalogueTableHeadData from '../../catalogue-table-head/data';
 
@@ -83,8 +83,7 @@
         }),
 
         components: {
-            'catalogue-item': CatalogueItem,
-            'catalogue-table-head': CatalogueTableHead
+            'catalogue-item': CatalogueItem
         },
 
         data () {

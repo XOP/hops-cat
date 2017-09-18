@@ -10,7 +10,7 @@
         </td>
         <td class="text-xs-left">
             <div>{{name}}</div>
-            <div class="content is-small" v-if="aliasFormatted">({{aliasFormatted}})</div>
+            <div class="caption" v-if="aliasFormatted">({{aliasFormatted}})</div>
         </td>
         <td class="text-xs-right">
             <div v-if="country.length" class="u-t-nowrap u-lh-reset">
