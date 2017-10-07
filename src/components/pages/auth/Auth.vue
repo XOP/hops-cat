@@ -1,47 +1,74 @@
 <template>
     <section>
-        <h1 class="title is-3">DB Auth</h1>
+        <h1 class="display-1">
+            DB Auth
+        </h1>
 
-        <div class="columns">
-            <div class="column is-4 is-offset-4">
+        <v-container fluid class="pa-0">
+            <v-layout row justify-space-around>
+                <v-flex d-flex xs4>
 
-                <form v-if="!isAuthenticated">
-                    <b-field label="E-mail" expanded>
-                        <b-input type="email" placeholder="user@email.com" name="email" required v-model="email"></b-input>
-                    </b-field>
+                    <v-card>
+                        <v-card-text>
 
-                    <b-field label="Pass" expanded>
-                        <b-input type="password" name="pass" required v-model="pass"></b-input>
-                    </b-field>
+                            <form v-if="!isAuthenticated">
+                                <v-text-field
+                                    label="E-mail"
+                                    v-model="email"
+                                    required
+                                    placeholder="user@email.com"
+                                    :rules="emailRules"
+                                ></v-text-field>
 
-                    <b-field>
-                        <div class="control">
-                            <button class="button is-primary is-fullwidth" @click.prevent="signIn">
-                                <b-icon icon="database"></b-icon>
-                                <span>DB Authorize</span>
-                            </button>
-                        </div>
-                    </b-field>
-                </form>
+                                <v-text-field
+                                    label="Pass"
+                                    v-model="pass"
+                                    required
+                                    type="password"
+                                ></v-text-field>
 
-                <form v-if="isAuthenticated">
-                    <b-field label="E-mail" expanded>
-                        <b-input disabled name="email" :value="user.email"></b-input>
-                    </b-field>
+                                <div class="text-xs-center">
+                                    <v-btn color="primary" large @click.prevent="signIn">
+                                        <v-icon left>storage</v-icon>
+                                        <span>DB Authorize</span>
+                                    </v-btn>
+                                </div>
+                            </form>
 
-                    <b-field>
-                        <div class="control">
-                            <button class="button is-primary is-fullwidth" @click.prevent="signOut">
-                                <b-icon icon="sign-out"></b-icon>
-                                <span>Log out</span>
-                            </button>
-                        </div>
-                    </b-field>
-                </form>
+                            <form v-if="isAuthenticated">
+                                <v-text-field
+                                    label="E-mail"
+                                    v-model="user.email"
+                                    disabled
+                                ></v-text-field>
 
-            </div>
+                                <div class="text-xs-center">
+                                    <v-btn color="primary" large @click.prevent="signOut">
+                                        <v-icon left>lock_open</v-icon>
+                                        <span>Log out</span>
+                                    </v-btn>
+                                </div>
+                            </form>
 
-        </div>
+                        </v-card-text>
+                    </v-card>
+
+                    <v-snackbar
+                        :timeout="notification.timeout"
+                        v-model="notification.show"
+                        top
+                    >
+                        <span>
+                            {{ notification.text }}
+                        </span>
+                        <v-btn dark flat @click.native="notification.show = false">
+                            {{ notification.btnText }}
+                        </v-btn>
+                    </v-snackbar>
+                </v-flex>
+            </v-layout>
+        </v-container>
+
     </section>
 </template>
 
@@ -58,7 +85,19 @@
         data () {
             return {
                 email: '',
-                pass: ''
+                pass: '',
+
+                emailRules: [
+                    (v) => !!v || 'E-mail is required',
+                    (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+                ],
+
+                notification: {
+                    show: false,
+                    text: '',
+                    btnText: '',
+                    timeout: DURATION.NOTIFICATION_NORMAL
+                }
             };
         },
 
@@ -72,24 +111,16 @@
                     .auth()
                     .signInWithEmailAndPassword(this.email, this.pass)
                     .then(() => {
-                        this.$snackbar.open({
-                            message: `User ${this.email} is now authorized!`,
-                            actionText: 'OK',
-                            position: 'is-top',
-                            duration: DURATION.NOTIFICATION_NORMAL
-                        });
+                        this.notification.text = `User ${this.email} is now authorized!`;
+                        this.notification.btnText = 'OK';
+                        this.notification.show = true;
 
                         this.email = '';
                         this.pass = '';
                     })
                     .catch((error) => {
-                        this.$snackbar.open({
-                            message: `Sorry, something is wrong: ${error}`,
-                            actionText: 'Ouch!',
-                            type: 'is-danger',
-                            position: 'is-top',
-                            duration: DURATION.NOTIFICATION_NORMAL
-                        });
+                        this.notification.text = `Sorry, something is wrong: ${error}`;
+                        this.notification.btnText = 'Ouch!';
 
                         this.pass = '';
                     });
