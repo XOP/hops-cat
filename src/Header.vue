@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar dark dense class="green darken-1">
+    <v-toolbar app dark dense class="green darken-1">
         <v-toolbar-title>
             <router-link to="/" tag="span" class="u-cur-pointer">
                 <span class="image">

@@ -2,7 +2,7 @@
     <section>
         <h1 class="display-1">Add new Hops</h1>
 
-        <v-alert v-if="!isAuthenticated" :value="true" info>
+        <v-alert v-if="!isAuthenticated" :value="true" color="info">
             <v-btn to="/auth">
                 <v-icon left>lock_open</v-icon>
                 Authorize
@@ -224,10 +224,11 @@
                 :items="hopsProcessed"
             >
                 <template slot="headerCell" scope="props">
-                    <span v-if="props.header.hint" v-tooltip:bottom="{ 'html': props.header.hint }">
-                        <span class="u-t-pseudo">{{ props.header.text }}</span>
-                    </span>
-                        <span v-else>
+                    <v-tooltip top v-if="props.header.hint">
+                        <span slot="activator" class="u-t-pseudo">{{ props.header.text }}</span>
+                        <span>{{ props.header.hint }}</span>
+                    </v-tooltip>
+                    <span v-else>
                         {{ props.header.text }}
                     </span>
                 </template>

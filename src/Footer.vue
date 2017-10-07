@@ -1,5 +1,5 @@
 <template>
-    <v-footer dark class="px-2 py-4 grey darken-4 grey--text text--lighten-4">
+    <v-footer app dark class="px-2 py-4 grey darken-4 grey--text text--lighten-4">
 
         <v-btn small flat dark href="https://github.com/XOP/hops-cat" target="_blank">
             Github

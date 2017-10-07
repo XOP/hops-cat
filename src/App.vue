@@ -2,14 +2,16 @@
     <v-app>
         <app-header></app-header>
 
-        <v-alert class="ma-0 py-2" v-model="isDebugMode" warning icon="bug_report">
+        <v-alert class="ma-0 py-2" v-model="isDebugMode" color="warning" icon="bug_report">
             Debug mode
         </v-alert>
 
         <main>
-            <v-container fluid>
-                <router-view></router-view>
-            </v-container>
+            <v-content fluid>
+                <v-container fluid>
+                    <router-view></router-view>
+                </v-container>
+            </v-content>
         </main>
 
         <app-footer></app-footer>

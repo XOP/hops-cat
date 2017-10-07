@@ -32,9 +32,10 @@
             :items="itemsProcessed"
         >
             <template slot="headerCell" scope="props">
-                <span v-if="props.header.hint" v-tooltip:bottom="{ 'html': props.header.hint }">
-                    <span class="u-t-pseudo">{{ props.header.text }}</span>
-                </span>
+                <v-tooltip top v-if="props.header.hint">
+                    <span slot="activator" class="u-t-pseudo">{{ props.header.text }}</span>
+                    <span>{{ props.header.hint }}</span>
+                </v-tooltip>
                 <span v-else>
                     {{ props.header.text }}
                 </span>
