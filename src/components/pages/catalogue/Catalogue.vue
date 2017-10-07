@@ -28,6 +28,7 @@
 
         <v-data-table
             class="elevation-1"
+            hideActions
             v-bind:headers="headers"
             :items="itemsProcessed"
         >

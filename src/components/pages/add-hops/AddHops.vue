@@ -14,212 +14,218 @@
         </v-alert>
 
         <div v-else>
+            <v-container fluid grid-list-lg class="pa-0 mb-3">
+                <v-layout row wrap>
+                    <v-flex d-flex xs8>
 
-            <div v-show="false" class="columns">
-                <div class="column is-8-desktop">
+                        <section class="add-hops__form">
+                            <form>
+                                <b-field grouped>
+                                    <b-field label="Name" expanded>
+                                        <b-input placeholder="Cascade" name="name" required v-model.trim="newHops.name"></b-input>
+                                    </b-field>
 
-                    <section class="add-hops__form">
-                        <form>
-                            <b-field grouped>
-                                <b-field label="Name" expanded>
-                                    <b-input placeholder="Cascade" name="name" required v-model.trim="newHops.name"></b-input>
-                                </b-field>
+                                    <b-field label="Usage">
+                                        <b-select expanded v-model="newHops.usage">
+                                            <option value="AB">Dual</option>
+                                            <option value="A">Aroma</option>
+                                            <option value="B">Bitter</option>
+                                        </b-select>
+                                    </b-field>
 
-                                <b-field label="Usage">
-                                    <b-select expanded v-model="newHops.usage">
-                                        <option value="AB">Dual</option>
-                                        <option value="A">Aroma</option>
-                                        <option value="B">Bitter</option>
-                                    </b-select>
-                                </b-field>
-
-                                <b-field :addons="false">
-                                    <div class="label">Alias</div>
-                                    <div class="columns">
-                                        <div class="column is-narrow">
-                                            <b-input placeholder="X133" name="alias" value=""
-                                                     @keydown.native.enter.prevent="handleAddAlias"
-                                                     ref="input-alias"
-                                            ></b-input>
-                                        </div>
-                                        <div class="column">
-                                            <b-field grouped>
-                                                <div
-                                                    class="control"
-                                                    v-for="(alias, index) in newHops.alias"
-                                                >
-                                                    <b-tag
-                                                        size="is-medium"
-                                                        attached
-                                                        closable
-                                                        @close="removeAlias(alias)"
-                                                        :key="index"
+                                    <b-field :addons="false">
+                                        <div class="label">Alias</div>
+                                        <div class="columns">
+                                            <div class="column is-narrow">
+                                                <b-input placeholder="X133" name="alias" value=""
+                                                         @keydown.native.enter.prevent="handleAddAlias"
+                                                         ref="input-alias"
+                                                ></b-input>
+                                            </div>
+                                            <div class="column">
+                                                <b-field grouped>
+                                                    <div
+                                                            class="control"
+                                                            v-for="(alias, index) in newHops.alias"
                                                     >
-                                                        {{alias}}
-                                                    </b-tag>
-                                                </div>
-                                            </b-field>
+                                                        <b-tag
+                                                                size="is-medium"
+                                                                attached
+                                                                closable
+                                                                @close="removeAlias(alias)"
+                                                                :key="index"
+                                                        >
+                                                            {{alias}}
+                                                        </b-tag>
+                                                    </div>
+                                                </b-field>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </b-field>
                                 </b-field>
-                            </b-field>
 
-                            <b-field :addons="false" grouped>
+                                <b-field :addons="false" grouped>
 
-                                <b-field :addons="false">
-                                    <b-field label="Shelf life">
-                                        <b-input placeholder="0 - 10" type="number" name="shelfLife" v-model.number="newHops.shelfLife"></b-input>
+                                    <b-field :addons="false">
+                                        <b-field label="Shelf life">
+                                            <b-input placeholder="0 - 10" type="number" name="shelfLife" v-model.number="newHops.shelfLife"></b-input>
+                                        </b-field>
+                                    </b-field>
+
+                                    <b-field :addons="false">
+                                        <div class="label">Countries of origin</div>
+                                        <div class="columns">
+                                            <div class="column is-narrow">
+                                                <select-tag
+                                                        :id="0"
+                                                        :value="newHops.country[0]"
+                                                        :label="getFlagNameByCode(newHops.country[0])"
+                                                        :items="flagsProcessed"
+                                                        :itemsMap="countryItemMap"
+                                                        @remove="removeFlag"
+                                                        @select="selectFlag"
+                                                ></select-tag>
+                                            </div>
+
+                                            <div class="column is-narrow" v-if="newHops.country[0]">
+                                                <select-tag
+                                                        :id="1"
+                                                        :value="newHops.country[1]"
+                                                        :label="getFlagNameByCode(newHops.country[1])"
+                                                        :items="flagsProcessed"
+                                                        :itemsMap="countryItemMap"
+                                                        @remove="removeFlag"
+                                                        @select="selectFlag"
+                                                ></select-tag>
+                                            </div>
+
+                                            <div class="column is-narrow" v-if="newHops.country[1]">
+                                                <select-tag
+                                                        :id="2"
+                                                        :value="newHops.country[2]"
+                                                        :label="getFlagNameByCode(newHops.country[2])"
+                                                        :items="flagsProcessed"
+                                                        :itemsMap="countryItemMap"
+                                                        @remove="removeFlag"
+                                                        @select="selectFlag"
+                                                ></select-tag>
+                                            </div>
+                                        </div>
                                     </b-field>
                                 </b-field>
 
                                 <b-field :addons="false">
-                                    <div class="label">Countries of origin</div>
+                                    <div class="label">Acid, %</div>
+
                                     <div class="columns">
-                                        <div class="column is-narrow">
-                                            <select-tag
-                                                :id="0"
-                                                :value="newHops.country[0]"
-                                                :label="getFlagNameByCode(newHops.country[0])"
-                                                :items="flagsProcessed"
-                                                :itemsMap="countryItemMap"
-                                                @remove="removeFlag"
-                                                @select="selectFlag"
-                                            ></select-tag>
+
+                                        <div class="column">
+                                            <div class="label">Alpha</div>
+
+                                            <b-field :addons="false" grouped>
+                                                <b-field expanded>
+                                                    <b-input placeholder="Min" type="number" name="alphaMin" required v-model.number="newHops.alpha.min"></b-input>
+                                                </b-field>
+                                                <b-field>-</b-field>
+                                                <b-field expanded>
+                                                    <b-input placeholder="Max" type="number" name="alphaMax" required v-model.number="newHops.alpha.max"></b-input>
+                                                </b-field>
+                                            </b-field>
                                         </div>
 
-                                        <div class="column is-narrow" v-if="newHops.country[0]">
-                                            <select-tag
-                                                :id="1"
-                                                :value="newHops.country[1]"
-                                                :label="getFlagNameByCode(newHops.country[1])"
-                                                :items="flagsProcessed"
-                                                :itemsMap="countryItemMap"
-                                                @remove="removeFlag"
-                                                @select="selectFlag"
-                                            ></select-tag>
+                                        <div class="column">
+                                            <div class="label">Beta</div>
+
+                                            <b-field :addons="false" grouped>
+                                                <b-field expanded>
+                                                    <b-input placeholder="Min" type="number" name="betaMin" v-model.number="newHops.beta.min"></b-input>
+                                                </b-field>
+                                                <b-field>-</b-field>
+                                                <b-field expanded>
+                                                    <b-input placeholder="Max" type="number" name="betaMax" v-model.number="newHops.beta.max"></b-input>
+                                                </b-field>
+                                            </b-field>
                                         </div>
 
-                                        <div class="column is-narrow" v-if="newHops.country[1]">
-                                            <select-tag
-                                                :id="2"
-                                                :value="newHops.country[2]"
-                                                :label="getFlagNameByCode(newHops.country[2])"
-                                                :items="flagsProcessed"
-                                                :itemsMap="countryItemMap"
-                                                @remove="removeFlag"
-                                                @select="selectFlag"
-                                            ></select-tag>
+                                        <div class="column">
+                                            <div class="label">Co-Humulone</div>
+
+                                            <b-field :addons="false" grouped>
+                                                <b-field expanded>
+                                                    <b-input placeholder="Min" type="number" name="coMin" v-model.number="newHops.co.min"></b-input>
+                                                </b-field>
+                                                <b-field>-</b-field>
+                                                <b-field expanded>
+                                                    <b-input placeholder="Max" type="number" name="coMax" v-model.number="newHops.co.max"></b-input>
+                                                </b-field>
+                                            </b-field>
                                         </div>
+
                                     </div>
                                 </b-field>
-                            </b-field>
 
-                            <b-field :addons="false">
-                                <div class="label">Acid, %</div>
+                                <hr>
 
-                                <div class="columns">
+                                <b-notification
+                                        :active.sync="isDefaultPropsNotification"
+                                        @click="hideDefaultPropsNotification"
+                                >
+                                    Some fields were changed to new hops defaults
+                                </b-notification>
 
-                                    <div class="column">
-                                        <div class="label">Alpha</div>
-
-                                        <b-field :addons="false" grouped>
-                                            <b-field expanded>
-                                                <b-input placeholder="Min" type="number" name="alphaMin" required v-model.number="newHops.alpha.min"></b-input>
-                                            </b-field>
-                                            <b-field>-</b-field>
-                                            <b-field expanded>
-                                                <b-input placeholder="Max" type="number" name="alphaMax" required v-model.number="newHops.alpha.max"></b-input>
-                                            </b-field>
-                                        </b-field>
+                                <b-field grouped>
+                                    <div class="control is-expanded">
+                                        <button class="button is-primary is-fullwidth" @click.prevent="addHops">
+                                            <span v-if="isHopsUpdated">
+                                                <b-icon icon="wrench"></b-icon>
+                                                <span>Update Hops</span>
+                                            </span>
+                                            <span v-else>
+                                                <b-icon icon="plus"></b-icon>
+                                                <span>Add Hops</span>
+                                            </span>
+                                        </button>
                                     </div>
-
-                                    <div class="column">
-                                        <div class="label">Beta</div>
-
-                                        <b-field :addons="false" grouped>
-                                            <b-field expanded>
-                                                <b-input placeholder="Min" type="number" name="betaMin" v-model.number="newHops.beta.min"></b-input>
-                                            </b-field>
-                                            <b-field>-</b-field>
-                                            <b-field expanded>
-                                                <b-input placeholder="Max" type="number" name="betaMax" v-model.number="newHops.beta.max"></b-input>
-                                            </b-field>
-                                        </b-field>
+                                    <div class="control">
+                                        <button class="button is-fullwidth" @click.prevent="clearFields">
+                                            <span v-if="isHopsSelected">
+                                                <b-icon icon="times"></b-icon>
+                                                <span>Deselect</span>
+                                            </span>
+                                            <span v-else>
+                                                <b-icon icon="eraser"></b-icon>
+                                                <span>Clear Fields</span>
+                                            </span>
+                                        </button>
                                     </div>
-
-                                    <div class="column">
-                                        <div class="label">Co-Humulone</div>
-
-                                        <b-field :addons="false" grouped>
-                                            <b-field expanded>
-                                                <b-input placeholder="Min" type="number" name="coMin" v-model.number="newHops.co.min"></b-input>
-                                            </b-field>
-                                            <b-field>-</b-field>
-                                            <b-field expanded>
-                                                <b-input placeholder="Max" type="number" name="coMax" v-model.number="newHops.co.max"></b-input>
-                                            </b-field>
-                                        </b-field>
+                                    <div class="control" v-if="isHopsSelected">
+                                        <button class="button is-fullwidth is-danger" @click.prevent="removeHops">
+                                            <b-icon icon="trash"></b-icon>
+                                            <span>Delete</span>
+                                        </button>
                                     </div>
+                                </b-field>
 
-                                </div>
-                            </b-field>
+                            </form>
+                        </section>
 
-                            <hr>
+                    </v-flex>
 
-                            <b-notification
-                                :active.sync="isDefaultPropsNotification"
-                                @click="hideDefaultPropsNotification"
-                            >
-                                Some fields were changed to new hops defaults
-                            </b-notification>
+                    <v-flex d-flex xs4>
 
-                            <b-field grouped>
-                                <div class="control is-expanded">
-                                    <button class="button is-primary is-fullwidth" @click.prevent="addHops">
-                                        <span v-if="isHopsUpdated">
-                                            <b-icon icon="wrench"></b-icon>
-                                            <span>Update Hops</span>
-                                        </span>
-                                        <span v-else>
-                                            <b-icon icon="plus"></b-icon>
-                                            <span>Add Hops</span>
-                                        </span>
-                                    </button>
-                                </div>
-                                <div class="control">
-                                    <button class="button is-fullwidth" @click.prevent="clearFields">
-                                        <span v-if="isHopsSelected">
-                                            <b-icon icon="times"></b-icon>
-                                            <span>Deselect</span>
-                                        </span>
-                                        <span v-else>
-                                            <b-icon icon="eraser"></b-icon>
-                                            <span>Clear Fields</span>
-                                        </span>
-                                    </button>
-                                </div>
-                                <div class="control" v-if="isHopsSelected">
-                                    <button class="button is-fullwidth is-danger" @click.prevent="removeHops">
-                                        <b-icon icon="trash"></b-icon>
-                                        <span>Delete</span>
-                                    </button>
-                                </div>
-                            </b-field>
+                        <v-card class="grey lighten-4">
+                            <v-card-text>
+                                <pre><code class="d-block">{{ JSON.stringify(transformHops(newHops), null, 2) }}</code></pre>
+                            </v-card-text>
+                        </v-card>
 
-                        </form>
-                    </section>
-
-                </div>
-                <div class="column">
-
-                    <pre><code>{{ JSON.stringify(transformHops(newHops), null, 2) }}</code></pre>
-
-                </div>
-            </div>
-
+                    </v-flex>
+                </v-layout>
+            </v-container>
 
             <v-data-table
                 class="elevation-1"
+                hideActions
                 v-bind:headers="headers"
                 :items="hopsProcessed"
             >
@@ -251,30 +257,6 @@
                 </template>
             </v-data-table>
 
-            <!--<section class="add-hops__section">-->
-                <!--<table class="add-hops__table table is-narrow is-fullwidth is-narrow">-->
-                    <!--<catalogue-table-head />-->
-                    <!--<tbody>-->
-                    <!--<catalogue-item-->
-                        <!--v-for="(hops, index) in hopsProcessed"-->
-                        <!--:key="index"-->
-                        <!--:dbKey="hops['.key']"-->
-                        <!--:index="index + 1"-->
-                        <!--:isSelected="hops.isSelected"-->
-                        <!--:name="hops.name"-->
-                        <!--:alias="hops.alias"-->
-                        <!--:country="hops.country"-->
-                        <!--:usage="hops.usage"-->
-                        <!--:shelfLife="hops.shelfLife"-->
-                        <!--:alpha="hops.alpha"-->
-                        <!--:beta="hops.beta"-->
-                        <!--:co="hops.co"-->
-                        <!--:onClick="selectHops"-->
-                    <!--&gt;</catalogue-item>-->
-                    <!--</tbody>-->
-                <!--</table>-->
-            <!--</section>-->
-
         </div>
 
     </section>
@@ -296,7 +278,6 @@
 
     import CatalogueItem from '../../catalogue-item';
     import SelectTag from '../../select-tag';
-    import Tag from '../../tag';
 
     import catalogueTableHeadData from '../../catalogue-table-head/data';
 
@@ -323,8 +304,7 @@
 
         components: {
             'catalogue-item': CatalogueItem,
-            'select-tag': SelectTag,
-            'tag': Tag
+            'select-tag': SelectTag
         },
 
         props: {
