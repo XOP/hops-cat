@@ -6,7 +6,7 @@
 
         <v-container fluid class="pa-0">
             <v-layout row justify-space-around>
-                <v-flex d-flex xs4>
+                <v-flex d-flex md4>
 
                     <v-card>
                         <v-card-text>
@@ -67,6 +67,24 @@
                     </v-snackbar>
                 </v-flex>
             </v-layout>
+        </v-container>
+
+        <v-container class="pa-0 mt-4" v-if="isAuthenticated">
+            <v-card>
+                <v-card-text class="text-xs-center">
+                    <v-btn large to="/add-hops" color="success">
+                        Add Hops
+                    </v-btn>
+
+                    <v-btn large to="/add-flag">
+                        Add Countries
+                    </v-btn>
+
+                    <v-btn large to="/add-style">
+                        Add Styles
+                    </v-btn>
+                </v-card-text>
+            </v-card>
         </v-container>
 
     </section>

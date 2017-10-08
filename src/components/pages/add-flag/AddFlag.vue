@@ -13,7 +13,7 @@
 
         <v-container fluid grid-list-lg class="pa-0 mb-3">
             <v-layout row wrap>
-                <v-flex xs6 v-if="isAuthenticated">
+                <v-flex md6 v-if="isAuthenticated">
                     <v-card>
                         <v-card-text>
                             <v-form v-model="isValid" ref="form" lazy-validation>
@@ -51,7 +51,7 @@
                     </v-card>
                 </v-flex>
 
-                <v-flex :xs6="isAuthenticated">
+                <v-flex :md6="isAuthenticated">
                     <v-data-table
                         v-bind:headers="headers"
                         class="elevation-1"
