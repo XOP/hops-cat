@@ -4,9 +4,7 @@
         @click="handleClick"
     >
         <td class="text-xs-left">
-            <div :class="'catalogue-item__status' + ' ' + statusFormatted">
-                <b-icon icon="bar-chart"></b-icon>
-            </div>
+            <v-icon :color="statusFormatted">insert_chart</v-icon>
         </td>
         <td class="text-xs-left">
             <div>{{name}}</div>
