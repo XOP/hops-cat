@@ -1,69 +1,83 @@
 <template>
     <section>
-        <h1 class="title is-3">Add new Country</h1>
+        <h1 class="display-1">Countries</h1>
 
-        <b-notification v-if="!isAuthenticated" type="is-info" :closable="false" :hasIcon="true">
-            <router-link to="/auth">Authorization</router-link> required to edit database
-        </b-notification>
+        <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
+            <v-btn to="/auth">
+                <v-icon left>lock_open</v-icon>
+                Authorize
+            </v-btn>
 
-        <div class="columns">
-            <div v-if="isAuthenticated" class="column is-half">
+            to add or edit Countries
+        </v-alert>
 
-                <form>
-                    <b-field grouped>
-                        <b-field label="Name" expanded>
-                            <b-input placeholder="Australia" name="name" required v-model="newFlag.name"></b-input>
-                        </b-field>
-                        <b-field label="Code" expanded>
-                            <b-input placeholder="au" name="category" required v-model="newFlag.code"></b-input>
-                        </b-field>
-                    </b-field>
+        <v-container fluid grid-list-lg class="pa-0 mb-3">
+            <v-layout row wrap>
+                <v-flex xs6 v-if="isAuthenticated">
+                    <v-card>
+                        <v-card-text>
+                            <v-form v-model="isValid" ref="form" lazy-validation>
+                                <v-text-field
+                                    label="Code"
+                                    v-model="newFlag.code"
+                                    required
+                                    placeholder="au"
+                                    :rules="codeRules"
+                                >
+                                </v-text-field>
 
-                    <b-field grouped>
-                        <div class="control is-expanded">
-                            <button class="button is-primary is-fullwidth" @click.prevent="addFlag">
-                                <b-icon :icon="isFlagUpdated ? 'wrench' : 'plus'"></b-icon>
-                                <span v-text="isFlagUpdated ? 'Update' : 'Add'"></span>
-                            </button>
-                        </div>
-                        <div class="control">
-                            <button class="button is-fullwidth" @click.prevent="clearFields">
-                                <b-icon icon="eraser"></b-icon>
-                                <span>Clear</span>
-                            </button>
-                        </div>
-                    </b-field>
-                </form>
+                                <v-text-field
+                                    label="Name"
+                                    v-model="newFlag.name"
+                                    required
+                                    placeholder="Australia"
+                                    :rules="nameRules"
+                                >
+                                </v-text-field>
 
-            </div>
+                                <div>
+                                    <v-btn color="primary" @click="addFlag" :disabled="!isValid">
+                                        <v-icon left v-text="isFlagUpdated ? 'mode_edit' : 'add'"></v-icon>
+                                        <span v-text="isFlagUpdated ? 'Update' : 'Add'"></span>
+                                    </v-btn>
 
-            <div :class="`column ${isAuthenticated ? 'is-half' : ''}`">
-                <div class="is-auto-overflow-vertical">
+                                    <v-btn color="secondary" @click="clearFields">
+                                        <v-icon left>clear_all</v-icon>
+                                        <span>Clear</span>
+                                    </v-btn>
+                                </div>
+                            </v-form>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
 
-                    <table class="add-flag__table table is-narrow">
-                        <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th v-if="isAuthenticated"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr @click="fillFormFields(flag)" v-for="flag in flagsProcessed">
-                            <td>{{ flag.code }}</td>
-                            <td>{{ flag.name }}</td>
-                            <td v-if="isAuthenticated">
-                                <button class="button add-flag__delete" @click.stop="removeFlag(flag)">
-                                    <b-icon icon="trash-o"></b-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <v-flex :xs6="isAuthenticated">
+                    <v-data-table
+                        v-bind:headers="headers"
+                        class="elevation-1"
+                        hideActions
+                        :items="flagsProcessed"
+                    >
+                        <template slot="items" scope="props">
+                            <tr :active="props.item.isSelected" @click="fillFormFields(props.item)">
+                                <td>{{ props.item.code }}</td>
+                                <td>{{ props.item.name }}</td>
+                            </tr>
+                        </template>
+                    </v-data-table>
 
-                </div>
-            </div>
-        </div>
+                    <v-card class="elevation-1" tile v-if="isAuthenticated && selectedFlag.code">
+                        <v-card-text class="text-xs-center">
+                            <v-btn color="error" @click.stop="removeFlag(selectedFlag)">
+                                <v-icon left>delete</v-icon>
+                                <span>Remove <span>"{{ selectedFlag.name }}"</span></span>
+                            </v-btn>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
+
     </section>
 </template>
 
@@ -98,12 +112,40 @@
 
         data () {
             return {
+                isValid: false,
+                nameRules: [
+                    (v) => !!v || 'Name is required'
+                ],
+                codeRules: [
+                    (v) => !!v || 'Code is required',
+                ],
+
                 newFlag: {
                     name: '',
                     code: ''
                 },
 
-                selectedFlag: {}
+                headers: [
+                    {
+                        text: 'Code',
+                        align: 'left',
+                        value: 'code'
+                    },
+                    {
+                        text: 'Name',
+                        align: 'left',
+                        value: 'name'
+                    }
+                ],
+
+                selectedFlag: {},
+
+                notification: {
+                    show: false,
+                    text: '',
+                    btnText: '',
+                    timeout: DURATION.NOTIFICATION_NORMAL
+                }
             };
         },
 
@@ -139,7 +181,16 @@
             },
 
             flagsProcessed: function () {
-                return this.flags.slice(0).reverse();
+                const selectedFlag = this.selectedFlag;
+
+                return this.flags
+                    .slice(0)
+                    .reverse()
+                    .map(flag => (
+                        Object.assign({}, flag, {
+                            isSelected: selectedFlag.code === flag.code
+                        })
+                    ));
             }
         },
 
@@ -157,6 +208,8 @@
 
             addFlag: function () {
                 if (this.isDebugMode) return;
+
+                if (!this.$refs.form.validate()) return;
 
                 const newFlag = this.newFlag;
 

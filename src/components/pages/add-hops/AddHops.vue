@@ -2,7 +2,7 @@
     <section>
         <h1 class="display-1">Add new Hops</h1>
 
-        <v-alert v-if="!isAuthenticated" :value="true" color="info">
+        <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
             <v-btn to="/auth">
                 <v-icon left>lock_open</v-icon>
                 Authorize
