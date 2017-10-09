@@ -78,6 +78,19 @@
             </v-layout>
         </v-container>
 
+        <v-snackbar
+            :timeout="notification.timeout"
+            v-model="notification.show"
+            top
+        >
+            <span>
+                {{ notification.text }}
+            </span>
+            <v-btn dark :color="notification.btnColor" flat @click.native="notification.onAction">
+                {{ notification.btnText }}
+            </v-btn>
+        </v-snackbar>
+
     </section>
 </template>
 
@@ -141,9 +154,13 @@
                 selectedFlag: {},
 
                 notification: {
-                    show: false,
+                    show: false
+                },
+
+                notificationDefaults: {
                     text: '',
                     btnText: '',
+                    onAction: () => this.notification.show = false,
                     timeout: DURATION.NOTIFICATION_NORMAL
                 }
             };
@@ -215,34 +232,32 @@
 
                 if (!_find(this.flags, {code: newFlag.code})) {
                     this.$firebaseRefs.dbFlags.push(newFlag).then(() => {
-                        this.$snackbar.open({
-                            message: `Country ${newFlag.name} successfully added!`,
-                            actionText: 'OK',
-                            position: 'is-top',
-                            duration: DURATION.NOTIFICATION_SHORT
+                        this.showNotification({
+                            text: `Country "${newFlag.name}" successfully added!`,
+                            btnText: 'OK',
+                            timeout: DURATION.NOTIFICATION_SHORT
                         });
 
                         this.clearFields();
                     });
                 } else {
-                    this.$snackbar.open({
-                        message: `Country ${newFlag.name} already exists!`,
-                        actionText: 'Override',
-                        position: 'is-top',
-                        type: 'is-warning',
-                        duration: DURATION.NOTIFICATION_NORMAL,
+                    this.showNotification({
+                        text: `Country ${newFlag.name} already exists!`,
+                        btnText: 'Override',
+                        btnColor: 'error',
                         onAction: () => {
+                            this.notification.show = false;
+
                             this.$firebaseRefs.dbFlags
                                 .child(this.selectedFlag['.key'])
                                 .set({...newFlag}).then(() => {
-                                    this.$snackbar.open({
-                                        message: `Country ${newFlag.name} successfully updated!`,
-                                        actionText: 'OK',
-                                        position: 'is-top',
-                                        duration: DURATION.NOTIFICATION_SHORT
-                                    });
+                                this.showNotification({
+                                    text: `Country "${newFlag.name}" successfully updated!`,
+                                    btnText: 'OK',
+                                    timeout: DURATION.NOTIFICATION_SHORT
+                                });
 
-                                    this.clearFields();
+                                this.clearFields();
                             });
                         }
                     });
@@ -253,13 +268,14 @@
                 if (this.isDebugMode) return;
 
                 this.$firebaseRefs.dbFlags.child(dbFlag['.key']).remove().then(() => {
-                    this.$snackbar.open({
-                        message: `Deleted successfully`,
-                        type: 'is-warning',
-                        position: 'is-top',
-                        duration: DURATION.NOTIFICATION_SHORT
+                    this.showNotification({
+                        text: `Deleted successfully`,
+                        btnText: 'OK',
+                        timeout: DURATION.NOTIFICATION_SHORT
                     });
                 });
+
+                this.clearFields();
             },
 
             selectFlag: function (dbFlag) {
@@ -273,8 +289,7 @@
             clearFields: function () {
                 this.clearSelected();
 
-                this.newFlag.name = '';
-                this.newFlag.code = '';
+                this.$refs.form.reset();
             },
 
             fillFormFields: function (dbFlag) {
@@ -282,6 +297,14 @@
 
                 this.newFlag.name = dbFlag.name;
                 this.newFlag.code = dbFlag.code;
+            },
+
+            showNotification: function (props) {
+                this.notification = {
+                    ...this.notificationDefaults,
+                    ...props,
+                    show: true
+                };
             }
         }
     };
