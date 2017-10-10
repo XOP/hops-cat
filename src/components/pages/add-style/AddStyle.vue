@@ -87,8 +87,8 @@
                     <v-data-table
                         v-bind:headers="headers"
                         class="elevation-1"
-                        hideActions
                         :items="stylesProcessed"
+                        :pagination.sync="pagination"
                     >
                         <template slot="items" scope="props">
                             <tr :active="props.item.isSelected" @click="fillFormFields(props.item)">
@@ -203,6 +203,10 @@
                         value: 'family'
                     }
                 ],
+
+                pagination: {
+                    rowsPerPage: 10
+                },
 
                 selectedStyle: {},
 
