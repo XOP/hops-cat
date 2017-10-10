@@ -90,7 +90,6 @@
                 {{ notification.btnText }}
             </v-btn>
         </v-snackbar>
-
     </section>
 </template>
 
