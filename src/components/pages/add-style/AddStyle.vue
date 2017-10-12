@@ -301,34 +301,34 @@
 
                 if (!_find(this.styles, {code: newStyle.code, sub_code: newStyle.sub_code})) {
                     this.$firebaseRefs.dbStyles.push(newStyle).then(() => {
-                        this.$snackbar.open({
-                            message: `Style ${newStyleCode} successfully added!`,
-                            actionText: 'OK',
-                            position: 'is-top',
-                            duration: DURATION.NOTIFICATION_SHORT
+                        this.showNotification({
+                            text: `Style ${newStyleCode} successfully added!`,
+                            btnText: 'OK',
+                            timeout: DURATION.NOTIFICATION_SHORT,
+                            btnColor: 'success'
                         });
 
                         this.clearFields();
                     });
                 } else {
-                    this.$snackbar.open({
-                        message: `Style ${newStyleCode} already exists!`,
-                        actionText: 'Override',
-                        position: 'is-top',
-                        type: 'is-warning',
-                        duration: DURATION.NOTIFICATION_NORMAL,
+                    this.showNotification({
+                        text: `Style ${newStyleCode} already exists!`,
+                        btnText: 'Override',
+                        btnColor: 'warning',
                         onAction: () => {
+                            this.notification.show = false;
+
                             this.$firebaseRefs.dbStyles
                                 .child(this.selectedStyle['.key'])
                                 .set({...newStyle}).then(() => {
-                                    this.$snackbar.open({
-                                        message: `Style ${newStyleCode} successfully updated!`,
-                                        actionText: 'OK',
-                                        position: 'is-top',
-                                        duration: DURATION.NOTIFICATION_SHORT
-                                    });
+                                this.showNotification({
+                                    text: `Style ${newStyleCode} successfully updated!`,
+                                    btnText: 'OK',
+                                    timeout: DURATION.NOTIFICATION_SHORT,
+                                    btnColor: 'success'
+                                });
 
-                                    this.clearFields();
+                                this.clearFields();
                             });
                         }
                     });
@@ -346,12 +346,11 @@
                     this.$firebaseRefs.dbStyles.child(styleKey).remove();
                 }, DURATION.NOTIFICATION_LONG);
 
-                this.$snackbar.open({
-                    message: `Deleted successfully`,
-                    type: 'is-warning',
-                    position: 'is-top',
-                    duration: DURATION.NOTIFICATION_LONG,
-                    actionText: 'Undo',
+                this.showNotification({
+                    text: `Deleted successfully`,
+                    btnText: 'Undo',
+                    btnColor: 'warning',
+                    timeout: DURATION.NOTIFICATION_LONG,
                     onAction: () => {
                         this.hiddenKeys = _without(this.hiddenKeys, styleKey);
                         clearTimeout(removeTimeout);

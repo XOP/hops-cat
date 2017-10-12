@@ -234,7 +234,8 @@
                         this.showNotification({
                             text: `Country "${newFlag.name}" successfully added!`,
                             btnText: 'OK',
-                            timeout: DURATION.NOTIFICATION_SHORT
+                            timeout: DURATION.NOTIFICATION_SHORT,
+                            btnColor: 'success'
                         });
 
                         this.clearFields();
@@ -253,7 +254,8 @@
                                 this.showNotification({
                                     text: `Country "${newFlag.name}" successfully updated!`,
                                     btnText: 'OK',
-                                    timeout: DURATION.NOTIFICATION_SHORT
+                                    timeout: DURATION.NOTIFICATION_SHORT,
+                                    btnColor: 'success'
                                 });
 
                                 this.clearFields();
