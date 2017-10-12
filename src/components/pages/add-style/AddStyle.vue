@@ -356,6 +356,8 @@
                         clearTimeout(removeTimeout);
                     }
                 });
+
+                this.clearFields();
             },
 
             selectStyle: function (dbStyle) {
