@@ -21,51 +21,33 @@
                         <v-card>
                             <v-card-text>
                                 <v-form v-model="isValid" ref="form" lazy-validation>
-                                    <v-layout row wrap>
-                                        <v-flex md6>
-                                            <v-text-field
-                                                label="Name"
-                                                v-model.trim="newHops.name"
-                                                required
-                                                placeholder="Cascade"
+                                    <v-text-field
+                                        label="Name"
+                                        v-model.trim="newHops.name"
+                                        required
+                                        placeholder="Cascade"
+                                        :rules="nameRules"
+                                    >
+                                    </v-text-field>
 
+                                    <v-select
+                                        label="Alias"
+                                        tags
+                                        chips
+                                        appendIcon=""
+                                        v-model="newHops.alias"
+                                        hint="Duplicated values are not allowed"
+                                    >
+                                        <template slot="selection" scope="data">
+                                            <v-chip
+                                                close
+                                                @input="removeAlias(data.item)"
+                                                :selected="data.selected"
                                             >
-                                            </v-text-field>
-                                        </v-flex>
-                                        <v-flex md6>
-
-                                            <b-field :addons="false">
-                                                <div class="label">Alias</div>
-                                                <div class="columns">
-                                                    <div class="column is-narrow">
-                                                        <b-input placeholder="X133" name="alias" value=""
-                                                                 @keydown.native.enter.prevent="handleAddAlias"
-                                                                 ref="input-alias"
-                                                        ></b-input>
-                                                    </div>
-                                                    <div class="column">
-                                                        <b-field grouped>
-                                                            <div
-                                                                    class="control"
-                                                                    v-for="(alias, index) in newHops.alias"
-                                                            >
-                                                                <b-tag
-                                                                        size="is-medium"
-                                                                        attached
-                                                                        closable
-                                                                        @close="removeAlias(alias)"
-                                                                        :key="index"
-                                                                >
-                                                                    {{alias}}
-                                                                </b-tag>
-                                                            </div>
-                                                        </b-field>
-                                                    </div>
-                                                </div>
-                                            </b-field>
-
-                                        </v-flex>
-                                    </v-layout>
+                                                {{ data.item }}
+                                            </v-chip>
+                                        </template>
+                                    </v-select>
 
                                     <v-layout row wrap>
                                         <v-flex md6>
@@ -143,10 +125,10 @@
                                             <label class="body-1">Alpha</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field label="min" required v-model.number="newHops.alpha.min" type="number"></v-text-field>
+                                                    <v-text-field :rules="acidRules" label="min" required v-model.number="newHops.alpha.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field label="max" required v-model.number="newHops.alpha.max" type="number"></v-text-field>
+                                                    <v-text-field :rules="acidRules" label="max" required v-model.number="newHops.alpha.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -155,10 +137,10 @@
                                             <label class="body-1">Beta</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field label="min" required v-model.number="newHops.beta.min" type="number"></v-text-field>
+                                                    <v-text-field label="min" v-model.number="newHops.beta.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field label="max" required v-model.number="newHops.beta.max" type="number"></v-text-field>
+                                                    <v-text-field label="max" v-model.number="newHops.beta.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -167,10 +149,10 @@
                                             <label class="body-1">Co-Humulone</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field label="min" required v-model.number="newHops.co.min" type="number"></v-text-field>
+                                                    <v-text-field label="min" v-model.number="newHops.co.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field label="max" required v-model.number="newHops.co.max" type="number"></v-text-field>
+                                                    <v-text-field label="max" v-model.number="newHops.co.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -181,7 +163,7 @@
                                         <!--@click="hideDefaultPropsNotification"-->
                                     </v-alert>
 
-                                    <v-layout row wrap>
+                                    <v-layout row wrap text-xs-center text-md-left>
                                         <v-flex>
                                             <v-btn color="primary" @click="addHops" :disabled="!isValid">
                                                 <v-icon left v-text="isHopsUpdated ? 'mode_edit' : 'add'"></v-icon>
@@ -193,8 +175,6 @@
                                                 <span v-text="isHopsSelected ? 'Deselect' : 'Clear Fields'"></span>
                                             </v-btn>
                                         </v-flex>
-
-                                        <v-spacer></v-spacer>
 
                                         <v-flex text-md-right>
                                             <v-btn color="error" @click="removeHops" :disabled="!isHopsSelected">
@@ -272,6 +252,7 @@
     import _isEqual from 'lodash/isEqual';
     import _find from 'lodash/find';
     import _without from 'lodash/without';
+    import _uniq from 'lodash/uniq';
 
     import db from '../../../firebase';
 
@@ -314,6 +295,13 @@
                 locale,
 
                 isValid: false,
+
+                nameRules: [
+                    (v) => !!v || 'Name is required'
+                ],
+                acidRules: [
+                    (v) => !!v || 'Value is required'
+                ],
 
                 newHops: {},
                 selectedHops: {},
@@ -446,6 +434,17 @@
         watch: {
             isDebugMode: function () {
                 this.$forceUpdate();
+            },
+
+            'newHops.alias': function (alias) {
+                if (alias.length < 2) {
+                    return false;
+                }
+
+                // checking if new value is a duplicate
+                if (alias.length !== _uniq(alias).length) {
+                    this.newHops.alias.pop();
+                }
             }
         },
 
@@ -583,9 +582,6 @@
                 this.selectedHops = {};
                 this.newHops = clone(hopsSchema);
 
-                // clear non-model fields
-                this.clearAliasField();
-
                 // remove notifications and errors
                 this.hideDefaultPropsNotification();
             },
@@ -620,35 +616,8 @@
                 }
             },
 
-            handleAddAlias: function () {
-                const input = this.$refs['input-alias'].$refs.input;
-                const alias = input.value;
-
-                if (this.newHops.alias.indexOf(alias) === -1) {
-                    this.addAlias(alias);
-                    this.clearAliasField();
-                } else {
-                    // todo: throw notification
-                }
-            },
-
-            addAlias: function (value) {
-                this.newHops.alias.push(value);
-            },
-
-            clearAliasField: function () {
-                if (!this.$refs['input-alias']) return;
-
-                const input = this.$refs['input-alias'].$refs.input;
-
-                setTimeout(() => {
-                    input.value = '';
-                }, 0);
-            },
-
             removeAlias: function (value) {
                 this.newHops.alias = _without(this.newHops.alias.slice(0), value);
-                this.clearAliasField();
             },
 
             hideDefaultPropsNotification: function () {
