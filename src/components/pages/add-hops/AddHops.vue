@@ -17,9 +17,9 @@
             <v-container fluid grid-list-lg class="pa-0 mb-3">
                 <v-layout row wrap>
                     <v-flex d-flex md8>
-
                         <v-card>
                             <v-card-text>
+
                                 <v-form v-model="isValid" ref="form" lazy-validation>
                                     <v-text-field
                                         label="Name"
@@ -75,49 +75,31 @@
                                     </v-layout>
 
 
-                                    <b-field :addons="false" grouped>
-                                        <b-field :addons="false">
-                                            <div class="label">Countries of origin</div>
-                                            <div class="columns">
-                                                <div class="column is-narrow">
-                                                    <select-tag
-                                                            :id="0"
-                                                            :value="newHops.country[0]"
-                                                            :label="getFlagNameByCode(newHops.country[0])"
-                                                            :items="flagsProcessed"
-                                                            :itemsMap="countryItemMap"
-                                                            @remove="removeFlag"
-                                                            @select="selectFlag"
-                                                    ></select-tag>
-                                                </div>
-
-                                                <div class="column is-narrow" v-if="newHops.country[0]">
-                                                    <select-tag
-                                                            :id="1"
-                                                            :value="newHops.country[1]"
-                                                            :label="getFlagNameByCode(newHops.country[1])"
-                                                            :items="flagsProcessed"
-                                                            :itemsMap="countryItemMap"
-                                                            @remove="removeFlag"
-                                                            @select="selectFlag"
-                                                    ></select-tag>
-                                                </div>
-
-                                                <div class="column is-narrow" v-if="newHops.country[1]">
-                                                    <select-tag
-                                                            :id="2"
-                                                            :value="newHops.country[2]"
-                                                            :label="getFlagNameByCode(newHops.country[2])"
-                                                            :items="flagsProcessed"
-                                                            :itemsMap="countryItemMap"
-                                                            @remove="removeFlag"
-                                                            @select="selectFlag"
-                                                    ></select-tag>
-                                                </div>
-                                            </div>
-                                        </b-field>
-                                    </b-field>
-
+                                    <v-select
+                                        label="Countries of origin"
+                                        chips
+                                        multiple
+                                        :items="flagsProcessed"
+                                        appendIcon=""
+                                        item-text="name"
+                                        item-value="code"
+                                        v-model="newHops.country"
+                                        autocomplete
+                                        maxHeight="auto"
+                                    >
+                                        <template slot="selection" scope="data">
+                                            <v-chip
+                                                close
+                                                @input="removeFlag(data.item.code)"
+                                                :selected="data.selected"
+                                            >
+                                                <v-avatar class="secondary">
+                                                    {{ data.item.code.toUpperCase() }}
+                                                </v-avatar>
+                                                {{ data.item.name }}
+                                            </v-chip>
+                                        </template>
+                                    </v-select>
 
                                     <label class="body-2">Acid, %</label>
                                     <v-layout row wrap>
@@ -183,21 +165,20 @@
                                             </v-btn>
                                         </v-flex>
                                     </v-layout>
-
                                 </v-form>
+
                             </v-card-text>
                         </v-card>
-
                     </v-flex>
 
                     <v-flex d-flex md4>
-
                         <v-card class="grey lighten-4">
                             <v-card-text>
+
                                 <pre><code class="d-block">{{ JSON.stringify(transformHops(newHops), null, 2) }}</code></pre>
+
                             </v-card-text>
                         </v-card>
-
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -361,18 +342,7 @@
             },
 
             flagsProcessed: function () {
-                const flagsSelected = this.newHops.country;
-                const isFlagSelected = flag => {
-                    return flagsSelected.indexOf(flag.code) > -1;
-                };
-
-                return this.flags
-                    .slice(0)
-                    .map(flag => (
-                        Object.assign({}, flag, {
-                            isSelected: isFlagSelected(flag)
-                        })
-                    ));
+                return this.flags.slice(0);
             },
 
             hops: function () {
@@ -586,34 +556,8 @@
                 this.hideDefaultPropsNotification();
             },
 
-            removeFlag: function (idx) {
-                const updatedFlags = this.newHops.country.slice(0);
-
-                updatedFlags[idx] = null;
-                updatedFlags.sort((a, b) => {
-                    if (a === null) return 1;
-                    if (b === null) return -1;
-                });
-
-                this.newHops.country = updatedFlags;
-            },
-
-            selectFlag: function (value, idx) {
-                if (!value) return;
-
-                const updatedFlags = this.newHops.country.slice(0);
-
-                updatedFlags[idx] = value;
-
-                this.newHops.country = updatedFlags;
-            },
-
-            getFlagNameByCode: function (code) {
-                const flag = _find(this.flags, { code });
-
-                if (flag) {
-                    return flag['name'];
-                }
+            removeFlag: function (flag) {
+                this.newHops.country = _without(this.newHops.country.slice(0), flag);
             },
 
             removeAlias: function (value) {

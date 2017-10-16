@@ -4,7 +4,7 @@ export default {
 
     usage: 'AB',
 
-    country: [null, null, null],
+    country: [],
 
     shelfLife: 0,
 
