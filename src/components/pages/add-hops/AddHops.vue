@@ -7,9 +7,7 @@
                 <v-icon left>lock_open</v-icon>
                 Authorize
             </v-btn>
-
-            to add hops or
-
+            <span>to add hops or</span>
             <v-btn to="/" exact>Go to Catalogue</v-btn>
         </v-alert>
 
@@ -254,7 +252,6 @@
     import db from '../../../firebase';
 
     import CatalogueItem from '../../catalogue-item';
-    import SelectTag from '../../select-tag';
 
     import catalogueTableHeadData from '../../catalogue-table-head/data';
 
@@ -280,8 +277,7 @@
         }),
 
         components: {
-            'catalogue-item': CatalogueItem,
-            'select-tag': SelectTag
+            'catalogue-item': CatalogueItem
         },
 
         props: {
