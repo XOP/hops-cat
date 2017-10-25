@@ -16,7 +16,7 @@
                 <v-flex md6 v-if="isAuthenticated">
                     <v-card>
                         <v-card-text>
-                            <v-form v-model="isValid" ref="form" lazy-validation>
+                            <v-form v-model="isValid" ref="form">
                                 <v-text-field
                                     label="Name"
                                     v-model.trim="newStyle.name"
@@ -338,12 +338,12 @@
             removeStyle: function (dbStyle) {
                 if (this.isDebugMode) return;
 
-                const styleKey = dbStyle['.key'];
+                const key = dbStyle['.key'];
 
-                this.hiddenKeys.push(styleKey);
+                this.hiddenKeys.push(key);
 
                 const removeTimeout = setTimeout(() => {
-                    this.$firebaseRefs.dbStyles.child(styleKey).remove();
+                    this.$firebaseRefs.dbStyles.child(key).remove();
                 }, DURATION.NOTIFICATION_LONG);
 
                 this.showNotification({
@@ -352,7 +352,7 @@
                     btnColor: 'warning',
                     timeout: DURATION.NOTIFICATION_LONG,
                     onAction: () => {
-                        this.hiddenKeys = _without(this.hiddenKeys, styleKey);
+                        this.hiddenKeys = _without(this.hiddenKeys, key);
                         clearTimeout(removeTimeout);
                     }
                 });

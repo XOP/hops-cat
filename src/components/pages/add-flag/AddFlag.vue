@@ -16,7 +16,7 @@
                 <v-flex md6 v-if="isAuthenticated">
                     <v-card>
                         <v-card-text>
-                            <v-form v-model="isValid" ref="form" lazy-validation>
+                            <v-form v-model="isValid" ref="form">
                                 <v-text-field
                                     label="Code"
                                     v-model="newFlag.code"

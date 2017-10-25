@@ -20,7 +20,7 @@
                         <v-card>
                             <v-card-text>
 
-                                <v-form v-model="isValid" ref="form" lazy-validation>
+                                <v-form v-model="isValid" ref="form">
                                     <v-text-field
                                         label="Name"
                                         v-model.trim="newHops.name"
@@ -73,7 +73,6 @@
                                             ></v-select>
                                         </v-flex>
                                     </v-layout>
-
 
                                     <v-select
                                         label="Countries of origin"
@@ -141,8 +140,12 @@
                                     </v-layout>
 
                                     <v-alert :value="true" color="info" class="my-2" dismissible v-model="isDefaultPropsNotification">
-                                        Some fields were changed to new hops defaults
-                                        <!--@click="hideDefaultPropsNotification"-->
+                                        <div>
+                                            Some fields were changed to new hops defaults
+                                        </div>
+                                        <v-btn color="secondary" outline @click="hideDefaultPropsNotification" class="ml-0">
+                                            Don't show again
+                                        </v-btn>
                                     </v-alert>
 
                                     <v-layout row wrap text-xs-center text-md-left>
@@ -218,6 +221,19 @@
             </v-data-table>
 
         </div>
+
+        <v-snackbar
+            :timeout="notification.timeout"
+            v-model="notification.show"
+            top
+        >
+            <span>
+                {{ notification.text }}
+            </span>
+            <v-btn dark :color="notification.btnColor" flat @click.native="notification.onAction">
+                {{ notification.btnText }}
+            </v-btn>
+        </v-snackbar>
 
     </section>
 </template>
@@ -320,12 +336,23 @@
                     { value: 7, text: '7 - Great' },
                     { value: 8, text: '8' },
                     { value: 9, text: '9 - Exceptional' }
-                ]
+                ],
+
+                notification: {
+                    show: false
+                },
+
+                notificationDefaults: {
+                    text: '',
+                    btnText: '',
+                    onAction: () => this.notification.show = false,
+                    timeout: DURATION.NOTIFICATION_NORMAL
+                }
             };
         },
 
         beforeMount: function () {
-            this.clearFields();
+            this.clearSelected();
         },
 
         beforeDestroy: function () {
@@ -447,31 +474,31 @@
 
                 if (!currentHops) {
                     this.$firebaseRefs.dbHops.push(transformedHops).then(() => {
-                        this.$snackbar.open({
-                            message: `Hops ${newHopsName} successfully added!`,
-                            actionText: 'OK',
-                            position: 'is-top',
-                            duration: DURATION.NOTIFICATION_SHORT
+                        this.showNotification({
+                            text: `Hops ${newHopsName} successfully added!`,
+                            btnText: 'OK',
+                            timeout: DURATION.NOTIFICATION_SHORT,
+                            btnColor: 'success'
                         });
 
                         this.clearFields();
                     });
                 } else {
-                    this.$snackbar.open({
-                        message: `Confirm new data for ${newHopsName}!`,
-                        actionText: 'Override',
-                        position: 'is-top',
-                        type: 'is-warning',
-                        duration: DURATION.NOTIFICATION_NORMAL,
+                    this.showNotification({
+                        text: `Confirm new data for ${newHopsName}!`,
+                        btnText: 'Override',
+                        btnColor: 'warning',
                         onAction: () => {
+                            this.notification.show = false;
+
                             this.$firebaseRefs.dbHops
                                 .child(currentKey)
                                 .set({...transformedHops}).then(() => {
-                                this.$snackbar.open({
-                                    message: `Hops ${newHopsName} successfully updated!`,
-                                    actionText: 'OK',
-                                    position: 'is-top',
-                                    duration: DURATION.NOTIFICATION_SHORT
+                                this.showNotification({
+                                    text: `Hops ${newHopsName} successfully updated!`,
+                                    btnText: 'OK',
+                                    timeout: DURATION.NOTIFICATION_SHORT,
+                                    btnColor: 'success'
                                 });
 
                                 this.clearFields();
@@ -518,19 +545,18 @@
                     this.$firebaseRefs.dbHops.child(key).remove();
                 }, DURATION.NOTIFICATION_LONG);
 
-                this.clearFields();
-
-                this.$snackbar.open({
-                    message: `Deleted successfully`,
-                    type: 'is-warning',
-                    position: 'is-top',
-                    duration: DURATION.NOTIFICATION_LONG,
-                    actionText: 'Undo',
+                this.showNotification({
+                    text: `Deleted successfully`,
+                    btnText: 'Undo',
+                    btnColor: 'warning',
+                    timeout: DURATION.NOTIFICATION_LONG,
                     onAction: () => {
                         this.hiddenKeys = _without(this.hiddenKeys, key);
                         clearTimeout(removeTimeout);
                     }
                 });
+
+                this.clearFields();
             },
 
             transformHops: hops => {
@@ -540,17 +566,23 @@
             },
 
             throwError: function (message) {
-                this.$toast.open({
-                    duration: DURATION.NOTIFICATION_SHORT,
-                    message: message || locale.errors._default,
-                    position: 'is-top',
-                    type: 'is-danger'
-                })
+                this.showNotification({
+                    text: message || locale.errors._default,
+                    btnText: 'OK',
+                    btnColor: 'error',
+                    timeout: DURATION.NOTIFICATION_SHORT
+                });
+            },
+
+            clearSelected: function () {
+                this.selectedHops = {};
+                this.newHops = clone(hopsSchema);
             },
 
             clearFields: function () {
-                this.selectedHops = {};
-                this.newHops = clone(hopsSchema);
+                this.$refs.form.reset();
+
+                this.clearSelected();
 
                 // remove notifications and errors
                 this.hideDefaultPropsNotification();
@@ -566,6 +598,14 @@
 
             hideDefaultPropsNotification: function () {
                 this.isDefaultPropsNotification = false;
+            },
+
+            showNotification: function (props) {
+                this.notification = {
+                    ...this.notificationDefaults,
+                    ...props,
+                    show: true
+                };
             }
         }
     };
