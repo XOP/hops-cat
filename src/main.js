@@ -2,22 +2,23 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import VueFire from 'vuefire';
-import Buefy from 'buefy';
+
+import Vuetify from 'vuetify';
 
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import 'buefy/lib/buefy.css';
-import './assets/styles/font-awesome.min.css';
+// vuetify styles and icons
+import 'vuetify/dist/vuetify.min.css';
+import './assets/styles/material-icons.css';
+
 import './main.scss';
 
 Vue.config.productionTip = false;
 
 Vue.use(VueFire);
-Vue.use(Buefy, {
-    defaultIconPack: 'fa'
-});
+Vue.use(Vuetify);
 
 /* eslint-disable no-new */
 new Vue({

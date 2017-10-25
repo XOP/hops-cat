@@ -1,21 +1,27 @@
 <template>
-    <div class="app">
+    <v-app>
         <app-header></app-header>
 
-        <main role="main" :class="mainClassname">
-            <router-view></router-view>
+        <v-alert class="ma-0 py-2" v-model="isDebugMode" color="warning" icon="bug_report">
+            Debug mode
+        </v-alert>
+
+        <main>
+            <v-content fluid>
+                <v-container fluid>
+                    <router-view></router-view>
+                </v-container>
+            </v-content>
         </main>
 
         <app-footer></app-footer>
-    </div>
+    </v-app>
 </template>
 
 <script>
     import { firebaseApp } from './firebase';
 
     import { mapActions, mapState } from 'vuex';
-
-    import cls from 'classnames';
 
     import Header from './Header.vue';
     import Footer from './Footer.vue';
@@ -39,15 +45,11 @@
         },
 
         computed: {
+            ...mapState('debug', ['isDebugMode']),
+
             ...mapState('helpers', [
                 'fitScreen'
-            ]),
-
-            mainClassname: function () {
-                return cls('main section', {
-                    'is-fit-screen': this.fitScreen
-                });
-            }
+            ])
         },
 
         methods: {
@@ -60,22 +62,4 @@
 </script>
 
 <style scoped>
-    .app {
-        display: flex;
-        flex-flow: column;
-
-        height: 100%;
-    }
-
-    header {
-        flex: 0 1 auto;
-    }
-
-    main {
-        flex: 1 0 auto;
-    }
-
-    footer {
-        flex: 0 1 auto;
-    }
 </style>

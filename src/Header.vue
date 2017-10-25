@@ -1,29 +1,62 @@
 <template>
-    <header class="header">
-        <section class="hero is-success is-bold">
-            <navi></navi>
-        </section>
+    <v-toolbar app dark dense class="green darken-1">
+        <v-toolbar-title>
+            <router-link to="/" tag="span" class="u-cur-pointer">
+                <span class="image">
+                <img src="./assets/images/icon.png" alt="Hops Cat Logo"/>
+                </span>
+                <span>Hops Cat</span>
+            </router-link>
+        </v-toolbar-title>
 
-        <b-notification v-if="isDebugMode" type="is-warning" :closable="false">
-            Debug mode
-        </b-notification>
-    </header>
+        <v-spacer></v-spacer>
+
+        <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn flat to="/" exact>
+                Catalogue
+            </v-btn>
+            <v-btn flat to="/add-hops">
+                Add Hops
+            </v-btn>
+        </v-toolbar-items>
+
+        <v-btn icon to="/auth">
+            <v-icon v-if="!isAuthenticated">account_box</v-icon>
+            <v-icon v-if="isAuthenticated">lock_open</v-icon>
+        </v-btn>
+
+        <debug-toggle></debug-toggle>
+    </v-toolbar>
 </template>
 
 <script>
     import { mapState } from 'vuex';
 
-    import Navi from './components/navi';
+    import Debug from './components/debug';
 
     export default {
         name: 'app-header',
 
         computed: {
-            ...mapState('debug', ['isDebugMode'])
+            ...mapState('user', ['isAuthenticated'])
         },
 
         components: {
-            navi: Navi
+            debugToggle: Debug
         }
     };
 </script>
+
+<style scoped>
+    .image {
+        display: inline-flex;
+        width: 16px;
+        height: 16px;
+    }
+
+    .image img {
+        filter: invert(100%);
+        width: 100%;
+        height: 100%;
+    }
+</style>

@@ -1,86 +1,129 @@
 <template>
     <section>
-        <h1 class="title is-3">Add new Style</h1>
+        <h1 class="display-1">Countries</h1>
 
-        <b-notification v-if="!isAuthenticated" type="is-info" :closable="false" :hasIcon="true">
-            <router-link to="/auth">Authorization</router-link> required to edit database
-        </b-notification>
+        <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
+            <v-btn to="/auth">
+                <v-icon left>lock_open</v-icon>
+                Authorize
+            </v-btn>
 
-        <div class="columns">
-            <div v-if="isAuthenticated" class="column is-half">
+            to add or edit Styles
+        </v-alert>
 
-                <form>
-                    <b-field grouped>
-                        <b-field label="Name" expanded>
-                            <b-input placeholder="Double IPA" name="name" required v-model="newStyle.name"></b-input>
-                        </b-field>
-                        <b-field label="Category" expanded>
-                            <b-input placeholder="Strong American Ale" name="category" required v-model="newStyle.category"></b-input>
-                        </b-field>
-                        <b-field label="Family" expanded>
-                            <b-input placeholder="IPA" name="family" required v-model="newStyle.family"></b-input>
-                        </b-field>
-                    </b-field>
+        <v-container fluid grid-list-lg class="pa-0 mb-3">
+            <v-layout row wrap>
+                <v-flex md6 v-if="isAuthenticated">
+                    <v-card>
+                        <v-card-text>
+                            <v-form v-model="isValid" ref="form">
+                                <v-text-field
+                                    label="Name"
+                                    v-model.trim="newStyle.name"
+                                    required
+                                    placeholder="Double IPA"
+                                    :rules="nameRules"
+                                >
+                                </v-text-field>
 
-                    <b-field grouped>
-                        <b-field label="Code" expanded>
-                            <b-input placeholder="22" name="code" required v-model="newStyle.code"></b-input>
-                        </b-field>
-                        <b-field label="Letter Code" expanded>
-                            <b-input placeholder="A" name="sub_code" v-model="newStyle.sub_code"></b-input>
-                        </b-field>
+                                <v-text-field
+                                    label="Category"
+                                    v-model.trim="newStyle.category"
+                                    required
+                                    placeholder="Strong American Ale"
+                                    :rules="categoryRules"
+                                >
+                                </v-text-field>
 
-                    </b-field>
+                                <v-text-field
+                                    label="Family"
+                                    v-model.trim="newStyle.family"
+                                    required
+                                    placeholder="IPA"
+                                    :rules="familyRules"
+                                >
+                                </v-text-field>
 
-                    <b-field grouped>
-                        <div class="control is-expanded">
-                            <button class="button is-primary is-fullwidth" @click.prevent="addStyle">
-                                <b-icon :icon="isStyleUpdated ? 'wrench' : 'plus'"></b-icon>
-                                <span v-text="isStyleUpdated ? 'Update' : 'Add'"></span>
-                            </button>
-                        </div>
-                        <div class="control">
-                            <button class="button is-fullwidth" @click.prevent="clearFields">
-                                <b-icon icon="eraser"></b-icon>
-                                <span>Clear</span>
-                            </button>
-                        </div>
-                    </b-field>
-                </form>
+                                <v-layout row wrap>
+                                    <v-flex>
+                                        <v-text-field
+                                            label="Code"
+                                            v-model.number="newStyle.code"
+                                            type="number"
+                                            required
+                                            placeholder="22"
+                                            :rules="codeRules"
+                                        >
+                                        </v-text-field>
+                                    </v-flex>
+                                    <v-flex>
+                                        <v-select
+                                            v-bind:items="['A', 'B', 'C', 'D', 'E']"
+                                            v-model="newStyle.sub_code"
+                                            label="Letter Code"
+                                            single-line
+                                            bottom
+                                        ></v-select>
+                                    </v-flex>
+                                </v-layout>
 
-            </div>
+                                <div>
+                                    <v-btn color="primary" @click="addStyle" :disabled="!isValid">
+                                        <v-icon left v-text="isStyleUpdated ? 'mode_edit' : 'add'"></v-icon>
+                                        <span v-text="isStyleUpdated ? 'Update' : 'Add'"></span>
+                                    </v-btn>
 
-            <div :class="`column ${isAuthenticated ? 'is-half' : ''}`">
-                <div class="is-auto-overflow-vertical">
+                                    <v-btn color="secondary" @click="clearFields">
+                                        <v-icon left>clear_all</v-icon>
+                                        <span>Clear</span>
+                                    </v-btn>
+                                </div>
+                            </v-form>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
 
-                    <table class="add-style__table table is-narrow">
-                        <thead>
-                        <tr>
-                            <th>Code / Group</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Family</th>
-                            <th v-if="isAuthenticated"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr @click="fillFormFields(style)" v-for="style in stylesProcessed">
-                            <td>{{ style.code }} / {{ style.sub_code }}</td>
-                            <td>{{ style.name }}</td>
-                            <td>{{ style.category }}</td>
-                            <td>{{ style.family }}</td>
-                            <td v-if="isAuthenticated">
-                                <button class="button add-style__delete" @click.stop="removeStyle(style)">
-                                    <b-icon icon="trash-o"></b-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <v-flex :md6="isAuthenticated">
+                    <v-data-table
+                        v-bind:headers="headers"
+                        class="elevation-1"
+                        :items="stylesProcessed"
+                        :pagination.sync="pagination"
+                    >
+                        <template slot="items" scope="props">
+                            <tr :active="props.item.isSelected" @click="fillFormFields(props.item)">
+                                <td>{{ props.item.code }} / {{ props.item.sub_code }}</td>
+                                <td>{{ props.item.name }}</td>
+                                <td>{{ props.item.category }}</td>
+                                <td>{{ props.item.family }}</td>
+                            </tr>
+                        </template>
+                    </v-data-table>
 
-                </div>
-            </div>
-        </div>
+                    <v-card class="elevation-1" tile v-if="isAuthenticated && selectedStyle.code">
+                        <v-card-text class="text-xs-center">
+                            <v-btn color="error" @click.stop="removeStyle(selectedStyle)">
+                                <v-icon left>delete</v-icon>
+                                <span>Remove <span>"{{ selectedStyle.name }}"</span></span>
+                            </v-btn>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
+
+        <v-snackbar
+            :timeout="notification.timeout"
+            v-model="notification.show"
+            top
+        >
+            <span>
+                {{ notification.text }}
+            </span>
+            <v-btn dark :color="notification.btnColor" flat @click.native="notification.onAction">
+                {{ notification.btnText }}
+            </v-btn>
+        </v-snackbar>
     </section>
 </template>
 
@@ -116,6 +159,20 @@
 
         data () {
             return {
+                isValid: false,
+                nameRules: [
+                    (v) => !!v || 'Name is required'
+                ],
+                categoryRules: [
+                    (v) => !!v || 'Category is required'
+                ],
+                familyRules: [
+                    (v) => !!v || 'Family is required'
+                ],
+                codeRules: [
+                    (v) => !!v || 'Code is required'
+                ],
+
                 newStyle: {
                     name: '',
                     category: '',
@@ -124,9 +181,47 @@
                     family: ''
                 },
 
+                headers: [
+                    {
+                        text: 'Code / Group',
+                        align: 'left',
+                        value: 'code'
+                    },
+                    {
+                        text: 'Name',
+                        align: 'left',
+                        value: 'name'
+                    },
+                    {
+                        text: 'Category',
+                        align: 'left',
+                        value: 'category'
+                    },
+                    {
+                        text: 'Family',
+                        align: 'left',
+                        value: 'family'
+                    }
+                ],
+
+                pagination: {
+                    rowsPerPage: 10
+                },
+
                 selectedStyle: {},
 
-                hiddenKeys: []
+                hiddenKeys: [],
+
+                notification: {
+                    show: false
+                },
+
+                notificationDefaults: {
+                    text: '',
+                    btnText: '',
+                    onAction: () => this.notification.show = false,
+                    timeout: DURATION.NOTIFICATION_NORMAL
+                }
             };
         },
 
@@ -170,9 +265,18 @@
             },
 
             stylesProcessed: function () {
+                const selectedStyle = this.selectedStyle;
+
                 return this.styles
                     .slice(0)
                     .reverse()
+                    .map(style => (
+                        Object.assign({}, style, {
+                            isSelected:
+                                selectedStyle.code === style.code &&
+                                selectedStyle.sub_code === style.sub_code
+                        })
+                    ))
                     .filter(i => this.hiddenKeys.indexOf(i['.key']) === -1);
             }
         },
@@ -197,34 +301,34 @@
 
                 if (!_find(this.styles, {code: newStyle.code, sub_code: newStyle.sub_code})) {
                     this.$firebaseRefs.dbStyles.push(newStyle).then(() => {
-                        this.$snackbar.open({
-                            message: `Style ${newStyleCode} successfully added!`,
-                            actionText: 'OK',
-                            position: 'is-top',
-                            duration: DURATION.NOTIFICATION_SHORT
+                        this.showNotification({
+                            text: `Style ${newStyleCode} successfully added!`,
+                            btnText: 'OK',
+                            timeout: DURATION.NOTIFICATION_SHORT,
+                            btnColor: 'success'
                         });
 
                         this.clearFields();
                     });
                 } else {
-                    this.$snackbar.open({
-                        message: `Style ${newStyleCode} already exists!`,
-                        actionText: 'Override',
-                        position: 'is-top',
-                        type: 'is-warning',
-                        duration: DURATION.NOTIFICATION_NORMAL,
+                    this.showNotification({
+                        text: `Style ${newStyleCode} already exists!`,
+                        btnText: 'Override',
+                        btnColor: 'warning',
                         onAction: () => {
+                            this.notification.show = false;
+
                             this.$firebaseRefs.dbStyles
                                 .child(this.selectedStyle['.key'])
                                 .set({...newStyle}).then(() => {
-                                    this.$snackbar.open({
-                                        message: `Style ${newStyleCode} successfully updated!`,
-                                        actionText: 'OK',
-                                        position: 'is-top',
-                                        duration: DURATION.NOTIFICATION_SHORT
-                                    });
+                                this.showNotification({
+                                    text: `Style ${newStyleCode} successfully updated!`,
+                                    btnText: 'OK',
+                                    timeout: DURATION.NOTIFICATION_SHORT,
+                                    btnColor: 'success'
+                                });
 
-                                    this.clearFields();
+                                this.clearFields();
                             });
                         }
                     });
@@ -234,25 +338,26 @@
             removeStyle: function (dbStyle) {
                 if (this.isDebugMode) return;
 
-                const styleKey = dbStyle['.key'];
+                const key = dbStyle['.key'];
 
-                this.hiddenKeys.push(styleKey);
+                this.hiddenKeys.push(key);
 
                 const removeTimeout = setTimeout(() => {
-                    this.$firebaseRefs.dbStyles.child(styleKey).remove();
+                    this.$firebaseRefs.dbStyles.child(key).remove();
                 }, DURATION.NOTIFICATION_LONG);
 
-                this.$snackbar.open({
-                    message: `Deleted successfully`,
-                    type: 'is-warning',
-                    position: 'is-top',
-                    duration: DURATION.NOTIFICATION_LONG,
-                    actionText: 'Undo',
+                this.showNotification({
+                    text: `Deleted successfully`,
+                    btnText: 'Undo',
+                    btnColor: 'warning',
+                    timeout: DURATION.NOTIFICATION_LONG,
                     onAction: () => {
-                        this.hiddenKeys = _without(this.hiddenKeys, styleKey);
+                        this.hiddenKeys = _without(this.hiddenKeys, key);
                         clearTimeout(removeTimeout);
                     }
                 });
+
+                this.clearFields();
             },
 
             selectStyle: function (dbStyle) {
@@ -266,11 +371,7 @@
             clearFields: function () {
                 this.clearSelected();
 
-                this.newStyle.name = '';
-                this.newStyle.category = '';
-                this.newStyle.code = '';
-                this.newStyle.sub_code = '';
-                this.newStyle.family = '';
+                this.$refs.form.reset();
             },
 
             fillFormFields: function (dbStyle) {
@@ -281,6 +382,14 @@
                 this.newStyle.code = dbStyle.code;
                 this.newStyle.sub_code = dbStyle.sub_code;
                 this.newStyle.family = dbStyle.family;
+            },
+
+            showNotification: function (props) {
+                this.notification = {
+                    ...this.notificationDefaults,
+                    ...props,
+                    show: true
+                };
             }
         }
     };

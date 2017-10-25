@@ -1,52 +1,63 @@
 <template>
     <section>
-        <h1 class="title is-3">Catalogue</h1>
+        <h1 class="display-1">
+            Catalogue
+            <v-btn v-if="isAuthenticated" to="/add-hops" class="amber lighten-1">Add Hops</v-btn>
+        </h1>
 
-        <b-notification v-if="isAuthenticated" type="is-info" :closable="false">
-            <router-link to="/add-hops">Add Hops here</router-link>
-        </b-notification>
+        <v-card class="mb-2 elevation-1">
+            <v-card-title class="py-1">
+                Apply sorting:
 
-        <section>
-            <div class="box">
-                Sort:
-
-                <button
-                    class="button is-small is-warning"
-                    @click="setDefaultOrder"
-                >
-                    Reset
-                </button>
-
-                <button
-                    class="button is-small is-info"
+                <v-btn
+                    icon
                     @click="toggleSortingOrderAz"
                 >
-                    <b-icon
-                        size="is-small"
-                        :icon="sortingOrderAZ > 0 ? 'sort-alpha-asc' : 'sort-alpha-desc'">
-                    </b-icon>
-                </button>
-            </div>
+                    <v-icon>sort_by_alpha</v-icon>
+                </v-btn>
 
-            <table class="catalogue__table table is-fullwidth is-narrow">
-                <catalogue-table-head />
-                <tbody>
-                    <catalogue-item
-                        v-for="(item, index) in itemsProcessed"
-                        :key="item.key"
-                        :index="index + 1"
-                        :name="item.name"
-                        :country="item.country"
-                        :usage="item.usage"
-                        :shelfLife="item.shelfLife"
-                        :alpha="item.alpha"
-                        :beta="item.beta"
-                    >
-                    </catalogue-item>
-                </tbody>
-            </table>
-        </section>
+                <v-btn
+                    v-if="!defaultOrder"
+                    icon
+                    @click="setDefaultOrder"
+                >
+                    <v-icon>restore</v-icon>
+                </v-btn>
+            </v-card-title>
+        </v-card>
+
+        <v-data-table
+            class="elevation-1"
+            hideActions
+            v-bind:headers="headers"
+            :items="itemsProcessed"
+        >
+            <template slot="headerCell" scope="props">
+                <v-tooltip top v-if="props.header.hint">
+                    <span slot="activator" class="u-t-pseudo">{{ props.header.text }}</span>
+                    <span>{{ props.header.hint }}</span>
+                </v-tooltip>
+                <span v-else>
+                    {{ props.header.text }}
+                </span>
+            </template>
+            <template slot="items" scope="props">
+                <catalogue-item
+                    :key="props.item.key"
+                    :name="props.item.name"
+                    :alias="props.item.alias"
+                    :country="props.item.country"
+                    :usage="props.item.usage"
+                    :shelfLife="props.item.shelfLife"
+                    :alpha="props.item.alpha"
+                    :beta="props.item.beta"
+                    :co="props.item.co"
+                >
+                </catalogue-item>
+            </template>
+        </v-data-table>
     </section>
+
 </template>
 
 <script>
@@ -55,7 +66,8 @@
     import db from '../../../firebase';
 
     import CatalogueItem from '../../catalogue-item';
-    import CatalogueTableHead from '../../catalogue-table-head';
+
+    import catalogueTableHeadData from '../../catalogue-table-head/data';
 
     import {
         Items as mockHops
@@ -73,8 +85,7 @@
         }),
 
         components: {
-            'catalogue-item': CatalogueItem,
-            'catalogue-table-head': CatalogueTableHead
+            'catalogue-item': CatalogueItem
         },
 
         data () {
@@ -89,6 +100,8 @@
         computed: {
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
+
+            headers: catalogueTableHeadData(locale),
 
             items: function () {
                 return this.isDebugMode ? mockHops : this.dbHops;

@@ -1,244 +1,237 @@
 <template>
     <section>
-        <h1 class="title is-3">Add new Hops</h1>
+        <h1 class="display-1">Add new Hops</h1>
 
-        <b-notification v-if="!isAuthenticated" type="is-info" :closable="false" :hasIcon="true">
-            <router-link to="/auth">Authorization</router-link> required to edit database
-
-            <hr>
-
-            <router-link to="/">Go to Hops Catalogue</router-link>
-        </b-notification>
+        <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
+            <v-btn to="/auth">
+                <v-icon left>lock_open</v-icon>
+                Authorize
+            </v-btn>
+            <span>to add hops or</span>
+            <v-btn to="/" exact>Go to Catalogue</v-btn>
+        </v-alert>
 
         <div v-if="isAuthenticated">
+            <v-container fluid grid-list-lg class="pa-0 mb-3">
+                <v-layout row wrap>
+                    <v-flex d-flex md8>
+                        <v-card>
+                            <v-card-text>
 
-            <div class="columns">
-                <div class="column is-8-desktop">
+                                <v-form v-model="isValid" ref="form">
+                                    <v-text-field
+                                        label="Name"
+                                        v-model.trim="newHops.name"
+                                        required
+                                        placeholder="Cascade"
+                                        :rules="nameRules"
+                                    >
+                                    </v-text-field>
 
-                    <section class="add-hops__form">
-                        <form>
-                            <b-field grouped>
-                                <b-field label="Name" expanded>
-                                    <b-input placeholder="Cascade" name="name" required v-model.trim="newHops.name"></b-input>
-                                </b-field>
+                                    <v-select
+                                        label="Alias"
+                                        tags
+                                        chips
+                                        appendIcon=""
+                                        v-model="newHops.alias"
+                                        hint="Duplicated values are not allowed"
+                                    >
+                                        <template slot="selection" scope="data">
+                                            <v-chip
+                                                close
+                                                @input="removeAlias(data.item)"
+                                                :selected="data.selected"
+                                            >
+                                                {{ data.item }}
+                                            </v-chip>
+                                        </template>
+                                    </v-select>
 
-                                <b-field label="Usage">
-                                    <b-select expanded v-model="newHops.usage">
-                                        <option value="AB">Dual</option>
-                                        <option value="A">Aroma</option>
-                                        <option value="B">Bitter</option>
-                                    </b-select>
-                                </b-field>
+                                    <v-layout row wrap>
+                                        <v-flex md6>
+                                            <v-select
+                                                :items="usageValues"
+                                                v-model="newHops.usage"
+                                                label="Usage"
+                                                hint="Usage"
+                                                persistentHint
+                                                single-line
+                                                bottom
+                                            ></v-select>
+                                        </v-flex>
+                                        <v-flex md6>
+                                            <v-select
+                                                :items="shelfLifeValues"
+                                                v-model="newHops.shelfLife"
+                                                hint="Shelf life"
+                                                persistentHint
+                                                placeholder="NA"
+                                                single-line
+                                                bottom
+                                            ></v-select>
+                                        </v-flex>
+                                    </v-layout>
 
-                                <b-field :addons="false">
-                                    <div class="label">Alias</div>
-                                    <div class="columns">
-                                        <div class="column is-narrow">
-                                            <b-input placeholder="X133" name="alias" value=""
-                                                     @keydown.native.enter.prevent="handleAddAlias"
-                                                     ref="input-alias"
-                                            ></b-input>
+                                    <v-select
+                                        label="Countries of origin"
+                                        chips
+                                        multiple
+                                        :items="flagsProcessed"
+                                        appendIcon=""
+                                        item-text="name"
+                                        item-value="code"
+                                        v-model="newHops.country"
+                                        autocomplete
+                                        maxHeight="auto"
+                                    >
+                                        <template slot="selection" scope="data">
+                                            <v-chip
+                                                close
+                                                @input="removeFlag(data.item.code)"
+                                                :selected="data.selected"
+                                            >
+                                                <v-avatar class="secondary">
+                                                    {{ data.item.code.toUpperCase() }}
+                                                </v-avatar>
+                                                {{ data.item.name }}
+                                            </v-chip>
+                                        </template>
+                                    </v-select>
+
+                                    <label class="body-2">Acid, %</label>
+                                    <v-layout row wrap>
+                                        <v-flex md4>
+                                            <label class="body-1">Alpha</label>
+                                            <v-layout column nowrap>
+                                                <v-flex>
+                                                    <v-text-field :rules="acidRules" label="min" required v-model.number="newHops.alpha.min" type="number"></v-text-field>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-text-field :rules="acidRules" label="max" required v-model.number="newHops.alpha.max" type="number"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+
+                                        <v-flex md4>
+                                            <label class="body-1">Beta</label>
+                                            <v-layout column nowrap>
+                                                <v-flex>
+                                                    <v-text-field label="min" v-model.number="newHops.beta.min" type="number"></v-text-field>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-text-field label="max" v-model.number="newHops.beta.max" type="number"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+
+                                        <v-flex md4>
+                                            <label class="body-1">Co-Humulone</label>
+                                            <v-layout column nowrap>
+                                                <v-flex>
+                                                    <v-text-field label="min" v-model.number="newHops.co.min" type="number"></v-text-field>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-text-field label="max" v-model.number="newHops.co.max" type="number"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+
+                                    <v-alert :value="true" color="info" class="my-2" dismissible v-model="isDefaultPropsNotification">
+                                        <div>
+                                            Some fields were changed to new hops defaults
                                         </div>
-                                        <div class="column">
-                                            <b-field grouped>
-                                                <div
-                                                    class="control"
-                                                    v-for="(alias, index) in newHops.alias"
-                                                >
-                                                    <b-tag
-                                                        size="is-medium"
-                                                        attached
-                                                        closable
-                                                        @close="removeAlias(alias)"
-                                                        :key="index"
-                                                    >
-                                                        {{alias}}
-                                                    </b-tag>
-                                                </div>
-                                            </b-field>
-                                        </div>
-                                    </div>
-                                </b-field>
-                            </b-field>
+                                        <v-btn color="secondary" outline @click="hideDefaultPropsNotification" class="ml-0">
+                                            Don't show again
+                                        </v-btn>
+                                    </v-alert>
 
-                            <b-field :addons="false" grouped>
+                                    <v-layout row wrap text-xs-center text-md-left>
+                                        <v-flex>
+                                            <v-btn color="primary" @click="addHops" :disabled="!isValid">
+                                                <v-icon left v-text="isHopsUpdated ? 'mode_edit' : 'add'"></v-icon>
+                                                <span v-text="isHopsUpdated ? 'Update' : 'Add'"></span>
+                                            </v-btn>
 
-                                <b-field :addons="false">
-                                    <b-field label="Shelf life">
-                                        <b-input placeholder="0 - 10" type="number" name="shelfLife" v-model.number="newHops.shelfLife"></b-input>
-                                    </b-field>
-                                </b-field>
+                                            <v-btn color="secondary" @click="clearFields">
+                                                <v-icon left v-text="isHopsSelected ? 'select_all' : 'clear_all'"></v-icon>
+                                                <span v-text="isHopsSelected ? 'Deselect' : 'Clear Fields'"></span>
+                                            </v-btn>
+                                        </v-flex>
 
-                                <b-field :addons="false">
-                                    <div class="label">Countries of origin</div>
-                                    <div class="columns">
-                                        <div class="column is-narrow">
-                                            <select-tag
-                                                :id="0"
-                                                :value="newHops.country[0]"
-                                                :label="getFlagNameByCode(newHops.country[0])"
-                                                :items="flagsProcessed"
-                                                :itemsMap="countryItemMap"
-                                                @remove="removeFlag"
-                                                @select="selectFlag"
-                                            ></select-tag>
-                                        </div>
+                                        <v-flex text-md-right>
+                                            <v-btn color="error" @click="removeHops" :disabled="!isHopsSelected">
+                                                <v-icon left>delete</v-icon>
+                                                <span>Delete</span>
+                                            </v-btn>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-form>
 
-                                        <div class="column is-narrow" v-if="newHops.country[0]">
-                                            <select-tag
-                                                :id="1"
-                                                :value="newHops.country[1]"
-                                                :label="getFlagNameByCode(newHops.country[1])"
-                                                :items="flagsProcessed"
-                                                :itemsMap="countryItemMap"
-                                                @remove="removeFlag"
-                                                @select="selectFlag"
-                                            ></select-tag>
-                                        </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-flex>
 
-                                        <div class="column is-narrow" v-if="newHops.country[1]">
-                                            <select-tag
-                                                :id="2"
-                                                :value="newHops.country[2]"
-                                                :label="getFlagNameByCode(newHops.country[2])"
-                                                :items="flagsProcessed"
-                                                :itemsMap="countryItemMap"
-                                                @remove="removeFlag"
-                                                @select="selectFlag"
-                                            ></select-tag>
-                                        </div>
-                                    </div>
-                                </b-field>
-                            </b-field>
+                    <v-flex d-flex md4>
+                        <v-card class="grey lighten-4">
+                            <v-card-text>
 
-                            <b-field :addons="false">
-                                <div class="label">Acid, %</div>
+                                <pre><code class="d-block">{{ JSON.stringify(transformHops(newHops), null, 2) }}</code></pre>
 
-                                <div class="columns">
+                            </v-card-text>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+            </v-container>
 
-                                    <div class="column">
-                                        <div class="label">Alpha</div>
-
-                                        <b-field :addons="false" grouped>
-                                            <b-field expanded>
-                                                <b-input placeholder="Min" type="number" name="alphaMin" required v-model.number="newHops.alpha.min"></b-input>
-                                            </b-field>
-                                            <b-field>-</b-field>
-                                            <b-field expanded>
-                                                <b-input placeholder="Max" type="number" name="alphaMax" required v-model.number="newHops.alpha.max"></b-input>
-                                            </b-field>
-                                        </b-field>
-                                    </div>
-
-                                    <div class="column">
-                                        <div class="label">Beta</div>
-
-                                        <b-field :addons="false" grouped>
-                                            <b-field expanded>
-                                                <b-input placeholder="Min" type="number" name="betaMin" v-model.number="newHops.beta.min"></b-input>
-                                            </b-field>
-                                            <b-field>-</b-field>
-                                            <b-field expanded>
-                                                <b-input placeholder="Max" type="number" name="betaMax" v-model.number="newHops.beta.max"></b-input>
-                                            </b-field>
-                                        </b-field>
-                                    </div>
-
-                                    <div class="column">
-                                        <div class="label">Co-Humulone</div>
-
-                                        <b-field :addons="false" grouped>
-                                            <b-field expanded>
-                                                <b-input placeholder="Min" type="number" name="coMin" v-model.number="newHops.co.min"></b-input>
-                                            </b-field>
-                                            <b-field>-</b-field>
-                                            <b-field expanded>
-                                                <b-input placeholder="Max" type="number" name="coMax" v-model.number="newHops.co.max"></b-input>
-                                            </b-field>
-                                        </b-field>
-                                    </div>
-
-                                </div>
-                            </b-field>
-
-                            <hr>
-
-                            <b-notification
-                                :active.sync="isDefaultPropsNotification"
-                                @click="hideDefaultPropsNotification"
-                            >
-                                Some fields were changed to new hops defaults
-                            </b-notification>
-
-                            <b-field grouped>
-                                <div class="control is-expanded">
-                                    <button class="button is-primary is-fullwidth" @click.prevent="addHops">
-                                        <span v-if="isHopsUpdated">
-                                            <b-icon icon="wrench"></b-icon>
-                                            <span>Update Hops</span>
-                                        </span>
-                                        <span v-else>
-                                            <b-icon icon="plus"></b-icon>
-                                            <span>Add Hops</span>
-                                        </span>
-                                    </button>
-                                </div>
-                                <div class="control">
-                                    <button class="button is-fullwidth" @click.prevent="clearFields">
-                                        <span v-if="isHopsSelected">
-                                            <b-icon icon="times"></b-icon>
-                                            <span>Deselect</span>
-                                        </span>
-                                        <span v-else>
-                                            <b-icon icon="eraser"></b-icon>
-                                            <span>Clear Fields</span>
-                                        </span>
-                                    </button>
-                                </div>
-                                <div class="control" v-if="isHopsSelected">
-                                    <button class="button is-fullwidth is-danger" @click.prevent="removeHops">
-                                        <b-icon icon="trash"></b-icon>
-                                        <span>Delete</span>
-                                    </button>
-                                </div>
-                            </b-field>
-
-                        </form>
-                    </section>
-
-                </div>
-                <div class="column">
-
-                    <pre><code>{{ JSON.stringify(transformHops(newHops), null, 2) }}</code></pre>
-
-                </div>
-            </div>
-
-            <section class="add-hops__section">
-                <table class="add-hops__table table is-narrow is-fullwidth is-narrow">
-                    <catalogue-table-head />
-                    <tbody>
+            <v-data-table
+                class="elevation-1"
+                hideActions
+                v-bind:headers="headers"
+                :items="hopsProcessed"
+            >
+                <template slot="headerCell" scope="props">
+                    <v-tooltip top v-if="props.header.hint">
+                        <span slot="activator" class="u-t-pseudo">{{ props.header.text }}</span>
+                        <span>{{ props.header.hint }}</span>
+                    </v-tooltip>
+                    <span v-else>
+                        {{ props.header.text }}
+                    </span>
+                </template>
+                <template slot="items" scope="props">
                     <catalogue-item
-                        v-for="(hops, index) in hopsProcessed"
-                        :key="index"
-                        :dbKey="hops['.key']"
-                        :index="index + 1"
-                        :isSelected="hops.isSelected"
-                        :name="hops.name"
-                        :alias="hops.alias"
-                        :country="hops.country"
-                        :usage="hops.usage"
-                        :shelfLife="hops.shelfLife"
-                        :alpha="hops.alpha"
-                        :beta="hops.beta"
-                        :co="hops.co"
+                        :key="props.item.key"
+                        :dbKey="props.item['.key']"
+                        :isSelected="props.item.isSelected"
+                        :name="props.item.name"
+                        :alias="props.item.alias"
+                        :country="props.item.country"
+                        :usage="props.item.usage"
+                        :shelfLife="props.item.shelfLife"
+                        :alpha="props.item.alpha"
+                        :beta="props.item.beta"
+                        :co="props.item.co"
                         :onClick="selectHops"
-                    ></catalogue-item>
-                    </tbody>
-                </table>
-            </section>
+                    >
+                    </catalogue-item>
+                </template>
+            </v-data-table>
 
         </div>
+
+        <v-snackbar
+            :timeout="notification.timeout"
+            v-model="notification.show"
+            top
+        >
+            <span>
+                {{ notification.text }}
+            </span>
+            <v-btn dark :color="notification.btnColor" flat @click.native="notification.onAction">
+                {{ notification.btnText }}
+            </v-btn>
+        </v-snackbar>
 
     </section>
 </template>
@@ -254,13 +247,13 @@
     import _isEqual from 'lodash/isEqual';
     import _find from 'lodash/find';
     import _without from 'lodash/without';
+    import _uniq from 'lodash/uniq';
 
     import db from '../../../firebase';
 
     import CatalogueItem from '../../catalogue-item';
-    import CatalogueTableHead from '../../catalogue-table-head';
-    import SelectTag from '../../select-tag';
-    import Tag from '../../tag';
+
+    import catalogueTableHeadData from '../../catalogue-table-head/data';
 
     import hopsSchema from './hops-schema';
 
@@ -284,10 +277,7 @@
         }),
 
         components: {
-            'catalogue-item': CatalogueItem,
-            'catalogue-table-head': CatalogueTableHead,
-            'select-tag': SelectTag,
-            'tag': Tag
+            'catalogue-item': CatalogueItem
         },
 
         props: {
@@ -296,6 +286,15 @@
         data () {
             return {
                 locale,
+
+                isValid: false,
+
+                nameRules: [
+                    (v) => !!v || 'Name is required'
+                ],
+                acidRules: [
+                    (v) => !!v || 'Value is required'
+                ],
 
                 newHops: {},
                 selectedHops: {},
@@ -315,12 +314,41 @@
                     value: 'code',
                     name: 'name',
                     disabled: 'isSelected'
+                },
+
+                usageValues: [
+                    { value: 'AB', text: 'Dual' },
+                    { value: 'A', text: 'Aroma' },
+                    { value: 'B', text: 'Bitter' }
+                ],
+
+                shelfLifeValues: [
+                    { value: 1, text: '1 - Very poor' },
+                    { value: 2, text: '2' },
+                    { value: 3, text: '3 - Poor' },
+                    { value: 4, text: '4' },
+                    { value: 5, text: '5 - Average' },
+                    { value: 6, text: '6' },
+                    { value: 7, text: '7 - Great' },
+                    { value: 8, text: '8' },
+                    { value: 9, text: '9 - Exceptional' }
+                ],
+
+                notification: {
+                    show: false
+                },
+
+                notificationDefaults: {
+                    text: '',
+                    btnText: '',
+                    onAction: () => this.notification.show = false,
+                    timeout: DURATION.NOTIFICATION_NORMAL
                 }
             };
         },
 
         beforeMount: function () {
-            this.clearFields();
+            this.clearSelected();
         },
 
         beforeDestroy: function () {
@@ -330,23 +358,14 @@
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
 
+            headers: catalogueTableHeadData(locale),
+
             flags: function () {
                 return this.isDebugMode ? mockFlags : this.dbFlags;
             },
 
             flagsProcessed: function () {
-                const flagsSelected = this.newHops.country;
-                const isFlagSelected = flag => {
-                    return flagsSelected.indexOf(flag.code) > -1;
-                };
-
-                return this.flags
-                    .slice(0)
-                    .map(flag => (
-                        Object.assign({}, flag, {
-                            isSelected: isFlagSelected(flag)
-                        })
-                    ));
+                return this.flags.slice(0);
             },
 
             hops: function () {
@@ -408,6 +427,17 @@
         watch: {
             isDebugMode: function () {
                 this.$forceUpdate();
+            },
+
+            'newHops.alias': function (alias) {
+                if (alias.length < 2) {
+                    return false;
+                }
+
+                // checking if new value is a duplicate
+                if (alias.length !== _uniq(alias).length) {
+                    this.newHops.alias.pop();
+                }
             }
         },
 
@@ -440,31 +470,31 @@
 
                 if (!currentHops) {
                     this.$firebaseRefs.dbHops.push(transformedHops).then(() => {
-                        this.$snackbar.open({
-                            message: `Hops ${newHopsName} successfully added!`,
-                            actionText: 'OK',
-                            position: 'is-top',
-                            duration: DURATION.NOTIFICATION_SHORT
+                        this.showNotification({
+                            text: `Hops ${newHopsName} successfully added!`,
+                            btnText: 'OK',
+                            timeout: DURATION.NOTIFICATION_SHORT,
+                            btnColor: 'success'
                         });
 
                         this.clearFields();
                     });
                 } else {
-                    this.$snackbar.open({
-                        message: `Confirm new data for ${newHopsName}!`,
-                        actionText: 'Override',
-                        position: 'is-top',
-                        type: 'is-warning',
-                        duration: DURATION.NOTIFICATION_NORMAL,
+                    this.showNotification({
+                        text: `Confirm new data for ${newHopsName}!`,
+                        btnText: 'Override',
+                        btnColor: 'warning',
                         onAction: () => {
+                            this.notification.show = false;
+
                             this.$firebaseRefs.dbHops
                                 .child(currentKey)
                                 .set({...transformedHops}).then(() => {
-                                this.$snackbar.open({
-                                    message: `Hops ${newHopsName} successfully updated!`,
-                                    actionText: 'OK',
-                                    position: 'is-top',
-                                    duration: DURATION.NOTIFICATION_SHORT
+                                this.showNotification({
+                                    text: `Hops ${newHopsName} successfully updated!`,
+                                    btnText: 'OK',
+                                    timeout: DURATION.NOTIFICATION_SHORT,
+                                    btnColor: 'success'
                                 });
 
                                 this.clearFields();
@@ -511,19 +541,18 @@
                     this.$firebaseRefs.dbHops.child(key).remove();
                 }, DURATION.NOTIFICATION_LONG);
 
-                this.clearFields();
-
-                this.$snackbar.open({
-                    message: `Deleted successfully`,
-                    type: 'is-warning',
-                    position: 'is-top',
-                    duration: DURATION.NOTIFICATION_LONG,
-                    actionText: 'Undo',
+                this.showNotification({
+                    text: `Deleted successfully`,
+                    btnText: 'Undo',
+                    btnColor: 'warning',
+                    timeout: DURATION.NOTIFICATION_LONG,
                     onAction: () => {
                         this.hiddenKeys = _without(this.hiddenKeys, key);
                         clearTimeout(removeTimeout);
                     }
                 });
+
+                this.clearFields();
             },
 
             transformHops: hops => {
@@ -533,88 +562,46 @@
             },
 
             throwError: function (message) {
-                this.$toast.open({
-                    duration: DURATION.NOTIFICATION_SHORT,
-                    message: message || locale.errors._default,
-                    position: 'is-top',
-                    type: 'is-danger'
-                })
+                this.showNotification({
+                    text: message || locale.errors._default,
+                    btnText: 'OK',
+                    btnColor: 'error',
+                    timeout: DURATION.NOTIFICATION_SHORT
+                });
+            },
+
+            clearSelected: function () {
+                this.selectedHops = {};
+                this.newHops = clone(hopsSchema);
             },
 
             clearFields: function () {
-                this.selectedHops = {};
-                this.newHops = clone(hopsSchema);
+                this.$refs.form.reset();
 
-                // clear non-model fields
-                this.clearAliasField();
+                this.clearSelected();
 
                 // remove notifications and errors
                 this.hideDefaultPropsNotification();
             },
 
-            removeFlag: function (idx) {
-                const updatedFlags = this.newHops.country.slice(0);
-
-                updatedFlags[idx] = null;
-                updatedFlags.sort((a, b) => {
-                    if (a === null) return 1;
-                    if (b === null) return -1;
-                });
-
-                this.newHops.country = updatedFlags;
-            },
-
-            selectFlag: function (value, idx) {
-                if (!value) return;
-
-                const updatedFlags = this.newHops.country.slice(0);
-
-                updatedFlags[idx] = value;
-
-                this.newHops.country = updatedFlags;
-            },
-
-            getFlagNameByCode: function (code) {
-                const flag = _find(this.flags, { code });
-
-                if (flag) {
-                    return flag['name'];
-                }
-            },
-
-            handleAddAlias: function () {
-                const input = this.$refs['input-alias'].$refs.input;
-                const alias = input.value;
-
-                if (this.newHops.alias.indexOf(alias) === -1) {
-                    this.addAlias(alias);
-                    this.clearAliasField();
-                } else {
-                    // todo: throw notification
-                }
-            },
-
-            addAlias: function (value) {
-                this.newHops.alias.push(value);
-            },
-
-            clearAliasField: function () {
-                if (!this.$refs['input-alias']) return;
-
-                const input = this.$refs['input-alias'].$refs.input;
-
-                setTimeout(() => {
-                    input.value = '';
-                }, 0);
+            removeFlag: function (flag) {
+                this.newHops.country = _without(this.newHops.country.slice(0), flag);
             },
 
             removeAlias: function (value) {
                 this.newHops.alias = _without(this.newHops.alias.slice(0), value);
-                this.clearAliasField();
             },
 
             hideDefaultPropsNotification: function () {
                 this.isDefaultPropsNotification = false;
+            },
+
+            showNotification: function (props) {
+                this.notification = {
+                    ...this.notificationDefaults,
+                    ...props,
+                    show: true
+                };
             }
         }
     };
