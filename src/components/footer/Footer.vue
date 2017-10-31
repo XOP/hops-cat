@@ -1,10 +1,10 @@
 <template>
     <v-footer app dark class="px-2 py-4 grey darken-4 grey--text text--lighten-4">
 
-        <v-btn small flat dark href="https://github.com/XOP/hops-cat" target="_blank">
+        <a class="white--text u-no-underline" :href="gitHref" target="_blank">
             Github
-            <v-icon right>open_in_new</v-icon>
-        </v-btn>
+            <v-icon class="grey--text text--lighten-4">open_in_new</v-icon>
+        </a>
 
         <v-spacer></v-spacer>
 
@@ -15,7 +15,15 @@
 </template>
 
 <script>
+    import { GIT_HREF } from '../../constants/system';
+
     export default {
-        name: 'app-footer'
+        name: 'app-footer',
+
+        data: function () {
+            return {
+                gitHref: GIT_HREF
+            };
+        }
     };
 </script>

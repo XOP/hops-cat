@@ -21,5 +21,13 @@
     border-bottom: 1px dashed;
 }
 
+.u-no-underline {
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
 /* /Utils
 ---------------------------------------------------------------------------------- */

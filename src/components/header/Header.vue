@@ -2,11 +2,21 @@
     <v-toolbar app dark dense class="green darken-1">
         <v-toolbar-title>
             <router-link to="/" tag="span" class="u-cur-pointer">
-                <span class="image">
-                <img src="../../assets/images/icon.png" alt="Hops Cat Logo"/>
-                </span>
+                <v-avatar size="32px">
+                    <img class="logo-img" src="../../assets/images/icon.png" alt="Hops Cat Logo"/>
+                </v-avatar>
                 <span>Hops Cat</span>
             </router-link>
+
+            <a :href="gitVersionHref" target="_blank" class="u-no-underline u-cur-pointer" :title="'v' + version">
+                <v-chip
+                    small
+                    class="red caption darken-1 white--text u-cur-pointer"
+                >
+                    {{version}}
+                </v-chip>
+            </a>
+
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
@@ -34,11 +44,17 @@
 
     import Debug from '../debug/index';
 
+    const packageInfo = require('../../../package.json');
+
+    import { GIT_RELEASES_HREF } from '../../constants/system';
+
     export default {
         name: 'app-header',
 
         data: function () {
             return {
+                version: packageInfo.version,
+
                 showDebug: ALLOW_DEBUG // eslint-disable-line
             };
         },
@@ -50,7 +66,11 @@
         },
 
         computed: {
-            ...mapState('user', ['isAuthenticated'])
+            ...mapState('user', ['isAuthenticated']),
+
+            gitVersionHref: function () {
+                return `${GIT_RELEASES_HREF}/v${this.version}`;
+            }
         },
 
         components: {
@@ -66,15 +86,7 @@
 </script>
 
 <style scoped>
-    .image {
-        display: inline-flex;
-        width: 16px;
-        height: 16px;
-    }
-
-    .image img {
+    .logo-img {
         filter: invert(100%);
-        width: 100%;
-        height: 100%;
     }
 </style>
