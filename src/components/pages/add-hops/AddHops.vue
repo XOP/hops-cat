@@ -19,36 +19,47 @@
                             <v-card-text>
 
                                 <v-form v-model="isValid" ref="form">
+                                    <v-layout row wrap>
+                                        <v-flex sm6>
+                                            <v-text-field
+                                                label="Name"
+                                                v-model.trim="newHops.name"
+                                                required
+                                                placeholder="Cascade"
+                                                :rules="nameRules"
+                                            >
+                                            </v-text-field>
+                                        </v-flex>
+                                        <v-flex sm6>
+                                            <v-select
+                                                label="Alias"
+                                                tags
+                                                chips
+                                                appendIcon=""
+                                                v-model="newHops.alias"
+                                                hint="Duplicated values are not allowed"
+                                            >
+                                                <template slot="selection" scope="data">
+                                                    <input-chip
+                                                        :item="data.item"
+                                                        :onClose="removeAlias"
+                                                        :selected="data.selected"
+                                                    >
+                                                    </input-chip>
+                                                </template>
+                                            </v-select>
+                                        </v-flex>
+                                    </v-layout>
+
                                     <v-text-field
-                                        label="Name"
-                                        v-model.trim="newHops.name"
-                                        required
-                                        placeholder="Cascade"
-                                        :rules="nameRules"
+                                        label="Description"
+                                        v-model.trim="newHops.notes"
+                                        placeholder="Everything not encompassed by other fields"
                                     >
                                     </v-text-field>
 
-                                    <v-select
-                                        label="Alias"
-                                        tags
-                                        chips
-                                        appendIcon=""
-                                        v-model="newHops.alias"
-                                        hint="Duplicated values are not allowed"
-                                    >
-                                        <template slot="selection" scope="data">
-                                            <v-chip
-                                                close
-                                                @input="removeAlias(data.item)"
-                                                :selected="data.selected"
-                                            >
-                                                {{ data.item }}
-                                            </v-chip>
-                                        </template>
-                                    </v-select>
-
                                     <v-layout row wrap>
-                                        <v-flex md6>
+                                        <v-flex sm6>
                                             <v-select
                                                 :items="usageValues"
                                                 v-model="newHops.usage"
@@ -59,7 +70,7 @@
                                                 bottom
                                             ></v-select>
                                         </v-flex>
-                                        <v-flex md6>
+                                        <v-flex sm6>
                                             <v-select
                                                 :items="shelfLifeValues"
                                                 v-model="newHops.shelfLife"
@@ -262,6 +273,7 @@
     import db from '../../../firebase';
 
     import CatalogueItem from '../../catalogue-item';
+    import InputChip from '../../input-chip';
 
     import catalogueTableHeadData from '../../catalogue-table-head/data';
 
@@ -287,7 +299,8 @@
         }),
 
         components: {
-            'catalogue-item': CatalogueItem
+            'catalogue-item': CatalogueItem,
+            'input-chip': InputChip
         },
 
         props: {
@@ -319,12 +332,6 @@
                     'beta',
                     'country'
                 ],
-
-                countryItemMap: {
-                    value: 'code',
-                    name: 'name',
-                    disabled: 'isSelected'
-                },
 
                 usageValues: [
                     { value: 'AB', text: 'Dual' },
@@ -412,6 +419,7 @@
                     selected['.key'] &&
                     (
                         selected.name !== edited.name ||
+                        selected.notes !== edited.notes ||
                         selected.usage !== edited.usage ||
                         selected.shelfLife !== edited.shelfLife ||
                         !_isEqual(selected.alias, edited.alias) ||
@@ -425,12 +433,6 @@
                 }
 
                 return false;
-            },
-
-            isFormValid: function () {
-                // todo: proper validation
-
-                return this.newHops.name.trim();
             }
         },
 
@@ -454,12 +456,6 @@
         methods: {
             addHops: function () {
                 if (this.isDebugMode) return;
-
-                if (!this.isFormValid) {
-                    this.throwError(locale.errors.nameNotSpecified);
-
-                    return;
-                }
 
                 // new hops data
                 const newHops = this.newHops;
@@ -585,7 +581,7 @@
             throwError: function (message) {
                 this.showNotification({
                     text: message || locale.errors._default,
-                    btnText: 'OK',
+                    btnText: 'Oh :(',
                     btnColor: 'error',
                     timeout: DURATION.NOTIFICATION_SHORT
                 });
@@ -603,6 +599,7 @@
 
                 // remove notifications and errors
                 this.hideDefaultPropsNotification();
+                this.notification.show = false;
             },
 
             removeFlag: function (flag) {

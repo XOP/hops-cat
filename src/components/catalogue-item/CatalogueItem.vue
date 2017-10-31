@@ -244,6 +244,7 @@
 
                 if (
                     status === 1 &&
+                    hops.notes &&
                     this.isCountryValid(hops.country) &&
                     this.isRangeValid(hops.co)
                 ) {
