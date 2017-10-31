@@ -174,7 +174,7 @@
 
                     <v-flex d-flex md4>
                         <v-card class="grey lighten-4">
-                            <v-card-text>
+                            <v-card-text style="max-height: 80vh; overflow: auto;">
 
                                 <pre><code class="d-block">{{ JSON.stringify(transformHops(newHops), null, 2) }}</code></pre>
 

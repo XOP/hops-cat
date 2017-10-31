@@ -3,7 +3,7 @@
         <v-toolbar-title>
             <router-link to="/" tag="span" class="u-cur-pointer">
                 <span class="image">
-                <img src="./assets/images/icon.png" alt="Hops Cat Logo"/>
+                <img src="../../assets/images/icon.png" alt="Hops Cat Logo"/>
                 </span>
                 <span>Hops Cat</span>
             </router-link>
@@ -25,17 +25,29 @@
             <v-icon v-if="isAuthenticated">lock_open</v-icon>
         </v-btn>
 
-        <debug-toggle></debug-toggle>
+        <debug-toggle v-if="showDebug"></debug-toggle>
     </v-toolbar>
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapActions, mapState } from 'vuex';
 
-    import Debug from './components/debug';
+    import Debug from '../debug/index';
 
     export default {
         name: 'app-header',
+
+        data: function () {
+            return {
+                showDebug: ALLOW_DEBUG // eslint-disable-line
+            };
+        },
+
+        beforeMount: function () {
+            if (!this.showDebug) {
+                this.disableDebugMode();
+            }
+        },
 
         computed: {
             ...mapState('user', ['isAuthenticated'])
@@ -43,6 +55,12 @@
 
         components: {
             debugToggle: Debug
+        },
+
+        methods: {
+            ...mapActions('debug', [
+                'disableDebugMode'
+            ])
         }
     };
 </script>
