@@ -22,6 +22,8 @@ export default {
         min: 0,
         max: 100
     },
+
+    notes: ''
 };
 
 export const USAGE_MAP = {

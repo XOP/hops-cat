@@ -52,6 +52,10 @@
                 type: Boolean
             },
 
+            ctx: {
+                type: Object
+            },
+
             dbKey: {
                 type: String
             },
@@ -106,6 +110,10 @@
                 default: function () {
                     return {};
                 }
+            },
+
+            notes: {
+                type: String
             },
 
             status: {

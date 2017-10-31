@@ -189,6 +189,7 @@
                 hideActions
                 v-bind:headers="headers"
                 :items="hopsProcessed"
+                item-key=".key"
             >
                 <template slot="headerCell" scope="props">
                     <v-tooltip top v-if="props.header.hint">
@@ -212,9 +213,18 @@
                         :alpha="props.item.alpha"
                         :beta="props.item.beta"
                         :co="props.item.co"
-                        :onClick="selectHops"
+                        :notes="props.item.notes"
+                        :onClick="handleHopsClick"
+                        :ctx="props"
                     >
                     </catalogue-item>
+                </template>
+                <template slot="expand" scope="props">
+                    <v-card flat class="grey lighten-4">
+                        <v-card-text class="px-4">
+                            {{ props.item.notes }}
+                        </v-card-text>
+                    </v-card>
                 </template>
             </v-data-table>
 
@@ -504,8 +514,19 @@
                 }
             },
 
-            selectHops: function (hops) {
+            handleHopsClick: function (hops) {
+                const { ctx } = hops;
 
+                if (!hops.isSelected) {
+                    this.selectHops(hops);
+                }
+
+                if (hops.notes) {
+                    ctx.expanded = !ctx.expanded;
+                }
+            },
+
+            selectHops: function (hops) {
                 // clear previous selection and notifications
                 this.clearFields();
 
