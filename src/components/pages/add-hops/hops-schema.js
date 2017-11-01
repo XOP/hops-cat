@@ -23,7 +23,9 @@ export default {
         max: 100
     },
 
-    notes: ''
+    notes: '',
+
+    styles: []
 };
 
 export const USAGE_MAP = {

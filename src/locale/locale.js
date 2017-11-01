@@ -6,7 +6,8 @@ export default {
 
     tooltips: {
         shelfLife: 'Recommended storage conditions observed',
-        acid: 'Acid composition, %'
+        acid: 'Acid composition, %',
+        styles: 'Prevalent usage in beer styles'
     },
 
     tableHops: {
@@ -17,6 +18,7 @@ export default {
         status: 'Status',
         alpha: 'Alpha',
         beta: 'Beta',
-        co: 'Co-hum'
+        co: 'Co-hum',
+        styles: 'Used in'
     }
 };

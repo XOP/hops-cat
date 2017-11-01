@@ -225,6 +225,7 @@
                         :beta="props.item.beta"
                         :co="props.item.co"
                         :notes="props.item.notes"
+                        :styles="props.item.styles"
                         :onClick="handleHopsClick"
                         :ctx="props"
                     >
@@ -281,21 +282,25 @@
 
     import locale from '../../../locale';
     import { DURATION } from '../../../constants/ui';
+    import { FIREBASE_REFS } from '../../../constants/firebase';
 
     import {
         Flags as mockFlags,
-        Items as mockHops
+        Items as mockHops,
+        Styles as mockStyles
     } from '../../../fixtures/index';
 
-    const itemsRef = db.ref('items');
-    const flagsRef = db.ref('flags');
+    const itemsRef = db.ref(FIREBASE_REFS.hops);
+    const flagsRef = db.ref(FIREBASE_REFS.flags);
+    const stylesRef = db.ref(FIREBASE_REFS.styles);
 
     export default {
         name: 'add-hops',
 
         firebase: () => ({
             dbHops: itemsRef.orderByKey(),
-            dbFlags: flagsRef.orderByKey()
+            dbFlags: flagsRef.orderByKey(),
+            dbStyles: stylesRef.orderByKey()
         }),
 
         components: {
@@ -383,6 +388,14 @@
 
             flagsProcessed: function () {
                 return this.flags.slice(0);
+            },
+
+            styles: function () {
+                return this.isDebugMode ? mockStyles : this.dbStyles;
+            },
+
+            stylesProcessed: function () {
+                return this.styles.slice(0);
             },
 
             hops: function () {

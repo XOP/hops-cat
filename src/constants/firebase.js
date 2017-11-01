@@ -6,3 +6,9 @@ export const FIREBASE_CFG = {
     storageBucket: "hops-cat.appspot.com",
     messagingSenderId: "64878387063"
 };
+
+export const FIREBASE_REFS = {
+    styles: 'styles',
+    hops: 'items',
+    flags: 'flags'
+};

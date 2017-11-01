@@ -17,7 +17,7 @@ export default [
         styles: [
             "18",
             "21",
-            "22C"
+            "22-C"
         ],
         types: [
             "pellet",

@@ -54,6 +54,7 @@
                     :beta="props.item.beta"
                     :co="props.item.co"
                     :notes="props.item.notes"
+                    :styles="props.item.styles"
                     :onClick="handleHopsClick"
                     :ctx="props"
                 >

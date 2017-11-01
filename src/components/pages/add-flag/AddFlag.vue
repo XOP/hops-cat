@@ -102,12 +102,13 @@
     import db from '../../../firebase';
 
     import { DURATION } from '../../../constants/ui';
+    import { FIREBASE_REFS } from '../../../constants/firebase';
 
     import {
         Flags as mockFlags
     } from '../../../fixtures/index';
 
-    const flagsRef = db.ref('flags');
+    const flagsRef = db.ref(FIREBASE_REFS.flags);
 
     export default {
         name: 'add-flag',

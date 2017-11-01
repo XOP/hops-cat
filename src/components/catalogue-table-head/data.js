@@ -52,6 +52,13 @@ export default function (locale) {
                 align: 'right',
                 hint: locale.tooltips.acid,
                 sortable: true
+            },
+            {
+                value: 'styles',
+                text: locale.tableHops.styles,
+                align: 'center',
+                hint: locale.tooltips.styles,
+                sortable: false
             }
         ];
     };

@@ -33,16 +33,42 @@
         <td class="text-xs-right">
             {{coFormatted}}
         </td>
+        <td class="text-xs-left">
+            <div v-if="styles.length">
+                <small
+                    v-for="(item, index) in stylesFormatted"
+                    :key="index"
+                >
+                    <span v-show="index > 0 && index < styles.length">,</span>
+                    <span>{{item}}</span>
+                </small>
+            </div>
+            <div v-else>
+                {{stylesFormatted}}
+            </div>
+        </td>
     </tr>
 </template>
 
 <script>
     import cls from 'classnames';
     import emoji from 'node-emoji';
+    import { mapState } from 'vuex';
 
+    import _find from 'lodash/find';
     import _isEmpty from 'lodash/isEmpty';
 
+    import db from '../../firebase';
+
     import { USAGE_MAP, STATUS_MAP } from '../pages/add-hops/hops-schema';
+
+    import { FIREBASE_REFS } from '../../constants/firebase';
+
+    import {
+        Styles as mockStyles
+    } from '../../fixtures/index';
+
+    const stylesRef = db.ref(FIREBASE_REFS.styles);
 
     export default {
         name: 'catalogue-item',
@@ -116,6 +142,12 @@
                 type: String
             },
 
+            styles: {
+                default: function () {
+                    return [];
+                }
+            },
+
             status: {
                 type: Number,
                 default: 2
@@ -129,6 +161,10 @@
             }
         },
 
+        firebase: () => ({
+            dbStyles: stylesRef.orderByKey()
+        }),
+
         data () {
             return {
 
@@ -136,8 +172,14 @@
         },
 
         computed: {
+            ...mapState('debug', ['isDebugMode']),
+
+            stylesList: function () {
+                return this.isDebugMode ? mockStyles : this.dbStyles;
+            },
+
             componentClassname: function () {
-                return cls('catalogue-item', 'table-row', {
+                return cls('catalogue-item', {
                     'is-selected': this.isSelected
                 });
             },
@@ -169,6 +211,34 @@
                     if (!flagCode) return;
 
                     return emoji.emojify(`:flag-${flagCode.toLowerCase()}:`);
+                });
+            },
+
+            stylesFormatted: function () {
+                const styleCodes = this.styles;
+
+                if (!styleCodes.length) {
+                    return 'NA';
+                }
+
+                return styleCodes.map(styleCode => {
+                    if (!styleCode) return;
+
+                    let styleName;
+                    const styleProps = this.getStyleProps(styleCode);
+                    const styles = this.stylesList;
+
+                    // find common group name
+                    if (!styleProps.sub_code) {
+                        styleName = _find(styles, styleProps)['category'];
+                    }
+
+                    // find specific style name
+                    if (styleProps.sub_code) {
+                        styleName = _find(styles, styleProps)['name'];
+                    }
+
+                    return styleName;
                 });
             },
 
@@ -211,6 +281,23 @@
         },
 
         methods: {
+            getStyleProps: code => {
+                const styleProps = {
+                    code: ''
+                };
+
+                if (code.indexOf('-') > -1) {
+                    const codeProcessed = code.split('-');
+
+                    styleProps.code = codeProcessed[0];
+                    styleProps.sub_code = codeProcessed[1];
+                } else {
+                    styleProps.code = code;
+                }
+
+                return styleProps;
+            },
+
             average: (min, max) => {
                 return ((min + max) / 2).toFixed(1);
             },
