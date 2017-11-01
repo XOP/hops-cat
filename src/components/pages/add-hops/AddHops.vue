@@ -52,6 +52,7 @@
                                     </v-layout>
 
                                     <v-text-field
+                                        multi-line
                                         label="Description"
                                         v-model.trim="newHops.notes"
                                         placeholder="Everything not encompassed by other fields"
