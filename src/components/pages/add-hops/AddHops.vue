@@ -55,7 +55,8 @@
                                         multi-line
                                         label="Description"
                                         v-model.trim="newHops.notes"
-                                        placeholder="Everything not encompassed by other fields"
+                                        hint="General notes and special observations"
+                                        persistent-hint
                                     >
                                     </v-text-field>
 
@@ -94,7 +95,7 @@
                                         item-value="code"
                                         v-model="newHops.country"
                                         autocomplete
-                                        maxHeight="auto"
+                                        maxHeight="400"
                                     >
                                         <template slot="selection" scope="data">
                                             <v-chip
@@ -148,6 +149,16 @@
                                             </v-layout>
                                         </v-flex>
                                     </v-layout>
+
+                                    <v-select
+                                        label="Most used in styles"
+                                        multiple
+                                        :items="stylesProcessed"
+                                        appendIcon=""
+                                        v-model="newHops.styles"
+                                        autocomplete
+                                        maxHeight="400"
+                                    ></v-select>
 
                                     <v-alert :value="true" color="info" class="my-2" dismissible v-model="isDefaultPropsNotification">
                                         <div>
@@ -396,7 +407,15 @@
             },
 
             stylesProcessed: function () {
-                return this.styles.slice(0);
+                return this.styles.slice(0)
+                    .map(style => {
+                        const styleValue = style.code + (style.sub_code && `-${style.sub_code}`);
+
+                        return {
+                            text: `${style.name} (${style.code}${style.sub_code})`,
+                            value: styleValue
+                        };
+                    });
             },
 
             hops: function () {
@@ -438,6 +457,7 @@
                         selected.shelfLife !== edited.shelfLife ||
                         !_isEqual(selected.alias, edited.alias) ||
                         !_isEqual(selected.country, edited.country) ||
+                        !_isEqual(selected.styles, edited.styles) ||
                         !_isEqual(selected.alpha, edited.alpha) ||
                         !_isEqual(selected.beta, edited.beta) ||
                         !_isEqual(selected.co, edited.co)
