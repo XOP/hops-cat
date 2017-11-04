@@ -19,6 +19,7 @@ export default {
         alpha: 'Alpha',
         beta: 'Beta',
         co: 'Co-hum',
-        styles: 'Used in'
+        styles: 'Used in',
+        notes: 'Details'
     }
 };

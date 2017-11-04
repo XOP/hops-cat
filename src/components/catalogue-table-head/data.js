@@ -59,6 +59,12 @@ export default function (locale) {
                 align: 'center',
                 hint: locale.tooltips.styles,
                 sortable: false
+            },
+            {
+                value: 'notes',
+                text: locale.tableHops.notes,
+                align: 'center',
+                sortable: false
             }
         ];
     };

@@ -547,12 +547,16 @@
             handleHopsClick: function (hops) {
                 const { ctx } = hops;
 
+                // close all others
+                ctx.expanded = false;
+
                 if (!hops.isSelected) {
                     this.selectHops(hops);
-                }
 
-                if (hops.notes) {
-                    ctx.expanded = !ctx.expanded;
+                    // expand if notes present
+                    if (hops.notes) {
+                        ctx.expanded = true;
+                    }
                 }
             },
 

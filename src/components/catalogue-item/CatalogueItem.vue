@@ -14,7 +14,7 @@
             <div v-if="country.length" class="u-t-nowrap u-lh-reset">
                 <span class="title" v-for="flag in countryFormatted">{{flag}}</span>
             </div>
-            <div v-else>
+            <div v-else class="text-xs-center">
                 {{countryFormatted}}
             </div>
         </td>
@@ -43,9 +43,14 @@
                     <span>{{item}}</span>
                 </small>
             </div>
-            <div v-else>
+            <div v-else class="text-xs-center">
                 {{stylesFormatted}}
             </div>
+        </td>
+        <td class="text-xs-center">
+            <v-btn flat icon v-if="notes" @click="handleDetailsClick">
+                <v-icon>more_vert</v-icon>
+            </v-btn>
         </td>
     </tr>
 </template>
@@ -158,6 +163,13 @@
                 default: function () {
                     return null;
                 }
+            },
+
+            onDetailsClick: {
+                type: Function,
+                default: function () {
+                    return null;
+                }
             }
         },
 
@@ -167,7 +179,7 @@
 
         data () {
             return {
-
+                isDetailsMode: false
             };
         },
 
@@ -180,7 +192,7 @@
 
             componentClassname: function () {
                 return cls('catalogue-item', {
-                    'is-selected': this.isSelected
+                    'amber lighten-4': this.isSelected
                 });
             },
 
@@ -320,6 +332,12 @@
 
             handleClick: function (e) {
                 return this.onClick(this.$props, e);
+            },
+
+            handleDetailsClick: function (e) {
+                e.stopPropagation();
+
+                this.ctx.expanded = !this.ctx.expanded;
             },
 
             getStatusInfo: function (hops) {
