@@ -15,8 +15,8 @@ export default [
             "Amarillo"
         ],
         styles: [
-            "18",
-            "21",
+            "18-A",
+            "21-A",
             "22-C"
         ],
         types: [
@@ -89,8 +89,8 @@ export default [
             "Ahtanum"
         ],
         styles: [
-            "18",
-            "21"
+            "21-A",
+            "21-B"
         ],
         types: [
             "pellet",

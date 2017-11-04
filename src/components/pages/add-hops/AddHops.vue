@@ -142,7 +142,7 @@
                                     </v-layout>
 
                                     <v-select
-                                        label="Most used in styles"
+                                        label="Most used in"
                                         multiple
                                         :items="stylesProcessed"
                                         appendIcon=""
