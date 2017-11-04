@@ -227,15 +227,16 @@
                     let styleName;
                     const styleProps = this.getStyleProps(styleCode);
                     const styles = this.stylesList;
+                    const styleObj = _find(styles, styleProps);
 
                     // find common group name
                     if (!styleProps.sub_code) {
-                        styleName = _find(styles, styleProps)['category'];
+                        styleName = styleObj && styleObj['category'];
                     }
 
                     // find specific style name
                     if (styleProps.sub_code) {
-                        styleName = _find(styles, styleProps)['name'];
+                        styleName = styleObj && styleObj['name'];
                     }
 
                     return styleName;
@@ -310,9 +311,11 @@
             },
 
             isCountryValid: (arr) => {
-                if (!arr.length) return false;
+                return Boolean(arr.length);
+            },
 
-                return arr[0] !== null;
+            isStylesValid: (arr) => {
+                return Boolean(arr.length);
             },
 
             handleClick: function (e) {
@@ -333,6 +336,7 @@
                     status === 1 &&
                     hops.notes &&
                     this.isCountryValid(hops.country) &&
+                    this.isStylesValid(hops.styles) &&
                     this.isRangeValid(hops.co)
                 ) {
                     status = 2;

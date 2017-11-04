@@ -51,15 +51,6 @@
                                         </v-flex>
                                     </v-layout>
 
-                                    <v-text-field
-                                        multi-line
-                                        label="Description"
-                                        v-model.trim="newHops.notes"
-                                        hint="General notes and special observations"
-                                        persistent-hint
-                                    >
-                                    </v-text-field>
-
                                     <v-layout row wrap>
                                         <v-flex sm6>
                                             <v-select
@@ -159,6 +150,15 @@
                                         autocomplete
                                         maxHeight="400"
                                     ></v-select>
+
+                                    <v-text-field
+                                        multi-line
+                                        label="Description"
+                                        v-model.trim="newHops.notes"
+                                        hint="General notes and special observations"
+                                        persistent-hint
+                                    >
+                                    </v-text-field>
 
                                     <v-alert :value="true" color="info" class="my-2" dismissible v-model="isDefaultPropsNotification">
                                         <div>
@@ -627,7 +627,8 @@
             },
 
             clearFields: function () {
-                this.$refs.form.reset();
+                // fixme: causes null values in alpha fields
+                // this.$refs.form.reset();
 
                 this.clearSelected();
 
