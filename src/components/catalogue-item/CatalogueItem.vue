@@ -271,36 +271,15 @@
             },
 
             alphaFormatted: function () {
-                const min = Number(this.alpha.min);
-                const max = Number(this.alpha.max);
-
-                if (!this.isRangeValid(this.alpha)) {
-                    return 'NA';
-                }
-
-                return this.average(min, max);
+                return this.formatAcid('alpha');
             },
 
             betaFormatted: function () {
-                const min = Number(this.beta.min);
-                const max = Number(this.beta.max);
-
-                if (!this.isRangeValid(this.beta)) {
-                    return 'NA';
-                }
-
-                return this.average(min, max);
+                return this.formatAcid('beta');
             },
 
             coFormatted: function () {
-                const min = Number(this.co.min);
-                const max = Number(this.co.max);
-
-                if (!this.isRangeValid(this.co)) {
-                    return 'NA';
-                }
-
-                return this.average(min, max);
+                return this.formatAcid('co');
             },
 
             statusFormatted: function () {
@@ -376,6 +355,19 @@
                 }
 
                 return status;
+            },
+
+            formatAcid: function (name) {
+                const acid = this[name];
+
+                const min = Number(acid.min);
+                const max = Number(acid.max);
+
+                if (!this.isRangeValid(acid)) {
+                    return 'NA';
+                }
+
+                return this.average(min, max);
             }
         }
     };
