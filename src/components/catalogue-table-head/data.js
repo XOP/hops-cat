@@ -54,6 +54,41 @@ export default function (locale) {
                 sortable: true
             },
             {
+                value: 'oil.min',
+                text: locale.tableHops.oil,
+                align: 'right',
+                hint: locale.tooltips.totalOil,
+                sortable: true
+            },
+            {
+                value: 'myr.min',
+                text: locale.tableHops.myr,
+                align: 'right',
+                hint: locale.tooltips.myr,
+                sortable: true
+            },
+            {
+                value: 'hum.min',
+                text: locale.tableHops.hum,
+                align: 'right',
+                hint: locale.tooltips.hum,
+                sortable: true
+            },
+            {
+                value: 'car.min',
+                text: locale.tableHops.car,
+                align: 'right',
+                hint: locale.tooltips.car,
+                sortable: true
+            },
+            {
+                value: 'far.min',
+                text: locale.tableHops.far,
+                align: 'right',
+                hint: locale.tooltips.far,
+                sortable: true
+            },
+            {
                 value: 'styles',
                 text: locale.tableHops.styles,
                 align: 'center',

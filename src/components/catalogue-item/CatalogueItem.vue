@@ -14,7 +14,7 @@
             <div v-if="country.length" class="u-t-nowrap u-lh-reset">
                 <span class="title" v-for="flag in countryFormatted">{{flag}}</span>
             </div>
-            <div v-else class="text-xs-center">
+            <div v-else>
                 {{countryFormatted}}
             </div>
         </td>
@@ -33,8 +33,23 @@
         <td class="text-xs-right">
             {{coFormatted}}
         </td>
+        <td class="text-xs-right">
+            NA
+        </td>
+        <td class="text-xs-right">
+            NA
+        </td>
+        <td class="text-xs-right">
+            NA
+        </td>
+        <td class="text-xs-right">
+            NA
+        </td>
+        <td class="text-xs-right">
+            NA
+        </td>
         <td class="text-xs-left">
-            <div v-if="styles.length">
+            <div v-if="styles.length" class="catalogue-item-styles">
                 <small
                     v-for="(item, index) in stylesFormatted"
                     :key="index"

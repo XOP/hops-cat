@@ -9,17 +9,36 @@ export default {
     shelfLife: 0,
 
     alpha: {
-        min: 0,
-        max: 100
+        min: 0.1,
+        max: 50
     },
-
     beta: {
-        min: 0,
+        min: 0.1,
+        max: 50
+    },
+    co: {
+        min: 0.1,
         max: 100
     },
 
-    co: {
-        min: 0,
+    oil: {
+        min: 0.1,
+        max: 10
+    },
+    myr: {
+        min: 0.1,
+        max: 100
+    },
+    hum: {
+        min: 0.1,
+        max: 100
+    },
+    car: {
+        min: 0.1,
+        max: 100
+    },
+    far: {
+        min: 0.1,
         max: 100
     },
 

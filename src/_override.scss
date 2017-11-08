@@ -1,1 +1,15 @@
+// see vuetify/src/stylus/components/_tables.styl
+table.table {
+    thead,
+    tbody {
+        th,
+        td {
+            line-height: 1.25;
 
+            &:not(:nth-child(1)),
+            &:first-child {
+                padding: 0 12px;
+            }
+        }
+    }
+}
