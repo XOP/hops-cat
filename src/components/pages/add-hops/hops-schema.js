@@ -1,3 +1,5 @@
+import _transform from 'lodash/transform';
+
 export default {
     name: '',
     alias: [],
@@ -52,6 +54,26 @@ export const USAGE_MAP = {
     'B': 'Bitter',
     'AB': 'Dual'
 };
+
+export const USAGE_VALUES = _transform(USAGE_MAP, (acc, val, key) => {
+    acc.push({ value: key, text: val });
+}, []);
+
+export const SHELF_LIFE_MAP = {
+    1: '1 - Very poor',
+    2: '2',
+    3: '3 - Poor',
+    4: '4',
+    5: '5 - Average',
+    6: '6',
+    7: '7 - Great',
+    8: '8',
+    9: '9 - Exceptional'
+};
+
+export const SHELF_LIFE_VALUES = _transform(SHELF_LIFE_MAP, (acc, val, key) => {
+    acc.push({ value: key, text: val });
+}, []);
 
 export const STATUS_MAP = {
     0: 'red darken-1',

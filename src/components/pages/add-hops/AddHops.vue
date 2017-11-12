@@ -285,6 +285,7 @@
     import _isEmpty from 'lodash/isEmpty';
     import _isEqual from 'lodash/isEqual';
     import _find from 'lodash/find';
+    import _transform from 'lodash/transform';
     import _without from 'lodash/without';
     import _uniq from 'lodash/uniq';
 
@@ -295,7 +296,7 @@
 
     import catalogueTableHeadData from '../../catalogue-table-head/data';
 
-    import hopsSchema from './hops-schema';
+    import hopsSchema, { USAGE_VALUES, SHELF_LIFE_VALUES } from './hops-schema';
 
     import locale from '../../../locale';
     import { DURATION } from '../../../constants/ui';
@@ -352,26 +353,18 @@
                     'shelfLife',
                     'alpha',
                     'beta',
+                    'co',
+                    'oil',
+                    'myr',
+                    'hum',
+                    'car',
+                    'far',
                     'country'
                 ],
 
-                usageValues: [
-                    { value: 'AB', text: 'Dual' },
-                    { value: 'A', text: 'Aroma' },
-                    { value: 'B', text: 'Bitter' }
-                ],
+                usageValues: USAGE_VALUES,
 
-                shelfLifeValues: [
-                    { value: 1, text: '1 - Very poor' },
-                    { value: 2, text: '2' },
-                    { value: 3, text: '3 - Poor' },
-                    { value: 4, text: '4' },
-                    { value: 5, text: '5 - Average' },
-                    { value: 6, text: '6' },
-                    { value: 7, text: '7 - Great' },
-                    { value: 8, text: '8' },
-                    { value: 9, text: '9 - Exceptional' }
-                ],
+                shelfLifeValues: SHELF_LIFE_VALUES,
 
                 notification: {
                     show: false
