@@ -34,19 +34,19 @@
             {{coFormatted}}
         </td>
         <td class="text-xs-right">
-            NA
+            {{oilFormatted}}
         </td>
         <td class="text-xs-right">
-            NA
+            {{myrFormatted}}
         </td>
         <td class="text-xs-right">
-            NA
+            {{humFormatted}}
         </td>
         <td class="text-xs-right">
-            NA
+            {{carFormatted}}
         </td>
         <td class="text-xs-right">
-            NA
+            {{farFormatted}}
         </td>
         <td class="text-xs-left">
             <div v-if="styles.length" class="catalogue-item-styles">
@@ -152,6 +152,46 @@
 
             // todo: number validation
             co: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+
+            // todo: number validation
+            oil: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+
+            // todo: number validation
+            myr: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+
+            // todo: number validation
+            hum: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+
+            // todo: number validation
+            car: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+
+            // todo: number validation
+            far: {
                 type: Object,
                 default: function () {
                     return {};
@@ -282,6 +322,26 @@
                 return this.formatAcid('co');
             },
 
+            oilFormatted: function () {
+                return this.formatOil('oil');
+            },
+
+            myrFormatted: function () {
+                return this.formatOil('myr');
+            },
+
+            humFormatted: function () {
+                return this.formatOil('hum');
+            },
+
+            carFormatted: function () {
+                return this.formatOil('car');
+            },
+
+            farFormatted: function () {
+                return this.formatOil('far');
+            },
+
             statusFormatted: function () {
                 return STATUS_MAP[this.getStatusInfo(this)];
             }
@@ -364,6 +424,19 @@
                 const max = Number(acid.max);
 
                 if (!this.isRangeValid(acid)) {
+                    return 'NA';
+                }
+
+                return this.average(min, max);
+            },
+
+            formatOil: function (name) {
+                const oil = this[name];
+
+                const min = Number(oil.min);
+                const max = Number(oil.max);
+
+                if (!this.isRangeValid(oil)) {
                     return 'NA';
                 }
 
