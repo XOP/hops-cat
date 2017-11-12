@@ -80,7 +80,7 @@
 
     import db from '../../firebase';
 
-    import { USAGE_MAP, STATUS_MAP } from '../pages/add-hops/hops-schema';
+    import hopsSchema, { USAGE_MAP, STATUS_MAP } from '../pages/add-hops/hops-schema';
 
     import { FIREBASE_REFS } from '../../constants/firebase';
 
@@ -369,11 +369,11 @@
                 return ((min + max) / 2).toFixed(1);
             },
 
-            isRangeValid: (obj) => {
+            isRangeValid: (obj, defaultObj = { min: 0, max: 100 }) => {
                 if (_isEmpty(obj)) return false;
 
                 // soft validation, one property can be different from default
-                return obj.min !== 0 || obj.max !== 100;
+                return obj.min !== defaultObj.min || obj.max !== defaultObj.max;
             },
 
             isCountryValid: (arr) => {
@@ -419,11 +419,12 @@
 
             formatAcid: function (name) {
                 const acid = this[name];
+                const acidDefaults = hopsSchema[name];
 
                 const min = Number(acid.min);
                 const max = Number(acid.max);
 
-                if (!this.isRangeValid(acid)) {
+                if (!this.isRangeValid(acid, acidDefaults)) {
                     return 'NA';
                 }
 
@@ -432,11 +433,12 @@
 
             formatOil: function (name) {
                 const oil = this[name];
+                const oilDefaults = hopsSchema[name];
 
                 const min = Number(oil.min);
                 const max = Number(oil.max);
 
-                if (!this.isRangeValid(oil)) {
+                if (!this.isRangeValid(oil, oilDefaults)) {
                     return 'NA';
                 }
 
