@@ -77,6 +77,8 @@
 
     import _find from 'lodash/find';
     import _isEmpty from 'lodash/isEmpty';
+    import _isObject from 'lodash/isObject';
+    import _isNumber from 'lodash/isNumber';
 
     import db from '../../firebase';
 
@@ -134,15 +136,13 @@
                 type: Number
             },
 
-            // todo: number validation
             alpha: {
-                type: Object,
-                default: function () {
-                    return {};
-                }
+                validator: function (o) {
+                    return _isObject(o) && _isNumber(o.min) && _isNumber(o.max);
+                },
+                required: true
             },
 
-            // todo: number validation
             beta: {
                 type: Object,
                 default: function () {
@@ -150,7 +150,6 @@
                 }
             },
 
-            // todo: number validation
             co: {
                 type: Object,
                 default: function () {
@@ -158,7 +157,6 @@
                 }
             },
 
-            // todo: number validation
             oil: {
                 type: Object,
                 default: function () {
@@ -166,7 +164,6 @@
                 }
             },
 
-            // todo: number validation
             myr: {
                 type: Object,
                 default: function () {
@@ -174,7 +171,6 @@
                 }
             },
 
-            // todo: number validation
             hum: {
                 type: Object,
                 default: function () {
@@ -182,7 +178,6 @@
                 }
             },
 
-            // todo: number validation
             car: {
                 type: Object,
                 default: function () {
@@ -190,7 +185,6 @@
                 }
             },
 
-            // todo: number validation
             far: {
                 type: Object,
                 default: function () {
