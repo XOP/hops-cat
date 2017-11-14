@@ -32,7 +32,7 @@ export default [
                 "citrus",
                 "grapefruit"
             ],
-            rest: [
+            extra: [
                 "spice"
             ]
         },
@@ -103,7 +103,7 @@ export default [
                 "citrus",
                 "grapefruit"
             ],
-            rest: [
+            extra: [
                 "orange",
                 "lemon",
                 "melon",
