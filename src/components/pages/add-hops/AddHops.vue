@@ -19,6 +19,7 @@
                             <v-card-text>
 
                                 <v-form v-model="isValid" ref="form">
+                                    <label class="title">Common information</label>
                                     <v-layout row wrap>
                                         <v-flex sm6>
                                             <v-text-field
@@ -76,33 +77,9 @@
                                         </v-flex>
                                     </v-layout>
 
-                                    <v-select
-                                        label="Countries of origin"
-                                        chips
-                                        multiple
-                                        :items="flagsProcessed"
-                                        appendIcon=""
-                                        item-text="name"
-                                        item-value="code"
-                                        v-model="newHops.country"
-                                        autocomplete
-                                        maxHeight="400"
-                                    >
-                                        <template slot="selection" scope="data">
-                                            <v-chip
-                                                close
-                                                @input="removeFlag(data.item.code)"
-                                                :selected="data.selected"
-                                            >
-                                                <v-avatar class="secondary">
-                                                    {{ data.item.code.toUpperCase() }}
-                                                </v-avatar>
-                                                {{ data.item.name }}
-                                            </v-chip>
-                                        </template>
-                                    </v-select>
+                                    <div class="title">Chemistry</div>
 
-                                    <label class="body-2">Acid, %</label>
+                                    <label class="subheading">Acid, %</label>
                                     <v-layout row wrap>
                                         <v-flex md4>
                                             <label class="body-1">Alpha</label>
@@ -140,6 +117,96 @@
                                             </v-layout>
                                         </v-flex>
                                     </v-layout>
+
+                                    <label class="subheading">Oil, ml/100g</label>
+                                    <v-layout row wrap>
+                                        <v-flex md4>
+                                            <label class="body-1">Total</label>
+                                            <v-layout column nowrap>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.oil.min" type="number"></v-text-field>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.oil.max" type="number"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+
+                                        <v-flex md2>
+                                            <label class="body-1">Myrcene</label>
+                                            <v-layout column nowrap>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.myr.min" type="number"></v-text-field>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.myr.max" type="number"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+
+                                        <v-flex md2>
+                                            <label class="body-1">Humulene</label>
+                                            <v-layout column nowrap>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.hum.min" type="number"></v-text-field>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.hum.max" type="number"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+
+                                        <v-flex md2>
+                                            <label class="body-1">Caryophyllene</label>
+                                            <v-layout column nowrap>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.car.min" type="number"></v-text-field>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.car.max" type="number"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+
+                                        <v-flex md2>
+                                            <label class="body-1">Farnesene</label>
+                                            <v-layout column nowrap>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.far.min" type="number"></v-text-field>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.far.max" type="number"></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+
+                                    <label class="title">Supplementary information</label>
+                                    <v-select
+                                        label="Countries of origin"
+                                        chips
+                                        multiple
+                                        :items="flagsProcessed"
+                                        appendIcon=""
+                                        item-text="name"
+                                        item-value="code"
+                                        v-model="newHops.country"
+                                        autocomplete
+                                        maxHeight="400"
+                                    >
+                                        <template slot="selection" scope="data">
+                                            <v-chip
+                                                close
+                                                @input="removeFlag(data.item.code)"
+                                                :selected="data.selected"
+                                            >
+                                                <v-avatar class="secondary">
+                                                    {{ data.item.code.toUpperCase() }}
+                                                </v-avatar>
+                                                {{ data.item.name }}
+                                            </v-chip>
+                                        </template>
+                                    </v-select>
 
                                     <v-select
                                         label="Most used in"
