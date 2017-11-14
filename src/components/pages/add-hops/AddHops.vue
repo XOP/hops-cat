@@ -525,7 +525,12 @@
                         !_isEqual(selected.styles, edited.styles) ||
                         !_isEqual(selected.alpha, edited.alpha) ||
                         !_isEqual(selected.beta, edited.beta) ||
-                        !_isEqual(selected.co, edited.co)
+                        !_isEqual(selected.co, edited.co) ||
+                        !_isEqual(selected.oil, edited.oil) ||
+                        !_isEqual(selected.myr, edited.myr) ||
+                        !_isEqual(selected.hum, edited.hum) ||
+                        !_isEqual(selected.car, edited.car) ||
+                        !_isEqual(selected.far, edited.far)
                     )
                 ) {
                     return true;

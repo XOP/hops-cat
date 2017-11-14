@@ -367,7 +367,7 @@
                 if (_isEmpty(obj)) return false;
 
                 // soft validation, one property can be different from default
-                return obj.min !== defaultObj.min || obj.max !== defaultObj.max;
+                return obj.min >= defaultObj.min && obj.max <= defaultObj.max;
             },
 
             isCountryValid: (arr) => {
@@ -394,16 +394,22 @@
                 if (
                     hops.name &&
                     hops.usage &&
-                    this.isRangeValid(hops.alpha) &&
-                    this.isRangeValid(hops.beta)
-                ) { status = 1; }
+                    this.isRangeValid(hops.alpha, hopsSchema.alpha) &&
+                    this.isRangeValid(hops.beta, hopsSchema.beta)
+                ) {
+                    status = 1;
+                }
 
                 if (
                     status === 1 &&
-                    hops.notes &&
                     this.isCountryValid(hops.country) &&
                     this.isStylesValid(hops.styles) &&
-                    this.isRangeValid(hops.co)
+                    this.isRangeValid(hops.co, hopsSchema.co) &&
+                    this.isRangeValid(hops.oil, hopsSchema.oil) &&
+                    this.isRangeValid(hops.myr, hopsSchema.myr) &&
+                    this.isRangeValid(hops.hum, hopsSchema.hum) &&
+                    this.isRangeValid(hops.car, hopsSchema.car) &&
+                    this.isRangeValid(hops.far, hopsSchema.far)
                 ) {
                     status = 2;
                 }
