@@ -1,3 +1,6 @@
+/* Overrides
+---------------------------------------------------------------------------------- */
+
 // see vuetify/src/stylus/components/_tables.styl
 table.table {
     thead,
@@ -13,3 +16,11 @@ table.table {
         }
     }
 }
+
+// remove shadow from block of code
+code.d-block {
+    box-shadow: none;
+}
+
+/* /Overrides
+---------------------------------------------------------------------------------- */

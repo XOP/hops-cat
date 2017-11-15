@@ -6,13 +6,11 @@
             Debug mode
         </v-alert>
 
-        <main>
-            <v-content fluid>
-                <v-container fluid>
-                    <router-view></router-view>
-                </v-container>
-            </v-content>
-        </main>
+        <v-content fluid>
+            <v-container fluid>
+                <router-view></router-view>
+            </v-container>
+        </v-content>
 
         <app-footer></app-footer>
     </v-app>
