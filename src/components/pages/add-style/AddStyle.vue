@@ -90,7 +90,7 @@
                         :items="stylesProcessed"
                         :pagination.sync="pagination"
                     >
-                        <template slot="items" scope="props">
+                        <template slot="items" slot-scope="props">
                             <tr :active="props.item.isSelected" @click="fillFormFields(props.item)">
                                 <td>{{ props.item.code }} / {{ props.item.sub_code }}</td>
                                 <td>{{ props.item.name }}</td>

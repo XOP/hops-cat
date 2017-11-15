@@ -58,7 +58,7 @@
                         hideActions
                         :items="flagsProcessed"
                     >
-                        <template slot="items" scope="props">
+                        <template slot="items" slot-scope="props">
                             <tr :active="props.item.isSelected" @click="fillFormFields(props.item)">
                                 <td>{{ props.item.code }}</td>
                                 <td>{{ props.item.name }}</td>

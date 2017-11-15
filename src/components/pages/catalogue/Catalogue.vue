@@ -33,7 +33,7 @@
             :items="itemsProcessed"
             item-key=".key"
         >
-            <template slot="headerCell" scope="props">
+            <template slot="headerCell" slot-scope="props">
                 <v-tooltip top v-if="props.header.hint">
                     <span slot="activator" class="u-t-pseudo">{{ props.header.text }}</span>
                     <span>{{ props.header.hint }}</span>
@@ -42,7 +42,7 @@
                     {{ props.header.text }}
                 </span>
             </template>
-            <template slot="items" scope="props">
+            <template slot="items" slot-scope="props">
                 <catalogue-item
                     :key="props.item.key"
                     :name="props.item.name"
@@ -65,7 +65,7 @@
                 >
                 </catalogue-item>
             </template>
-            <template slot="expand" scope="props">
+            <template slot="expand" slot-scope="props">
                 <v-card flat class="grey lighten-4">
                     <v-card-text class="px-4">
                         {{ props.item.notes }}

@@ -40,7 +40,7 @@
                                                 v-model="newHops.alias"
                                                 hint="Duplicated values are not allowed"
                                             >
-                                                <template slot="selection" scope="data">
+                                                <template slot="selection" slot-scope="data">
                                                     <input-chip
                                                         :item="data.item"
                                                         :onClose="removeAlias"
@@ -194,7 +194,7 @@
                                         autocomplete
                                         maxHeight="400"
                                     >
-                                        <template slot="selection" scope="data">
+                                        <template slot="selection" slot-scope="data">
                                             <v-chip
                                                 close
                                                 @input="removeFlag(data.item.code)"
@@ -281,7 +281,7 @@
                 :items="hopsProcessed"
                 item-key=".key"
             >
-                <template slot="headerCell" scope="props">
+                <template slot="headerCell" slot-scope="props">
                     <v-tooltip top v-if="props.header.hint">
                         <span slot="activator" class="u-t-pseudo">{{ props.header.text }}</span>
                         <span>{{ props.header.hint }}</span>
@@ -290,7 +290,7 @@
                         {{ props.header.text }}
                     </span>
                 </template>
-                <template slot="items" scope="props">
+                <template slot="items" slot-scope="props">
                     <catalogue-item
                         :key="props.item.key"
                         :dbKey="props.item['.key']"
@@ -315,7 +315,7 @@
                     >
                     </catalogue-item>
                 </template>
-                <template slot="expand" scope="props">
+                <template slot="expand" slot-scope="props">
                     <v-card flat class="grey lighten-4">
                         <v-card-text class="px-4">
                             {{ props.item.notes }}
@@ -406,6 +406,9 @@
                     (v) => !!v || 'Name is required'
                 ],
                 acidRules: [
+                    (v) => !!v || 'Value is required'
+                ],
+                oilRules: [
                     (v) => !!v || 'Value is required'
                 ],
 
