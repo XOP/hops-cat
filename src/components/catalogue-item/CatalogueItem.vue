@@ -49,6 +49,22 @@
             {{farFormatted}}
         </td>
         <td class="text-xs-left">
+            <div v-if="isAromaFormatted" class="catalogue-item-aroma">
+                <small
+                    v-for="(item, index) in aromaFormatted"
+                    :key="index"
+                >
+                    <span v-show="index > 0 && index < aromaFormatted.length">,</span>
+                    <b v-if="item.type === 'primary'" class="light-green--text text--darken-2">{{item.text}}</b>
+                    <span v-else-if="item.type === 'secondary'" class="grey--text text--darken-4">{{item.text}}</span>
+                    <span v-else-if="item.type === 'extra'" class="grey--text text--darken-1">{{item.text}}</span>
+                </small>
+            </div>
+            <div v-else class="text-xs-center">
+                {{aromaFormatted}}
+            </div>
+        </td>
+        <td class="text-xs-left">
             <div v-if="styles.length" class="catalogue-item-styles">
                 <small
                     v-for="(item, index) in stylesFormatted"
@@ -76,6 +92,7 @@
     import { mapState } from 'vuex';
 
     import _find from 'lodash/find';
+    import _isArray from 'lodash/isArray';
     import _isEmpty from 'lodash/isEmpty';
     import _isObject from 'lodash/isObject';
     import _isNumber from 'lodash/isNumber';
@@ -202,6 +219,13 @@
                 }
             },
 
+            aroma: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+
             status: {
                 type: Number,
                 default: 2
@@ -302,6 +326,48 @@
 
                     return styleName;
                 });
+            },
+
+            aromaFormatted: function () {
+                const aroma = this.aroma;
+                const formatted = [];
+
+                if (aroma.primary && aroma.primary.length) {
+                    aroma.primary.forEach(i => {
+                        formatted.push({
+                            text: i,
+                            type: 'primary'
+                        });
+                    });
+                }
+
+                if (aroma.secondary && aroma.secondary.length) {
+                    aroma.secondary.forEach(i => {
+                        formatted.push({
+                            text: i,
+                            type: 'secondary'
+                        });
+                    });
+                }
+
+                if (aroma.extra && aroma.extra.length) {
+                    aroma.extra.forEach(i => {
+                        formatted.push({
+                            text: i,
+                            type: 'extra'
+                        });
+                    });
+                }
+
+                if (!formatted.length) {
+                    return 'NA';
+                }
+
+                return formatted;
+            },
+
+            isAromaFormatted: function () {
+                return _isArray(this.aromaFormatted);
             },
 
             alphaFormatted: function () {

@@ -58,6 +58,7 @@
                     :hum="props.item.hum"
                     :car="props.item.car"
                     :far="props.item.far"
+                    :aroma="props.item.aroma"
                     :notes="props.item.notes"
                     :styles="props.item.styles"
                     :onClick="handleHopsClick"

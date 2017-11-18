@@ -89,6 +89,12 @@ export default function (locale) {
                 sortable: true
             },
             {
+                value: 'aroma',
+                text: locale.tableHops.aroma,
+                align: 'center',
+                sortable: false
+            },
+            {
                 value: 'styles',
                 text: locale.tableHops.styles,
                 align: 'center',

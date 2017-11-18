@@ -44,6 +44,12 @@ export default {
         max: 100
     },
 
+    aroma: {
+        primary: [],
+        secondary: [],
+        extra: []
+    },
+
     notes: '',
 
     styles: []

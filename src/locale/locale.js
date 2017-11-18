@@ -30,6 +30,7 @@ export default {
         myr: 'Myr.',
         hum: 'Hum.',
         car: 'Car.',
-        far: 'Far.'
+        far: 'Far.',
+        aroma: 'Aroma Profile'
     }
 };
