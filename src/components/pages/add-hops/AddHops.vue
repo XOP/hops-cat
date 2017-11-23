@@ -77,6 +77,42 @@
                                         </v-flex>
                                     </v-layout>
 
+                                    <div class="title">Aroma Profile</div>
+
+                                    <v-select
+                                        label="Primary"
+                                        chips
+                                        tags
+                                        :items="aromaTags"
+                                        appendIcon=""
+                                        prependIcon="looks_one"
+                                        v-model="newHops.aroma.primary"
+                                        autocomplete
+                                        maxHeight="400"
+                                    ></v-select>
+                                    <v-select
+                                        label="Secondary"
+                                        chips
+                                        tags
+                                        :items="aromaTags"
+                                        appendIcon=""
+                                        prependIcon="looks_two"
+                                        v-model="newHops.aroma.secondary"
+                                        autocomplete
+                                        maxHeight="400"
+                                    ></v-select>
+                                    <v-select
+                                        label="Extra"
+                                        chips
+                                        tags
+                                        :items="aromaTags"
+                                        appendIcon=""
+                                        prependIcon="looks_3"
+                                        v-model="newHops.aroma.extra"
+                                        autocomplete
+                                        maxHeight="400"
+                                    ></v-select>
+
                                     <div class="title">Chemistry</div>
 
                                     <label class="subheading">Acid, %</label>
@@ -485,6 +521,19 @@
                             value: styleValue
                         };
                     });
+            },
+
+            aromaTags: function () {
+                return [
+                    'citrus',
+                    'wood',
+                    'tropical',
+                    'orange',
+                    'lime',
+                    'herbal',
+                    'floral',
+                    'flower'
+                ];
             },
 
             hops: function () {
