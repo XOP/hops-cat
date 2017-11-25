@@ -10,5 +10,6 @@ export const FIREBASE_CFG = {
 export const FIREBASE_REFS = {
     styles: 'styles',
     hops: 'items',
-    flags: 'flags'
+    flags: 'flags',
+    aromas: 'aromas'
 };

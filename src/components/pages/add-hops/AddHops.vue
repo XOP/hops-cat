@@ -83,7 +83,7 @@
                                         label="Primary"
                                         chips
                                         tags
-                                        :items="aromaTags"
+                                        :items="aromasProcessed"
                                         appendIcon=""
                                         prependIcon="looks_one"
                                         v-model="newHops.aroma.primary"
@@ -103,7 +103,7 @@
                                         label="Secondary"
                                         chips
                                         tags
-                                        :items="aromaTags"
+                                        :items="aromasProcessed"
                                         appendIcon=""
                                         prependIcon="looks_two"
                                         v-model="newHops.aroma.secondary"
@@ -123,7 +123,7 @@
                                         label="Extra"
                                         chips
                                         tags
-                                        :items="aromaTags"
+                                        :items="aromasProcessed"
                                         appendIcon=""
                                         prependIcon="looks_3"
                                         v-model="newHops.aroma.extra"
@@ -425,6 +425,7 @@
     import { FIREBASE_REFS } from '../../../constants/firebase';
 
     import {
+        Aromas as mockAromas,
         Flags as mockFlags,
         Items as mockHops,
         Styles as mockStyles
@@ -433,6 +434,7 @@
     const itemsRef = db.ref(FIREBASE_REFS.hops);
     const flagsRef = db.ref(FIREBASE_REFS.flags);
     const stylesRef = db.ref(FIREBASE_REFS.styles);
+    const aromasRef = db.ref(FIREBASE_REFS.aromas);
 
     export default {
         name: 'add-hops',
@@ -440,7 +442,8 @@
         firebase: () => ({
             dbHops: itemsRef.orderByKey(),
             dbFlags: flagsRef.orderByKey(),
-            dbStyles: stylesRef.orderByKey()
+            dbStyles: stylesRef.orderByKey(),
+            dbAromas: aromasRef.orderByValue()
         }),
 
         components: {
@@ -541,17 +544,13 @@
                     });
             },
 
-            aromaTags: function () {
-                return [
-                    'citrus',
-                    'wood',
-                    'tropical',
-                    'orange',
-                    'lime',
-                    'herbal',
-                    'floral',
-                    'flower'
-                ];
+            aromas: function () {
+                return this.isDebugMode ? mockAromas : this.dbAromas;
+            },
+
+            aromasProcessed: function () {
+                return this.aromas.slice(0)
+                    .map(aroma => aroma.name);
             },
 
             hops: function () {
