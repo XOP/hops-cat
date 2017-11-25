@@ -89,7 +89,16 @@
                                         v-model="newHops.aroma.primary"
                                         autocomplete
                                         maxHeight="400"
-                                    ></v-select>
+                                    >
+                                        <template slot="selection" slot-scope="data">
+                                            <v-chip
+                                                :key="JSON.stringify(data.item)"
+                                                color="light-green"
+                                            >
+                                                {{ data.item }}
+                                            </v-chip>
+                                        </template>
+                                    </v-select>
                                     <v-select
                                         label="Secondary"
                                         chips
@@ -100,7 +109,16 @@
                                         v-model="newHops.aroma.secondary"
                                         autocomplete
                                         maxHeight="400"
-                                    ></v-select>
+                                    >
+                                        <template slot="selection" slot-scope="data">
+                                            <v-chip
+                                                :key="JSON.stringify(data.item)"
+                                                color="amber"
+                                            >
+                                                {{ data.item }}
+                                            </v-chip>
+                                        </template>
+                                    </v-select>
                                     <v-select
                                         label="Extra"
                                         chips

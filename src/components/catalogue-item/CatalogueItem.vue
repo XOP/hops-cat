@@ -56,8 +56,8 @@
                 >
                     <span v-show="index > 0 && index < aromaFormatted.length">,</span>
                     <b v-if="item.type === 'primary'" class="light-green--text text--darken-2">{{item.text}}</b>
-                    <span v-else-if="item.type === 'secondary'" class="grey--text text--darken-4">{{item.text}}</span>
-                    <span v-else-if="item.type === 'extra'" class="grey--text text--darken-1">{{item.text}}</span>
+                    <span v-else-if="item.type === 'secondary'" class="amber--text text--darken-4">{{item.text}}</span>
+                    <span v-else-if="item.type === 'extra'" class="grey--text text--darken-2">{{item.text}}</span>
                 </small>
             </div>
             <div v-else class="text-xs-center">
