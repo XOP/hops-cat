@@ -443,7 +443,7 @@
             dbHops: itemsRef.orderByKey(),
             dbFlags: flagsRef.orderByKey(),
             dbStyles: stylesRef.orderByKey(),
-            dbAromas: aromasRef.orderByValue()
+            dbAromas: aromasRef.orderByChild('name')
         }),
 
         components: {
