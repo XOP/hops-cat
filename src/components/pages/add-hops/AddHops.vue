@@ -84,7 +84,7 @@
                                         label="Primary"
                                         chips
                                         tags
-                                        :items="aromasProcessed"
+                                        :items="aromasPrimary"
                                         appendIcon=""
                                         prependIcon="looks_one"
                                         v-model="newHops.aroma.primary"
@@ -101,7 +101,10 @@
                                         </template>
                                         <template slot="item" slot-scope="data">
                                             <v-list-tile-action>
-                                                <v-checkbox v-model="data.item.selected"></v-checkbox>
+                                                <v-checkbox
+                                                    v-model="data.item.selected"
+                                                    :disabled="!data.item.isSelected"
+                                                ></v-checkbox>
                                             </v-list-tile-action>
                                             <v-list-tile-content>
                                                 <v-list-tile-title>{{ data.item.text }}</v-list-tile-title>
@@ -115,7 +118,7 @@
                                         label="Secondary"
                                         chips
                                         tags
-                                        :items="aromasProcessed"
+                                        :items="aromasSecondary"
                                         appendIcon=""
                                         prependIcon="looks_two"
                                         v-model="newHops.aroma.secondary"
@@ -132,7 +135,10 @@
                                         </template>
                                         <template slot="item" slot-scope="data">
                                             <v-list-tile-action>
-                                                <v-checkbox v-model="data.item.selected"></v-checkbox>
+                                                <v-checkbox
+                                                    v-model="data.item.selected"
+                                                    :disabled="!data.item.isSelected"
+                                                ></v-checkbox>
                                             </v-list-tile-action>
                                             <v-list-tile-content>
                                                 <v-list-tile-title>{{ data.item.text }}</v-list-tile-title>
@@ -146,7 +152,7 @@
                                         label="Extra"
                                         chips
                                         tags
-                                        :items="aromasProcessed"
+                                        :items="aromasExtra"
                                         appendIcon=""
                                         prependIcon="looks_3"
                                         v-model="newHops.aroma.extra"
@@ -155,7 +161,10 @@
                                     >
                                         <template slot="item" slot-scope="data">
                                             <v-list-tile-action>
-                                                <v-checkbox v-model="data.item.selected"></v-checkbox>
+                                                <v-checkbox
+                                                    v-model="data.item.selected"
+                                                    :disabled="!data.item.isSelected"
+                                                ></v-checkbox>
                                             </v-list-tile-action>
                                             <v-list-tile-content>
                                                 <v-list-tile-title>{{ data.item.text }}</v-list-tile-title>
@@ -595,6 +604,39 @@
                             text: aroma.name,
                             selected: isSelected
                         };
+                    });
+            },
+
+            aromasPrimary: function () {
+                const aromasPrimary = this.newHops.aroma.primary;
+
+                return this.aromasProcessed.slice(0)
+                    .map(aroma => {
+                        const isSelected = aromasPrimary.indexOf(aroma.value) > -1;
+
+                        return {...aroma, isSelected};
+                    });
+            },
+
+            aromasSecondary: function () {
+                const aromasSecondary = this.newHops.aroma.secondary;
+
+                return this.aromasProcessed.slice(0)
+                    .map(aroma => {
+                        const isSelected = aromasSecondary.indexOf(aroma.value) > -1;
+
+                        return {...aroma, isSelected};
+                    });
+            },
+
+            aromasExtra: function () {
+                const aromasExtra = this.newHops.aroma.extra;
+
+                return this.aromasProcessed.slice(0)
+                    .map(aroma => {
+                        const isSelected = aromasExtra.indexOf(aroma.value) > -1;
+
+                        return {...aroma, isSelected};
                     });
             },
 
