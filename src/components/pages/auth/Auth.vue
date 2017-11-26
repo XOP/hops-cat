@@ -1,8 +1,6 @@
 <template>
     <section>
-        <h1 class="display-1">
-            DB Auth
-        </h1>
+        <h1 class="display-1 mb-2">DB Auth</h1>
 
         <v-container fluid class="pa-0">
             <v-layout row justify-space-around>

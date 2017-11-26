@@ -1,6 +1,6 @@
 <template>
     <section>
-        <h1 class="display-1">Countries</h1>
+        <h1 class="display-1 mb-2">Styles</h1>
 
         <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
             <v-btn to="/auth">

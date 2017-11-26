@@ -1,6 +1,6 @@
 <template>
     <section>
-        <h1 class="display-1">
+        <h1 class="display-1 mb-2">
             Catalogue
             <v-btn v-if="isAuthenticated" to="/add-hops" class="amber lighten-1">Add Hops</v-btn>
         </h1>
