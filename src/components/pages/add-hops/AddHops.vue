@@ -1,6 +1,6 @@
 <template>
     <section>
-        <h1 class="display-1">Add new Hops</h1>
+        <h1 class="display-1 mb-2">Add new Hops</h1>
 
         <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
             <v-btn to="/auth">
@@ -447,6 +447,7 @@
 
     import _isEmpty from 'lodash/isEmpty';
     import _isEqual from 'lodash/isEqual';
+    import _filter from 'lodash/filter';
     import _find from 'lodash/find';
     import _transform from 'lodash/transform';
     import _without from 'lodash/without';
@@ -720,6 +721,54 @@
                 if (alias.length !== _uniq(alias).length) {
                     this.newHops.alias.pop();
                 }
+            },
+
+            // selection automatically applies to the current list
+            // we have to ensure deselection in other lists
+            // with the exception of at least 1 item in the preceding list
+            'newHops.aroma.primary': function (aroma) {
+                const lastValue = aroma[aroma.length - 1];
+                const isSelected = this.findInAromas('primary', { value: lastValue });
+
+                if (isSelected) {
+                    this.deselectAroma(isSelected.category, lastValue)
+                }
+            },
+            'newHops.aroma.secondary': function (aroma) {
+                const lastValue = aroma[aroma.length - 1];
+                const isSelected = this.findInAromas('secondary', { value: lastValue });
+
+                if (isSelected) {
+                    const category = isSelected.category;
+
+                    if (category === 'primary') {
+                        if (isSelected.safeToDeselect) {
+                            this.deselectAroma(category, lastValue);
+                        } else {
+                            this.deselectAroma('secondary', lastValue);
+                        }
+                    } else {
+                        this.deselectAroma(category, lastValue);
+                    }
+                }
+            },
+            'newHops.aroma.extra': function (aroma) {
+                const lastValue = aroma[aroma.length - 1];
+                const isSelected = this.findInAromas('extra', { value: lastValue });
+
+                if (isSelected) {
+                    const category = isSelected.category;
+
+                    if (category === 'primary' || category === 'secondary') {
+                        if (isSelected.safeToDeselect) {
+                            this.deselectAroma(category, lastValue);
+                        } else {
+                            this.deselectAroma('extra', lastValue);
+                        }
+                    } else {
+                        this.deselectAroma(category, lastValue);
+                    }
+                }
             }
         },
 
@@ -895,6 +944,56 @@
                     ...props,
                     show: true
                 };
+            },
+
+            getAromasByCategory: function (name) {
+                switch (name) {
+                    case 'primary':
+                        return this.aromasPrimary;
+                        break;
+                    case 'secondary':
+                        return this.aromasSecondary;
+                        break;
+                    case 'extra':
+                        return this.aromasExtra;
+                        break;
+                    default:
+                        return null;
+                }
+            },
+
+            findInAromas: function (category, obj) {
+                const primary = this.getAromasByCategory('primary');
+                const secondary = this.getAromasByCategory('secondary');
+                const extra = this.getAromasByCategory('extra');
+
+                const inPrimary = _find(primary, { ...obj, isSelected: true });
+                const inSecondary = _find(secondary, { ...obj, isSelected: true });
+                const inExtra = _find(extra, { ...obj, isSelected: true });
+
+                if (inPrimary && category !== 'primary') {
+                    return {
+                        category: 'primary',
+                        safeToDeselect: _filter(primary, { isSelected: true }).length > 1
+                    };
+                } else if (inSecondary && category !== 'secondary') {
+                    return {
+                        category: 'secondary',
+                        safeToDeselect: _filter(secondary, { isSelected: true }).length > 1
+                    };
+                } else if (inExtra && category !== 'extra') {
+                    return {
+                        category: 'extra',
+                        safeToDeselect: true
+                    }
+                } else {
+                    return false;
+                }
+            },
+
+            deselectAroma: function (category, value) {
+                _find(this.getAromasByCategory(category), { value }).isSelected = false;
+                this.newHops.aroma[category] = _without(this.newHops.aroma[category], value);
             }
         }
     };
