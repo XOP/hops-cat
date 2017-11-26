@@ -80,6 +80,7 @@
                                     <div class="title">Aroma Profile</div>
 
                                     <v-select
+                                        item-value="value"
                                         label="Primary"
                                         chips
                                         tags
@@ -98,8 +99,18 @@
                                                 {{ data.item }}
                                             </v-chip>
                                         </template>
+                                        <template slot="item" slot-scope="data">
+                                            <v-list-tile-action>
+                                                <v-checkbox v-model="data.item.selected"></v-checkbox>
+                                            </v-list-tile-action>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title>{{ data.item.text }}</v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </template>
                                     </v-select>
+
                                     <v-select
+                                        item-value="value"
                                         :disabled="isAroma2Disabled"
                                         label="Secondary"
                                         chips
@@ -119,8 +130,18 @@
                                                 {{ data.item }}
                                             </v-chip>
                                         </template>
+                                        <template slot="item" slot-scope="data">
+                                            <v-list-tile-action>
+                                                <v-checkbox v-model="data.item.selected"></v-checkbox>
+                                            </v-list-tile-action>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title>{{ data.item.text }}</v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </template>
                                     </v-select>
+
                                     <v-select
+                                        item-value="value"
                                         :disabled="isAroma3Disabled"
                                         label="Extra"
                                         chips
@@ -131,7 +152,16 @@
                                         v-model="newHops.aroma.extra"
                                         autocomplete
                                         maxHeight="400"
-                                    ></v-select>
+                                    >
+                                        <template slot="item" slot-scope="data">
+                                            <v-list-tile-action>
+                                                <v-checkbox v-model="data.item.selected"></v-checkbox>
+                                            </v-list-tile-action>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title>{{ data.item.text }}</v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                    </v-select>
 
                                     <div class="title">Chemistry</div>
 
@@ -552,8 +582,20 @@
             },
 
             aromasProcessed: function () {
+                const aromaTags = this.newHops.aroma;
+
                 return this.aromas.slice(0)
-                    .map(aroma => aroma.name);
+                    .map(aroma => {
+                        const isSelected = aromaTags.primary.indexOf(aroma.name) > -1 ||
+                            aromaTags.secondary.indexOf(aroma.name) > -1 ||
+                            aromaTags.extra.indexOf(aroma.name) > -1;
+
+                        return {
+                            value: aroma.name,
+                            text: aroma.name,
+                            selected: isSelected
+                        };
+                    });
             },
 
             isAroma2Disabled: function () {
