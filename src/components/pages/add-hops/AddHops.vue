@@ -100,6 +100,7 @@
                                         </template>
                                     </v-select>
                                     <v-select
+                                        :disabled="isAroma2Disabled"
                                         label="Secondary"
                                         chips
                                         tags
@@ -120,6 +121,7 @@
                                         </template>
                                     </v-select>
                                     <v-select
+                                        :disabled="isAroma3Disabled"
                                         label="Extra"
                                         chips
                                         tags
@@ -482,6 +484,7 @@
                     'alpha',
                     'beta',
                     'co',
+                    'aroma',
                     'oil',
                     'myr',
                     'hum',
@@ -553,6 +556,14 @@
                     .map(aroma => aroma.name);
             },
 
+            isAroma2Disabled: function () {
+                return !this.newHops.aroma.primary.length;
+            },
+
+            isAroma3Disabled: function () {
+                return !this.newHops.aroma.secondary.length;
+            },
+
             hops: function () {
                 return this.isDebugMode ? mockHops : this.dbHops;
             },
@@ -596,6 +607,7 @@
                         !_isEqual(selected.alpha, edited.alpha) ||
                         !_isEqual(selected.beta, edited.beta) ||
                         !_isEqual(selected.co, edited.co) ||
+                        !_isEqual(selected.aroma, edited.aroma) ||
                         !_isEqual(selected.oil, edited.oil) ||
                         !_isEqual(selected.myr, edited.myr) ||
                         !_isEqual(selected.hum, edited.hum) ||
