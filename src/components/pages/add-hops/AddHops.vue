@@ -726,17 +726,41 @@
             // selection automatically applies to the current list
             // we have to ensure deselection in other lists
             // with the exception of at least 1 item in the preceding list
-            'newHops.aroma.primary': function (aroma) {
+            // if only 1 item remains in current list
+            // prevent from deselecting if subsequent lists are not empty
+            'newHops.aroma.primary': function (aroma, prevAroma) {
+                if (aroma.length === 0 && prevAroma && prevAroma.length === 1) {
+                    const lastValue = prevAroma[0];
+                    const isSelected = this.findSelectedInAromaCategories();
+
+                    if (isSelected) {
+                        this.selectAroma('primary', lastValue);
+                    }
+
+                    return;
+                }
+
                 const lastValue = aroma[aroma.length - 1];
-                const isSelected = this.findInAromas('primary', { value: lastValue });
+                const isSelected = this.getAromaCategoryByValue('primary', { value: lastValue });
 
                 if (isSelected) {
                     this.deselectAroma(isSelected.category, lastValue)
                 }
             },
-            'newHops.aroma.secondary': function (aroma) {
+            'newHops.aroma.secondary': function (aroma, prevAroma) {
+                if (aroma.length === 0 && prevAroma && prevAroma.length === 1) {
+                    const lastValue = prevAroma[0];
+                    const isSelected = this.findSelectedInAromaCategories();
+
+                    if (isSelected.extra) {
+                        this.selectAroma('secondary', lastValue);
+                    }
+
+                    return;
+                }
+
                 const lastValue = aroma[aroma.length - 1];
-                const isSelected = this.findInAromas('secondary', { value: lastValue });
+                const isSelected = this.getAromaCategoryByValue('secondary', { value: lastValue });
 
                 if (isSelected) {
                     const category = isSelected.category;
@@ -754,7 +778,7 @@
             },
             'newHops.aroma.extra': function (aroma) {
                 const lastValue = aroma[aroma.length - 1];
-                const isSelected = this.findInAromas('extra', { value: lastValue });
+                const isSelected = this.getAromaCategoryByValue('extra', { value: lastValue });
 
                 if (isSelected) {
                     const category = isSelected.category;
@@ -962,7 +986,27 @@
                 }
             },
 
-            findInAromas: function (category, obj) {
+            findSelectedInAromaCategories: function (obj = {}) {
+                const primary = this.getAromasByCategory('primary');
+                const secondary = this.getAromasByCategory('secondary');
+                const extra = this.getAromasByCategory('extra');
+
+                const inPrimary = _find(primary, { ...obj, isSelected: true });
+                const inSecondary = _find(secondary, { ...obj, isSelected: true });
+                const inExtra = _find(extra, { ...obj, isSelected: true });
+
+                if (!inPrimary && !inSecondary && !inExtra) {
+                    return false;
+                }
+
+                return {
+                    primary: inPrimary,
+                    secondary: inSecondary,
+                    extra: inExtra
+                };
+            },
+
+            getAromaCategoryByValue: function (category, obj = {}) {
                 const primary = this.getAromasByCategory('primary');
                 const secondary = this.getAromasByCategory('secondary');
                 const extra = this.getAromasByCategory('extra');
@@ -989,6 +1033,11 @@
                 } else {
                     return false;
                 }
+            },
+
+            selectAroma: function (category, value) {
+                _find(this.getAromasByCategory(category), { value }).isSelected = true;
+                this.newHops.aroma[category] = [...this.newHops.aroma[category], ...[value]];
             },
 
             deselectAroma: function (category, value) {
