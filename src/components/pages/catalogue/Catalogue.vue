@@ -1,13 +1,13 @@
 <template>
     <section>
         <h1 class="display-1 mb-2">
-            Catalogue
-            <v-btn v-if="isAuthenticated" to="/add-hops" class="amber lighten-1">Add Hops</v-btn>
+            {{ locale.catalogue.title }}
+            <v-btn v-if="isAuthenticated" to="/add-hops" class="amber lighten-1">{{ locale.addHops.title }}</v-btn>
         </h1>
 
         <v-card class="mb-2 elevation-1">
             <v-card-title class="py-1">
-                Apply sorting:
+                {{ locale.catalogue.sorting }}:
 
                 <v-btn
                     icon

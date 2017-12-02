@@ -57,7 +57,8 @@ const locale = {
     },
 
     catalogue: {
-        title: 'Catalogue'
+        title: 'Catalogue',
+        sorting: 'Apply sorting'
     },
 
     addHops: {
