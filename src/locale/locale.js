@@ -1,4 +1,8 @@
 export default {
+    general: {
+        na: 'NA'
+    },
+
     errors: {
         _default: 'Something went wrong',
         nameNotSpecified: 'Name is not specified'
@@ -32,5 +36,64 @@ export default {
         car: 'Car.',
         far: 'Far.',
         aroma: 'Aroma Profile'
+    },
+
+    header: {
+        title: 'Hops Cat',
+        logoText: 'Hops Cat Logo'
+    },
+
+    footer: {
+        githubText: 'Github',
+        copyright: 'Hops Cat ©'
+    },
+
+    auth: {
+        title: 'Authorization',
+        authText: 'Authorize',
+        toEditText: 'to add or edit Countries'
+    },
+
+    catalogue: {
+        title: 'Catalogue'
+    },
+
+    addHops: {
+        title: 'Add Hops'
+    },
+
+    addFlag: {
+        title: 'Add Countries',
+        form: {
+            labels: {
+                code: 'Code',
+                name: 'Name'
+            },
+            placeholders: {
+                code: 'au',
+                name: 'Name'
+            },
+            submit: 'Add',
+            update: 'Update',
+            clear: 'Clear',
+            delete: 'Remove',
+            rules: {
+                name: 'Name is required',
+                code: 'Code is required'
+            }
+        },
+        notification: {
+            addSuccess: 'Country {country} successfully added!',
+            addConflict: 'Country {country} already exists!',
+            updateSuccess: 'Country {country} successfully updated!',
+            deleteSuccess: 'Deleted successfully',
+            ok: 'OK',
+            override: 'Override'
+        }
+    },
+
+    addStyle: {
+        title: 'Add Styles'
     }
+
 };

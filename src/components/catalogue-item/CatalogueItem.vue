@@ -101,6 +101,7 @@
 
     import hopsSchema, { USAGE_MAP, STATUS_MAP } from '../pages/add-hops/hops-schema';
 
+    import locale from '../../locale';
     import { FIREBASE_REFS } from '../../constants/firebase';
 
     import {
@@ -139,7 +140,7 @@
 
             usage: {
                 type: String,
-                default: 'NA'
+                default: locale.general.na
             },
 
             country: {
@@ -282,14 +283,14 @@
             },
 
             shelfLifeFormatted: function () {
-                return Number(this.shelfLife) || 'NA';
+                return Number(this.shelfLife) || locale.general.na;
             },
 
             countryFormatted: function () {
                 const flagCodes = this.country;
 
                 if (!flagCodes.length) {
-                    return 'NA';
+                    return locale.general.na;
                 }
 
                 return flagCodes.map(flagCode => {
@@ -303,7 +304,7 @@
                 const styleCodes = this.styles;
 
                 if (!styleCodes.length) {
-                    return 'NA';
+                    return locale.general.na;
                 }
 
                 return styleCodes.map(styleCode => {
@@ -360,7 +361,7 @@
                 }
 
                 if (!formatted.length) {
-                    return 'NA';
+                    return locale.general.na;
                 }
 
                 return formatted;
@@ -491,7 +492,7 @@
                 const max = Number(acid.max);
 
                 if (!this.isRangeValid(acid, acidDefaults)) {
-                    return 'NA';
+                    return locale.general.na;
                 }
 
                 return this.average(min, max);
@@ -505,7 +506,7 @@
                 const max = Number(oil.max);
 
                 if (!this.isRangeValid(oil, oilDefaults)) {
-                    return 'NA';
+                    return locale.general.na;
                 }
 
                 return this.average(min, max);

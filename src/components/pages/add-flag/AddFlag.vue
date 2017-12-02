@@ -1,14 +1,14 @@
 <template>
     <section>
-        <h1 class="display-1 mb-2">Countries</h1>
+        <h1 class="display-1 mb-2">{{ locale.addFlag.title }}</h1>
 
         <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
             <v-btn to="/auth">
                 <v-icon left>lock_open</v-icon>
-                Authorize
+                {{ locale.auth.authText }}
             </v-btn>
 
-            to add or edit Countries
+            {{ locale.auth.toEditText }}
         </v-alert>
 
         <v-container fluid grid-list-lg class="pa-0 mb-3">
@@ -18,19 +18,19 @@
                         <v-card-text>
                             <v-form v-model="isValid" ref="form">
                                 <v-text-field
-                                    label="Code"
+                                    :label="locale.addFlag.form.labels.code"
                                     v-model="newFlag.code"
                                     required
-                                    placeholder="au"
+                                    :placeholder="locale.addFlag.form.placeholders.code"
                                     :rules="codeRules"
                                 >
                                 </v-text-field>
 
                                 <v-text-field
-                                    label="Name"
+                                    :label="locale.addFlag.form.placeholders.name"
                                     v-model="newFlag.name"
                                     required
-                                    placeholder="Australia"
+                                    :placeholder="locale.addFlag.form.placeholders.name"
                                     :rules="nameRules"
                                 >
                                 </v-text-field>
@@ -38,12 +38,12 @@
                                 <div>
                                     <v-btn color="primary" @click="addFlag" :disabled="!isValid">
                                         <v-icon left v-text="isFlagUpdated ? 'mode_edit' : 'add'"></v-icon>
-                                        <span v-text="isFlagUpdated ? 'Update' : 'Add'"></span>
+                                        <span v-text="isFlagUpdated ? locale.addFlag.form.update : locale.addFlag.form.submit"></span>
                                     </v-btn>
 
                                     <v-btn color="secondary" @click="clearFields">
                                         <v-icon left>clear_all</v-icon>
-                                        <span>Clear</span>
+                                        <span>{{locale.addFlag.form.clear}}</span>
                                     </v-btn>
                                 </div>
                             </v-form>
@@ -70,7 +70,7 @@
                         <v-card-text class="text-xs-center">
                             <v-btn color="error" @click.stop="removeFlag(selectedFlag)">
                                 <v-icon left>delete</v-icon>
-                                <span>Remove <span>"{{ selectedFlag.name }}"</span></span>
+                                <span>{{ locale.addFlag.form.delete }} <span>"{{ selectedFlag.name }}"</span></span>
                             </v-btn>
                         </v-card-text>
                     </v-card>
@@ -101,6 +101,7 @@
 
     import db from '../../../firebase';
 
+    import locale from '../../../locale';
     import { DURATION } from '../../../constants/ui';
     import { FIREBASE_REFS } from '../../../constants/firebase';
 
@@ -125,12 +126,14 @@
 
         data () {
             return {
+                locale,
+
                 isValid: false,
                 nameRules: [
-                    (v) => !!v || 'Name is required'
+                    (v) => !!v || locale.addFlag.form.rules.name
                 ],
                 codeRules: [
-                    (v) => !!v || 'Code is required',
+                    (v) => !!v || locale.addFlag.form.rules.code
                 ],
 
                 newFlag: {

@@ -3,9 +3,9 @@
         <v-toolbar-title>
             <router-link to="/" tag="span" class="u-cur-pointer">
                 <v-avatar size="32px">
-                    <img class="logo-img" src="../../assets/images/icon.png" alt="Hops Cat Logo"/>
+                    <img class="logo-img" src="../../assets/images/icon.png" :alt="locale.header.logoText"/>
                 </v-avatar>
-                <span>Hops Cat</span>
+                <span>{{ locale.header.title }}</span>
             </router-link>
 
             <a :href="gitVersionHref" target="_blank" class="u-no-underline u-cur-pointer" :title="'v' + version">
@@ -23,10 +23,10 @@
 
         <v-toolbar-items class="hidden-sm-and-down">
             <v-btn flat to="/" exact>
-                Catalogue
+                {{ locale.catalogue.title }}
             </v-btn>
             <v-btn flat to="/add-hops">
-                Add Hops
+                {{ locale.addHops.title }}
             </v-btn>
         </v-toolbar-items>
 
@@ -46,6 +46,7 @@
 
     const packageInfo = require('../../../package.json');
 
+    import locale from '../../locale';
     import { GIT_RELEASES_HREF } from '../../constants/system';
 
     export default {
@@ -53,6 +54,8 @@
 
         data: function () {
             return {
+                locale,
+
                 version: packageInfo.version,
 
                 showDebug: ALLOW_DEBUG // eslint-disable-line
