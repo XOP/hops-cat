@@ -101,7 +101,7 @@
 
     import db from '../../../firebase';
 
-    import locale from '../../../locale';
+    import locale, { translate } from '../../../locale';
     import { DURATION } from '../../../constants/ui';
     import { FIREBASE_REFS } from '../../../constants/firebase';
 
@@ -226,6 +226,8 @@
                 'disableFitScreen'
             ]),
 
+            translate: translate(locale.addFlag),
+
             addFlag: function () {
                 if (this.isDebugMode) return;
 
@@ -236,8 +238,8 @@
                 if (!_find(this.flags, {code: newFlag.code})) {
                     this.$firebaseRefs.dbFlags.push(newFlag).then(() => {
                         this.showNotification({
-                            text: `Country "${newFlag.name}" successfully added!`,
-                            btnText: 'OK',
+                            text: translate('notification.addSuccess', {country: newFlag.name}),
+                            btnText: locale.addFlag.notification.ok,
                             timeout: DURATION.NOTIFICATION_SHORT,
                             btnColor: 'success'
                         });
@@ -246,8 +248,8 @@
                     });
                 } else {
                     this.showNotification({
-                        text: `Country ${newFlag.name} already exists!`,
-                        btnText: 'Override',
+                        text: translate('notification.addConflict', {country: newFlag.name}),
+                        btnText: locale.addFlag.notification.override,
                         btnColor: 'error',
                         onAction: () => {
                             this.notification.show = false;
@@ -256,8 +258,8 @@
                                 .child(this.selectedFlag['.key'])
                                 .set({...newFlag}).then(() => {
                                 this.showNotification({
-                                    text: `Country "${newFlag.name}" successfully updated!`,
-                                    btnText: 'OK',
+                                    text: translate('notification.updateSuccess', {country: newFlag.name}),
+                                    btnText: locale.addFlag.notification.ok,
                                     timeout: DURATION.NOTIFICATION_SHORT,
                                     btnColor: 'success'
                                 });
@@ -274,8 +276,8 @@
 
                 this.$firebaseRefs.dbFlags.child(dbFlag['.key']).remove().then(() => {
                     this.showNotification({
-                        text: `Deleted successfully`,
-                        btnText: 'OK',
+                        text: locale.addFlag.notification.deleteSuccess,
+                        btnText: locale.addFlag.notification.ok,
                         timeout: DURATION.NOTIFICATION_SHORT
                     });
                 });

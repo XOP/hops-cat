@@ -1,4 +1,6 @@
-export default {
+import _get from 'lodash/get';
+
+const locale = {
     general: {
         na: 'NA'
     },
@@ -95,5 +97,18 @@ export default {
     addStyle: {
         title: 'Add Styles'
     }
-
 };
+
+export function translate (locale) {
+    return (localeKey, data) => {
+        let str = _get(locale, localeKey);
+
+        Object.keys(data).forEach(k => {
+            str = str.replace(`{${k}}`, data[k]);
+        });
+
+        return str;
+    };
+}
+
+export default locale;
