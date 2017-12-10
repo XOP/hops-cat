@@ -2,14 +2,7 @@
     <section>
         <h1 class="display-1 mb-2">Add new Hops</h1>
 
-        <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
-            <v-btn to="/auth">
-                <v-icon left>lock_open</v-icon>
-                Authorize
-            </v-btn>
-            <span>to add hops or</span>
-            <v-btn to="/" exact>Go to Catalogue</v-btn>
-        </v-alert>
+        <auth-alert></auth-alert>
 
         <div v-if="isAuthenticated">
             <v-container fluid grid-list-lg class="pa-0 mb-3">
@@ -455,6 +448,7 @@
 
     import db from '../../../firebase';
 
+    import AuthAlert from '../../auth-alert';
     import CatalogueItem from '../../catalogue-item';
     import InputChip from '../../input-chip';
 
@@ -489,6 +483,7 @@
         }),
 
         components: {
+            'auth-alert': AuthAlert,
             'catalogue-item': CatalogueItem,
             'input-chip': InputChip
         },

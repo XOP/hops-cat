@@ -2,14 +2,7 @@
     <section>
         <h1 class="display-1 mb-2">{{ locale.addFlag.title }}</h1>
 
-        <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
-            <v-btn to="/auth">
-                <v-icon left>lock_open</v-icon>
-                {{ locale.auth.authText }}
-            </v-btn>
-
-            {{ locale.auth.toEditText }}
-        </v-alert>
+        <auth-alert></auth-alert>
 
         <v-container fluid grid-list-lg class="pa-0 mb-3">
             <v-layout row wrap>
@@ -101,6 +94,8 @@
 
     import db from '../../../firebase';
 
+    import AuthAlert from '../../auth-alert';
+
     import locale, { translate } from '../../../locale';
     import { DURATION } from '../../../constants/ui';
     import { FIREBASE_REFS } from '../../../constants/firebase';
@@ -117,6 +112,10 @@
         firebase: () => ({
             dbFlags: flagsRef.orderByKey()
         }),
+
+        components: {
+            'auth-alert': AuthAlert
+        },
 
         props: {
             fitScreen: {

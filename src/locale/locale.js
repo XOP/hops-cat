@@ -53,7 +53,8 @@ const locale = {
     auth: {
         title: 'Authorization',
         authText: 'Authorize',
-        toEditText: 'to add or edit Countries'
+        toEditText: 'to add or edit items',
+        goToCatalogue: 'go to Catalogue'
     },
 
     catalogue: {

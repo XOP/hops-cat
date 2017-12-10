@@ -2,14 +2,7 @@
     <section>
         <h1 class="display-1 mb-2">Styles</h1>
 
-        <v-alert v-if="!isAuthenticated" :value="true" color="info" class="mb-3">
-            <v-btn to="/auth">
-                <v-icon left>lock_open</v-icon>
-                Authorize
-            </v-btn>
-
-            to add or edit Styles
-        </v-alert>
+        <auth-alert></auth-alert>
 
         <v-container fluid grid-list-lg class="pa-0 mb-3">
             <v-layout row wrap>
@@ -136,6 +129,8 @@
 
     import db from '../../../firebase';
 
+    import AuthAlert from '../../auth-alert';
+
     import { DURATION } from '../../../constants/ui';
 
     import {
@@ -150,6 +145,10 @@
         firebase: () => ({
             dbStyles: stylesRef.orderByKey()
         }),
+
+        components: {
+            'auth-alert': AuthAlert
+        },
 
         props: {
             fitScreen: {
