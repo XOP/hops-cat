@@ -707,12 +707,13 @@
                 this.$forceUpdate();
             },
 
+            // checking if new value is a duplicate
+            // if it is - revert to previous state
             'newHops.alias': function (alias) {
                 if (alias.length < 2) {
                     return false;
                 }
 
-                // checking if new value is a duplicate
                 if (alias.length !== _uniq(alias).length) {
                     this.newHops.alias.pop();
                 }

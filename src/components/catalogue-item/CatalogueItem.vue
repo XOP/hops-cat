@@ -476,7 +476,8 @@
                     this.isRangeValid(hops.myr, hopsSchema.myr) &&
                     this.isRangeValid(hops.hum, hopsSchema.hum) &&
                     this.isRangeValid(hops.car, hopsSchema.car) &&
-                    this.isRangeValid(hops.far, hopsSchema.far)
+                    this.isRangeValid(hops.far, hopsSchema.far) &&
+                    this.isAromaFormatted
                 ) {
                     status = 2;
                 }
