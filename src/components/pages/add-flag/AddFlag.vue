@@ -237,7 +237,7 @@
                 if (!_find(this.flags, {code: newFlag.code})) {
                     this.$firebaseRefs.dbFlags.push(newFlag).then(() => {
                         this.showNotification({
-                            text: translate('notification.addSuccess', {country: newFlag.name}),
+                            text: this.translate('notification.addSuccess', {country: newFlag.name}),
                             btnText: locale.addFlag.notification.ok,
                             timeout: DURATION.NOTIFICATION_SHORT,
                             btnColor: 'success'
@@ -247,7 +247,7 @@
                     });
                 } else {
                     this.showNotification({
-                        text: translate('notification.addConflict', {country: newFlag.name}),
+                        text: this.translate('notification.addConflict', {country: newFlag.name}),
                         btnText: locale.addFlag.notification.override,
                         btnColor: 'error',
                         onAction: () => {
@@ -257,7 +257,7 @@
                                 .child(this.selectedFlag['.key'])
                                 .set({...newFlag}).then(() => {
                                 this.showNotification({
-                                    text: translate('notification.updateSuccess', {country: newFlag.name}),
+                                    text: this.translate('notification.updateSuccess', {country: newFlag.name}),
                                     btnText: locale.addFlag.notification.ok,
                                     timeout: DURATION.NOTIFICATION_SHORT,
                                     btnColor: 'success'

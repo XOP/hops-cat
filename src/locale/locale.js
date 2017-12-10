@@ -97,7 +97,42 @@ const locale = {
     },
 
     addStyle: {
-        title: 'Add Styles'
+        title: 'Add Styles',
+
+        form: {
+            labels: {
+                name: 'Name',
+                category: 'Category',
+                family: 'Family',
+                code: 'Code',
+                subCode: 'Letter Code'
+            },
+            placeholders: {
+                name: 'Double IPA',
+                category: 'Strong American Ale',
+                family: 'IPA',
+                code: '22'
+            },
+            submit: 'Add',
+            update: 'Update',
+            clear: 'Clear',
+            delete: 'Remove',
+            rules: {
+                name: 'Name is required',
+                category: 'Category is required',
+                family: 'Family is required',
+                code: 'Code is required'
+            }
+        },
+        notification: {
+            addSuccess: 'Style {style} successfully added!',
+            addConflict: 'Style {style} already exists!',
+            updateSuccess: 'Style {style} successfully updated!',
+            deleteSuccess: 'Deleted successfully',
+            ok: 'OK',
+            override: 'Override',
+            undo: 'Undo'
+        }
     }
 };
 

@@ -1,6 +1,6 @@
 <template>
     <section>
-        <h1 class="display-1 mb-2">Styles</h1>
+        <h1 class="display-1 mb-2">{{ locale.addStyle.title }}</h1>
 
         <auth-alert></auth-alert>
 
@@ -11,28 +11,28 @@
                         <v-card-text>
                             <v-form v-model="isValid" ref="form">
                                 <v-text-field
-                                    label="Name"
+                                    :label="locale.addStyle.form.labels.name"
                                     v-model.trim="newStyle.name"
                                     required
-                                    placeholder="Double IPA"
+                                    :placeholder="locale.addStyle.form.placeholders.name"
                                     :rules="nameRules"
                                 >
                                 </v-text-field>
 
                                 <v-text-field
-                                    label="Category"
+                                    :label="locale.addStyle.form.labels.category"
                                     v-model.trim="newStyle.category"
                                     required
-                                    placeholder="Strong American Ale"
+                                    :placeholder="locale.addStyle.form.placeholders.category"
                                     :rules="categoryRules"
                                 >
                                 </v-text-field>
 
                                 <v-text-field
-                                    label="Family"
+                                    :label="locale.addStyle.form.labels.category"
                                     v-model.trim="newStyle.family"
                                     required
-                                    placeholder="IPA"
+                                    :placeholder="locale.addStyle.form.placeholders.family"
                                     :rules="familyRules"
                                 >
                                 </v-text-field>
@@ -40,11 +40,11 @@
                                 <v-layout row wrap>
                                     <v-flex>
                                         <v-text-field
-                                            label="Code"
+                                            :label="locale.addStyle.form.labels.code"
                                             v-model.number="newStyle.code"
                                             type="number"
                                             required
-                                            placeholder="22"
+                                            :placeholder="locale.addStyle.form.placeholders.code"
                                             :rules="codeRules"
                                         >
                                         </v-text-field>
@@ -53,7 +53,7 @@
                                         <v-select
                                             v-bind:items="['A', 'B', 'C', 'D', 'E']"
                                             v-model="newStyle.sub_code"
-                                            label="Letter Code"
+                                            :label="locale.addStyle.form.labels.subCode"
                                             single-line
                                             bottom
                                         ></v-select>
@@ -63,12 +63,12 @@
                                 <div>
                                     <v-btn color="primary" @click="addStyle" :disabled="!isValid">
                                         <v-icon left v-text="isStyleUpdated ? 'mode_edit' : 'add'"></v-icon>
-                                        <span v-text="isStyleUpdated ? 'Update' : 'Add'"></span>
+                                        <span v-text="isStyleUpdated ? locale.addStyle.form.update : locale.addStyle.form.submit"></span>
                                     </v-btn>
 
                                     <v-btn color="secondary" @click="clearFields">
                                         <v-icon left>clear_all</v-icon>
-                                        <span>Clear</span>
+                                        <span>{{ locale.addStyle.form.clear }}</span>
                                     </v-btn>
                                 </div>
                             </v-form>
@@ -97,7 +97,7 @@
                         <v-card-text class="text-xs-center">
                             <v-btn color="error" @click.stop="removeStyle(selectedStyle)">
                                 <v-icon left>delete</v-icon>
-                                <span>Remove <span>"{{ selectedStyle.name }}"</span></span>
+                                <span>{{ locale.addStyle.form.delete }} <span>"{{ selectedStyle.name }}"</span></span>
                             </v-btn>
                         </v-card-text>
                     </v-card>
@@ -131,6 +131,7 @@
 
     import AuthAlert from '../../auth-alert';
 
+    import locale, { translate } from '../../../locale';
     import { DURATION } from '../../../constants/ui';
 
     import {
@@ -158,18 +159,20 @@
 
         data () {
             return {
+                locale,
+
                 isValid: false,
                 nameRules: [
-                    (v) => !!v || 'Name is required'
+                    (v) => !!v || locale.addStyle.form.rules.name
                 ],
                 categoryRules: [
-                    (v) => !!v || 'Category is required'
+                    (v) => !!v || locale.addStyle.form.rules.category
                 ],
                 familyRules: [
-                    (v) => !!v || 'Family is required'
+                    (v) => !!v || locale.addStyle.form.rules.family
                 ],
                 codeRules: [
-                    (v) => !!v || 'Code is required'
+                    (v) => !!v || locale.addStyle.form.rules.code
                 ],
 
                 newStyle: {
@@ -292,6 +295,8 @@
                 'disableFitScreen'
             ]),
 
+            translate: translate(locale.addStyle),
+
             addStyle: function () {
                 if (this.isDebugMode) return;
 
@@ -301,7 +306,7 @@
                 if (!_find(this.styles, {code: newStyle.code, sub_code: newStyle.sub_code})) {
                     this.$firebaseRefs.dbStyles.push(newStyle).then(() => {
                         this.showNotification({
-                            text: `Style ${newStyleCode} successfully added!`,
+                            text: this.translate('notification.addSuccess', {style: newStyleCode}),
                             btnText: 'OK',
                             timeout: DURATION.NOTIFICATION_SHORT,
                             btnColor: 'success'
@@ -311,8 +316,8 @@
                     });
                 } else {
                     this.showNotification({
-                        text: `Style ${newStyleCode} already exists!`,
-                        btnText: 'Override',
+                        text: this.translate('notification.addConflict', {style: newStyleCode}),
+                        btnText: locale.addStyle.form.notification.override,
                         btnColor: 'warning',
                         onAction: () => {
                             this.notification.show = false;
@@ -321,8 +326,8 @@
                                 .child(this.selectedStyle['.key'])
                                 .set({...newStyle}).then(() => {
                                 this.showNotification({
-                                    text: `Style ${newStyleCode} successfully updated!`,
-                                    btnText: 'OK',
+                                    text: this.translate('notification.updateSuccess', {style: newStyleCode}),
+                                    btnText: locale.addStyle.form.notification.ok,
                                     timeout: DURATION.NOTIFICATION_SHORT,
                                     btnColor: 'success'
                                 });
@@ -346,8 +351,8 @@
                 }, DURATION.NOTIFICATION_LONG);
 
                 this.showNotification({
-                    text: `Deleted successfully`,
-                    btnText: 'Undo',
+                    text: locale.addStyle.form.notification.deleteSuccess,
+                    btnText: locale.addStyle.form.notification.undo,
                     btnColor: 'warning',
                     timeout: DURATION.NOTIFICATION_LONG,
                     onAction: () => {
