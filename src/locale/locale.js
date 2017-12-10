@@ -54,7 +54,32 @@ const locale = {
         title: 'Authorization',
         authText: 'Authorize',
         toEditText: 'to add or edit items',
-        goToCatalogue: 'go to Catalogue'
+        goToCatalogue: 'go to Catalogue',
+        addHops: 'Add Hops',
+        addFlag: 'Add Countries',
+        addStyle: 'Add Styles',
+        form: {
+            labels: {
+                email: 'E-mail',
+                pass: 'Pass'
+            },
+            placeholders: {
+                email: 'user@email.com'
+            },
+            login: 'DB Authorize',
+            logout: 'Log out',
+            rules: {
+                email: 'E-mail is required',
+                emailValid: 'E-mail must be valid'
+            }
+        },
+        notification: {
+            ok: 'OK',
+            oh: 'Ouch!',
+            success: 'User {email} is now authorized!',
+            error: 'Sorry, something is wrong: {error}'
+        },
+
     },
 
     catalogue: {

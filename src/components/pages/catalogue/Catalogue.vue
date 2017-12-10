@@ -2,6 +2,7 @@
     <section>
         <h1 class="display-1 mb-2">
             {{ locale.catalogue.title }}
+
             <v-btn v-if="isAuthenticated" to="/add-hops" class="amber lighten-1">{{ locale.addHops.title }}</v-btn>
         </h1>
 

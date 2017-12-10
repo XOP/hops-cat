@@ -1,6 +1,6 @@
 <template>
     <section>
-        <h1 class="display-1 mb-2">DB Auth</h1>
+        <h1 class="display-1 mb-2">{{ locale.auth.title }}</h1>
 
         <v-container fluid class="pa-0">
             <v-layout row justify-space-around>
@@ -11,15 +11,15 @@
 
                             <form v-if="!isAuthenticated">
                                 <v-text-field
-                                    label="E-mail"
+                                    :label="locale.auth.form.labels.email"
                                     v-model="email"
                                     required
-                                    placeholder="user@email.com"
+                                    :placeholder="locale.auth.form.placeholders.email"
                                     :rules="emailRules"
                                 ></v-text-field>
 
                                 <v-text-field
-                                    label="Pass"
+                                    :label="locale.auth.form.labels.pass"
                                     v-model="pass"
                                     required
                                     type="password"
@@ -28,14 +28,14 @@
                                 <div class="text-xs-center">
                                     <v-btn color="primary" large @click.prevent="signIn">
                                         <v-icon left>storage</v-icon>
-                                        <span>DB Authorize</span>
+                                        <span>{{ locale.auth.form.login }}</span>
                                     </v-btn>
                                 </div>
                             </form>
 
                             <form v-if="isAuthenticated">
                                 <v-text-field
-                                    label="E-mail"
+                                    :label="locale.auth.form.labels.email"
                                     v-model="user.email"
                                     disabled
                                 ></v-text-field>
@@ -43,7 +43,7 @@
                                 <div class="text-xs-center">
                                     <v-btn color="primary" large @click.prevent="signOut">
                                         <v-icon left>lock_open</v-icon>
-                                        <span>Log out</span>
+                                        <span>{{ locale.auth.form.logout }}</span>
                                     </v-btn>
                                 </div>
                             </form>
@@ -73,17 +73,17 @@
                     <v-layout row wrap justify-space-around>
                         <v-flex xs12 md3>
                             <v-btn large to="/add-hops" color="success" block>
-                                Add Hops
+                                {{ locale.auth.addHops }}
                             </v-btn>
                         </v-flex>
                         <v-flex xs12 md3>
                             <v-btn large to="/add-flag" block>
-                                Add Countries
+                                {{ locale.auth.addFlag }}
                             </v-btn>
                         </v-flex>
                         <v-flex xs12 md3>
                             <v-btn large to="/add-style" block>
-                                Add Styles
+                                {{ locale.auth.addStyle }}
                             </v-btn>
                         </v-flex>
                     </v-layout>
@@ -99,6 +99,7 @@
 
     import { mapState } from 'vuex';
 
+    import locale, { translate } from '../../../locale';
     import { DURATION } from '../../../constants/ui';
 
     export default {
@@ -106,12 +107,14 @@
 
         data () {
             return {
+                locale,
+
                 email: '',
                 pass: '',
 
                 emailRules: [
-                    (v) => !!v || 'E-mail is required',
-                    (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+                    (v) => !!v || locale.auth.form.rules.email,
+                    (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || locale.auth.form.rules.emailValid
                 ],
 
                 notification: {
@@ -128,21 +131,23 @@
         },
 
         methods: {
+            translate: translate(locale.auth),
+
             signIn: function () {
                 firebaseApp
                     .auth()
                     .signInWithEmailAndPassword(this.email, this.pass)
                     .then(() => {
-                        this.notification.text = `User ${this.email} is now authorized!`;
-                        this.notification.btnText = 'OK';
+                        this.notification.text = this.translate('notification.success', { email: this.email });
+                        this.notification.btnText = locale.auth.notification.ok;
                         this.notification.show = true;
 
                         this.email = '';
                         this.pass = '';
                     })
                     .catch((error) => {
-                        this.notification.text = `Sorry, something is wrong: ${error}`;
-                        this.notification.btnText = 'Ouch!';
+                        this.notification.text = this.translate('notification.error', { error });
+                        this.notification.btnText = locale.auth.notification.oh;
 
                         this.pass = '';
                     });
