@@ -516,6 +516,6 @@
     };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import './catalogue-item.scss';
 </style>

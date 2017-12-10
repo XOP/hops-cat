@@ -70,7 +70,9 @@
             <template slot="expand" slot-scope="props">
                 <v-card flat class="grey lighten-4">
                     <v-card-text class="px-4">
-                        {{ props.item.notes }}
+                        <div class="catalogue-item-notes">
+                            {{ props.item.notes }}
+                        </div>
                     </v-card-text>
                 </v-card>
             </template>
