@@ -173,10 +173,10 @@
                                             <label class="body-1">{{ locale.addHops.form.labels.alpha }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field :rules="acidRules" label="min" required v-model.number="newHops.alpha.min" type="number"></v-text-field>
+                                                    <v-text-field :rules="acidRules" :label="locale.general.min" required v-model.number="newHops.alpha.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field :rules="acidRules" label="max" required v-model.number="newHops.alpha.max" type="number"></v-text-field>
+                                                    <v-text-field :rules="acidRules" label="locale.general.max" required v-model.number="newHops.alpha.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -185,10 +185,10 @@
                                             <label class="body-1">{{ locale.addHops.form.labels.beta }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field label="min" v-model.number="newHops.beta.min" type="number"></v-text-field>
+                                                    <v-text-field :label="locale.general.min" v-model.number="newHops.beta.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field label="max" v-model.number="newHops.beta.max" type="number"></v-text-field>
+                                                    <v-text-field :label="locale.general.max" v-model.number="newHops.beta.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -197,10 +197,10 @@
                                             <label class="body-1">{{ locale.addHops.form.labels.cohum }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field label="min" v-model.number="newHops.co.min" type="number"></v-text-field>
+                                                    <v-text-field :label="locale.general.min" v-model.number="newHops.co.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field label="max" v-model.number="newHops.co.max" type="number"></v-text-field>
+                                                    <v-text-field :label="locale.general.max" v-model.number="newHops.co.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -212,10 +212,10 @@
                                             <label class="body-1">{{ locale.addHops.form.labels.total }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.oil.min" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.min" v-model.number="newHops.oil.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.oil.max" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.max" v-model.number="newHops.oil.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -224,10 +224,10 @@
                                             <label class="body-1">{{ locale.addHops.form.labels.myr }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.myr.min" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.min" v-model.number="newHops.myr.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.myr.max" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.max" v-model.number="newHops.myr.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -236,10 +236,10 @@
                                             <label class="body-1">{{ locale.addHops.form.labels.hum }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.hum.min" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.min" v-model.number="newHops.hum.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.hum.max" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.max" v-model.number="newHops.hum.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -248,10 +248,10 @@
                                             <label class="body-1">{{ locale.addHops.form.labels.car }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.car.min" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.min" v-model.number="newHops.car.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.car.max" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.max" v-model.number="newHops.car.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -260,10 +260,10 @@
                                             <label class="body-1">{{ locale.addHops.form.labels.far }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="min" v-model.number="newHops.far.min" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.min" v-model.number="newHops.far.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field :rules="oilRules" label="max" v-model.number="newHops.far.max" type="number"></v-text-field>
+                                                    <v-text-field :rules="oilRules" :label="locale.general.max" v-model.number="newHops.far.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
