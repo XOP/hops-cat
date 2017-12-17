@@ -1,6 +1,6 @@
 {
   "name": "hops-cat",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Hops catalogue and tracker",
   "author": "Evgeny Khoroshilov <stewiekillsloiss@gmail.com>",
   "private": true,
