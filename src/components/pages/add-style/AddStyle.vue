@@ -131,6 +131,8 @@
 
     import AuthAlert from '../../auth-alert';
 
+    import addStyleTableHead from '../../table-head/add-style-head';
+
     import locale, { translate } from '../../../locale';
     import { DURATION } from '../../../constants/ui';
 
@@ -183,29 +185,6 @@
                     family: ''
                 },
 
-                headers: [
-                    {
-                        text: 'Code / Group',
-                        align: 'left',
-                        value: 'code'
-                    },
-                    {
-                        text: 'Name',
-                        align: 'left',
-                        value: 'name'
-                    },
-                    {
-                        text: 'Category',
-                        align: 'left',
-                        value: 'category'
-                    },
-                    {
-                        text: 'Family',
-                        align: 'left',
-                        value: 'family'
-                    }
-                ],
-
                 pagination: {
                     rowsPerPage: 10
                 },
@@ -242,6 +221,8 @@
         computed: {
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
+
+            headers: addStyleTableHead(locale),
 
             styles: function () {
                 return this.isDebugMode ? mockStyles : this.dbStyles;

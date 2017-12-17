@@ -96,6 +96,8 @@
 
     import AuthAlert from '../../auth-alert';
 
+    import addFlagTableHead from '../../table-head/add-flag-head';
+
     import locale, { translate } from '../../../locale';
     import { DURATION } from '../../../constants/ui';
     import { FIREBASE_REFS } from '../../../constants/firebase';
@@ -140,19 +142,6 @@
                     code: ''
                 },
 
-                headers: [
-                    {
-                        text: 'Code',
-                        align: 'left',
-                        value: 'code'
-                    },
-                    {
-                        text: 'Name',
-                        align: 'left',
-                        value: 'name'
-                    }
-                ],
-
                 selectedFlag: {},
 
                 notification: {
@@ -183,6 +172,8 @@
         computed: {
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
+
+            headers: addFlagTableHead(locale),
 
             flags: function () {
                 return this.isDebugMode ? mockFlags : this.dbFlags;

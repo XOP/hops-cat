@@ -454,7 +454,7 @@
     import CatalogueItem from '../../catalogue-item';
     import InputChip from '../../input-chip';
 
-    import catalogueTableHeadData from '../../catalogue-table-head/data';
+    import catalogueTableHead from '../../table-head/catalogue-head';
 
     import hopsSchema, { USAGE_VALUES, SHELF_LIFE_VALUES } from './hops-schema';
 
@@ -558,7 +558,7 @@
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
 
-            headers: catalogueTableHeadData(locale),
+            headers: catalogueTableHead(locale),
 
             flags: function () {
                 return this.isDebugMode ? mockFlags : this.dbFlags;

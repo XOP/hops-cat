@@ -40,6 +40,18 @@ const locale = {
         aroma: 'Aroma Profile'
     },
 
+    tableStyles: {
+        code: 'Code / Group',
+        name: 'Name',
+        category: 'Category',
+        family: 'Family'
+    },
+
+    tableFlags: {
+        code: 'Code',
+        name: 'Name',
+    },
+
     header: {
         title: 'Hops Cat',
         logoText: 'Hops Cat Logo'

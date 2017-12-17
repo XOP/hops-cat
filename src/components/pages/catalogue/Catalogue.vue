@@ -88,7 +88,7 @@
 
     import CatalogueItem from '../../catalogue-item';
 
-    import catalogueTableHeadData from '../../catalogue-table-head/data';
+    import catalogueTableHead from '../../table-head/catalogue-head';
 
     import {
         Items as mockHops
@@ -122,7 +122,7 @@
             ...mapState('debug', ['isDebugMode']),
             ...mapState('user', ['isAuthenticated']),
 
-            headers: catalogueTableHeadData(locale),
+            headers: catalogueTableHead(locale),
 
             items: function () {
                 return this.isDebugMode ? mockHops : this.dbHops;
