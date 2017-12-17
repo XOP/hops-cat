@@ -1,6 +1,6 @@
 <template>
     <section>
-        <h1 class="display-1 mb-2">Add new Hops</h1>
+        <h1 class="display-1 mb-2">{{ locale.addHops.title }}</h1>
 
         <auth-alert></auth-alert>
 
@@ -12,26 +12,26 @@
                             <v-card-text>
 
                                 <v-form v-model="isValid" ref="form">
-                                    <label class="title">Common information</label>
+                                    <label class="title">{{ locale.addHops.form.titles.common }}</label>
                                     <v-layout row wrap>
                                         <v-flex sm6>
                                             <v-text-field
-                                                label="Name"
+                                                :label="locale.addHops.form.labels.name"
                                                 v-model.trim="newHops.name"
                                                 required
-                                                placeholder="Cascade"
+                                                :placeholder="locale.addHops.form.placeholders.name"
                                                 :rules="nameRules"
                                             >
                                             </v-text-field>
                                         </v-flex>
                                         <v-flex sm6>
                                             <v-select
-                                                label="Alias"
+                                                :label="locale.addHops.form.labels.alias"
                                                 tags
                                                 chips
                                                 appendIcon=""
                                                 v-model="newHops.alias"
-                                                hint="Duplicated values are not allowed"
+                                                :hint="locale.addHops.form.hints.alias"
                                             >
                                                 <template slot="selection" slot-scope="data">
                                                     <input-chip
@@ -50,8 +50,8 @@
                                             <v-select
                                                 :items="usageValues"
                                                 v-model="newHops.usage"
-                                                label="Usage"
-                                                hint="Usage"
+                                                :label="locale.addHops.form.labels.usage"
+                                                :hint="locale.addHops.form.hints.usage"
                                                 persistentHint
                                                 single-line
                                                 bottom
@@ -61,20 +61,20 @@
                                             <v-select
                                                 :items="shelfLifeValues"
                                                 v-model="newHops.shelfLife"
-                                                hint="Shelf life"
+                                                :hint="locale.addHops.form.hints.shelfLife"
                                                 persistentHint
-                                                placeholder="NA"
+                                                :placeholder="locale.addHops.form.placeholders.shelfLife"
                                                 single-line
                                                 bottom
                                             ></v-select>
                                         </v-flex>
                                     </v-layout>
 
-                                    <div class="title">Aroma Profile</div>
+                                    <div class="title">{{ locale.addHops.form.titles.aroma }}</div>
 
                                     <v-select
                                         item-value="value"
-                                        label="Primary"
+                                        :label="locale.addHops.form.labels.primary"
                                         chips
                                         tags
                                         :items="aromasPrimary"
@@ -108,7 +108,7 @@
                                     <v-select
                                         item-value="value"
                                         :disabled="isAroma2Disabled"
-                                        label="Secondary"
+                                        :label="locale.addHops.form.labels.secondary"
                                         chips
                                         tags
                                         :items="aromasSecondary"
@@ -142,7 +142,7 @@
                                     <v-select
                                         item-value="value"
                                         :disabled="isAroma3Disabled"
-                                        label="Extra"
+                                        :label="locale.addHops.form.labels.extra"
                                         chips
                                         tags
                                         :items="aromasExtra"
@@ -165,12 +165,12 @@
                                         </template>
                                     </v-select>
 
-                                    <div class="title">Chemistry</div>
+                                    <div class="title">{{ locale.addHops.form.titles.chem }}</div>
 
-                                    <label class="subheading">Acid, %</label>
+                                    <label class="subheading">{{ locale.addHops.form.titles.acid }}</label>
                                     <v-layout row wrap>
                                         <v-flex md4>
-                                            <label class="body-1">Alpha</label>
+                                            <label class="body-1">{{ locale.addHops.form.labels.alpha }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
                                                     <v-text-field :rules="acidRules" label="min" required v-model.number="newHops.alpha.min" type="number"></v-text-field>
@@ -182,7 +182,7 @@
                                         </v-flex>
 
                                         <v-flex md4>
-                                            <label class="body-1">Beta</label>
+                                            <label class="body-1">{{ locale.addHops.form.labels.beta }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
                                                     <v-text-field label="min" v-model.number="newHops.beta.min" type="number"></v-text-field>
@@ -194,7 +194,7 @@
                                         </v-flex>
 
                                         <v-flex md4>
-                                            <label class="body-1">Co-Humulone</label>
+                                            <label class="body-1">{{ locale.addHops.form.labels.cohum }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
                                                     <v-text-field label="min" v-model.number="newHops.co.min" type="number"></v-text-field>
@@ -206,10 +206,10 @@
                                         </v-flex>
                                     </v-layout>
 
-                                    <label class="subheading">Oil, ml/100g</label>
+                                    <label class="subheading">{{ locale.addHops.form.titles.oil }}</label>
                                     <v-layout row wrap>
                                         <v-flex md4>
-                                            <label class="body-1">Total</label>
+                                            <label class="body-1">{{ locale.addHops.form.labels.total }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
                                                     <v-text-field :rules="oilRules" label="min" v-model.number="newHops.oil.min" type="number"></v-text-field>
@@ -221,7 +221,7 @@
                                         </v-flex>
 
                                         <v-flex md2>
-                                            <label class="body-1">Myrcene</label>
+                                            <label class="body-1">{{ locale.addHops.form.labels.myr }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
                                                     <v-text-field :rules="oilRules" label="min" v-model.number="newHops.myr.min" type="number"></v-text-field>
@@ -233,7 +233,7 @@
                                         </v-flex>
 
                                         <v-flex md2>
-                                            <label class="body-1">Humulene</label>
+                                            <label class="body-1">{{ locale.addHops.form.labels.hum }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
                                                     <v-text-field :rules="oilRules" label="min" v-model.number="newHops.hum.min" type="number"></v-text-field>
@@ -245,7 +245,7 @@
                                         </v-flex>
 
                                         <v-flex md2>
-                                            <label class="body-1">Caryophyllene</label>
+                                            <label class="body-1">{{ locale.addHops.form.labels.car }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
                                                     <v-text-field :rules="oilRules" label="min" v-model.number="newHops.car.min" type="number"></v-text-field>
@@ -257,7 +257,7 @@
                                         </v-flex>
 
                                         <v-flex md2>
-                                            <label class="body-1">Farnesene</label>
+                                            <label class="body-1">{{ locale.addHops.form.labels.far }}</label>
                                             <v-layout column nowrap>
                                                 <v-flex>
                                                     <v-text-field :rules="oilRules" label="min" v-model.number="newHops.far.min" type="number"></v-text-field>
@@ -269,9 +269,9 @@
                                         </v-flex>
                                     </v-layout>
 
-                                    <label class="title">Supplementary information</label>
+                                    <label class="title">{{ locale.addHops.form.titles.other }}</label>
                                     <v-select
-                                        label="Countries of origin"
+                                        :label="locale.addHops.form.labels.countries"
                                         chips
                                         multiple
                                         :items="flagsProcessed"
@@ -297,7 +297,7 @@
                                     </v-select>
 
                                     <v-select
-                                        label="Most used in"
+                                        :label="locale.addHops.form.labels.usedIn"
                                         multiple
                                         :items="stylesProcessed"
                                         appendIcon=""
@@ -308,19 +308,19 @@
 
                                     <v-text-field
                                         multi-line
-                                        label="Description"
+                                        :label="locale.addHops.form.labels.notes"
                                         v-model.trim="newHops.notes"
-                                        hint="General notes and special observations"
+                                        :hint="locale.addHops.form.hints.notes"
                                         persistent-hint
                                     >
                                     </v-text-field>
 
                                     <v-alert :value="true" color="info" class="my-2" dismissible v-model="isDefaultPropsNotification">
                                         <div>
-                                            Some fields were changed to new hops defaults
+                                            {{ locale.addHops.alert.text }}
                                         </div>
                                         <v-btn color="secondary" outline @click="hideDefaultPropsNotification" class="ml-0">
-                                            Don't show again
+                                            {{ locale.addHops.alert.dismiss }}
                                         </v-btn>
                                     </v-alert>
 
@@ -328,19 +328,21 @@
                                         <v-flex>
                                             <v-btn color="primary" @click="addHops" :disabled="!isValid">
                                                 <v-icon left v-text="isHopsUpdated ? 'mode_edit' : 'add'"></v-icon>
-                                                <span v-text="isHopsUpdated ? 'Update' : 'Add'"></span>
+                                                <span v-text="isHopsUpdated ?
+                                                locale.addHops.form.update :
+                                                locale.addHops.form.submit"></span>
                                             </v-btn>
 
                                             <v-btn color="secondary" @click="clearFields">
                                                 <v-icon left v-text="isHopsSelected ? 'select_all' : 'clear_all'"></v-icon>
-                                                <span v-text="isHopsSelected ? 'Deselect' : 'Clear Fields'"></span>
+                                                <span v-text="isHopsSelected ? locale.addHops.form.deselect : locale.addHops.form.clear"></span>
                                             </v-btn>
                                         </v-flex>
 
                                         <v-flex text-md-right>
                                             <v-btn color="error" @click="removeHops" :disabled="!isHopsSelected">
                                                 <v-icon left>delete</v-icon>
-                                                <span>Delete</span>
+                                                <span>{{ locale.addHops.form.delete }}</span>
                                             </v-btn>
                                         </v-flex>
                                     </v-layout>
@@ -458,7 +460,7 @@
 
     import hopsSchema, { USAGE_VALUES, SHELF_LIFE_VALUES } from './hops-schema';
 
-    import locale from '../../../locale';
+    import locale, { translate } from '../../../locale';
     import { DURATION } from '../../../constants/ui';
     import { FIREBASE_REFS } from '../../../constants/firebase';
 
@@ -500,13 +502,13 @@
                 isValid: false,
 
                 nameRules: [
-                    (v) => !!v || 'Name is required'
+                    (v) => !!v || locale.addHops.form.rules.name
                 ],
                 acidRules: [
-                    (v) => !!v || 'Value is required'
+                    (v) => !!v || locale.addHops.form.rules.acid
                 ],
                 oilRules: [
-                    (v) => !!v || 'Value is required'
+                    (v) => !!v || locale.addHops.form.rules.oil
                 ],
 
                 newHops: {},
@@ -795,6 +797,8 @@
         },
 
         methods: {
+            translate: translate(locale.addHops),
+
             addHops: function () {
                 if (this.isDebugMode) return;
 
@@ -818,8 +822,8 @@
                 if (!currentHops) {
                     this.$firebaseRefs.dbHops.push(transformedHops).then(() => {
                         this.showNotification({
-                            text: `Hops ${newHopsName} successfully added!`,
-                            btnText: 'OK',
+                            text: this.translate('notification.addSuccess', {name: newHopsName}),
+                            btnText: locale.addHops.notification.ok,
                             timeout: DURATION.NOTIFICATION_SHORT,
                             btnColor: 'success'
                         });
@@ -828,8 +832,8 @@
                     });
                 } else {
                     this.showNotification({
-                        text: `Confirm new data for ${newHopsName}!`,
-                        btnText: 'Override',
+                        text: this.translate('notification.addConflict', {name: newHopsName}),
+                        btnText: locale.addHops.notification.override,
                         btnColor: 'warning',
                         onAction: () => {
                             this.notification.show = false;
@@ -838,8 +842,8 @@
                                 .child(currentKey)
                                 .set({...transformedHops}).then(() => {
                                 this.showNotification({
-                                    text: `Hops ${newHopsName} successfully updated!`,
-                                    btnText: 'OK',
+                                    text: this.translate('notification.updateSuccess', {name: newHopsName}),
+                                    btnText: locale.addHops.notification.ok,
                                     timeout: DURATION.NOTIFICATION_SHORT,
                                     btnColor: 'success'
                                 });
@@ -904,8 +908,8 @@
                 }, DURATION.NOTIFICATION_LONG);
 
                 this.showNotification({
-                    text: `Deleted successfully`,
-                    btnText: 'Undo',
+                    text: locale.addHops.notification.deleteSuccess,
+                    btnText: locale.addHops.notification.undo,
                     btnColor: 'warning',
                     timeout: DURATION.NOTIFICATION_LONG,
                     onAction: () => {
@@ -926,7 +930,7 @@
             throwError: function (message) {
                 this.showNotification({
                     text: message || locale.errors._default,
-                    btnText: 'Oh :(',
+                    btnText: locale.addHops.notification.oh,
                     btnColor: 'error',
                     timeout: DURATION.NOTIFICATION_SHORT
                 });

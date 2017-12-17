@@ -2,7 +2,9 @@ import _get from 'lodash/get';
 
 const locale = {
     general: {
-        na: 'NA'
+        na: 'NA',
+        min: 'min',
+        max: 'max'
     },
 
     errors: {
@@ -90,8 +92,7 @@ const locale = {
             oh: 'Ouch!',
             success: 'User {email} is now authorized!',
             error: 'Sorry, something is wrong: {error}'
-        },
-
+        }
     },
 
     catalogue: {
@@ -100,7 +101,70 @@ const locale = {
     },
 
     addHops: {
-        title: 'Add Hops'
+        title: 'Add Hops',
+        alert: {
+            text: 'Some fields were changed to new hops defaults',
+            dismiss: 'Don\'t show again'
+        },
+        form: {
+            titles: {
+                common: 'Common information',
+                aroma: 'Aroma Profile',
+                chem: 'Chemistry',
+                acid: 'Acid, %',
+                oil: 'Oil, ml/100g',
+                other: 'Supplementary information'
+            },
+            labels: {
+                name: 'Name',
+                alias: 'Alias',
+                usage: 'Usage',
+                primary: 'Primary',
+                secondary: 'Secondary',
+                extra: 'Extra',
+                alpha: 'Alpha',
+                beta: 'Beta',
+                cohum: 'Co-Humulone',
+                total: 'total',
+                myr: 'Myrcene',
+                hum: 'Humulene',
+                car: 'Caryophyllene',
+                far: 'Farmesene',
+                countries: 'Countries of origin',
+                usedIn: 'Most used in',
+                notes: 'Description'
+            },
+            placeholders: {
+                name: 'Cascade',
+                shelfLife: 'NA'
+            },
+            hints: {
+                alias: 'Duplicated values are not allowed',
+                usage: 'Usage',
+                shelfLife: 'Shelf life',
+                notes: 'General notes and special observations'
+            },
+            submit: 'Add',
+            update: 'Update',
+            clear: 'Clear Fields',
+            deselect: 'Deselect',
+            delete: 'Delete',
+            rules: {
+                name: 'Name is required',
+                acid: 'Value is required',
+                oil: 'Value is required'
+            }
+        },
+        notification: {
+            addSuccess: 'Hops {name} successfully added!',
+            addConflict: 'Confirm new data for {name}!',
+            updateSuccess: 'Hops {name} successfully updated!',
+            deleteSuccess: 'Deleted successfully',
+            ok: 'OK',
+            override: 'Override',
+            oh: 'Ouch!',
+            undo: 'Undo'
+        }
     },
 
     addFlag: {
@@ -128,8 +192,7 @@ const locale = {
             addConflict: 'Country {country} already exists!',
             updateSuccess: 'Country {country} successfully updated!',
             deleteSuccess: 'Deleted successfully',
-            ok: 'OK',
-            override: 'Override'
+            ok: 'OK'
         }
     },
 
