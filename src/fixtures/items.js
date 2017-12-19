@@ -207,7 +207,7 @@ export default [
             max: 12
         },
         far: {
-            min: 0,
+            min: 0.1,
             max: 1
         },
         notes: "Bred by Select Botanicals Group, Ahtanum® Brand YCR 1 is an aroma-type cultivar used for its aromatic properties and moderate bittering. The hop is named after the location where Charles Carpenter established the first hop farm east of the Cascade Mountains in Washington State in 1869."

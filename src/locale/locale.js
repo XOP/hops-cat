@@ -33,6 +33,7 @@ const locale = {
         beta: 'Beta',
         co: 'Co-hum.',
         styles: 'Used in',
+        similar: 'Similar',
         notes: 'Details',
         oil: 'Total Oil',
         myr: 'Myr.',

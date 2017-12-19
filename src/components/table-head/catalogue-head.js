@@ -102,6 +102,12 @@ export default function (locale) {
                 sortable: false
             },
             {
+                value: 'similar',
+                text: locale.tableHops.similar,
+                align: 'center',
+                sortable: false
+            },
+            {
                 value: 'notes',
                 text: locale.tableHops.notes,
                 align: 'center',

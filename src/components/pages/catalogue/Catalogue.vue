@@ -62,6 +62,7 @@
                     :aroma="props.item.aroma"
                     :notes="props.item.notes"
                     :styles="props.item.styles"
+                    :similar="props.item.similar"
                     :onClick="handleHopsClick"
                     :ctx="props"
                 >

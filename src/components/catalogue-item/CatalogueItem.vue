@@ -78,6 +78,20 @@
                 {{stylesFormatted}}
             </div>
         </td>
+        <td class="text-xs-left">
+            <div v-if="similar.length" class="catalogue-item-similar">
+                <small
+                    v-for="(item, index) in similarFormatted"
+                    :key="index"
+                >
+                    <span v-show="index > 0 && index < styles.length">,</span>
+                    <span>{{item}}</span>
+                </small>
+            </div>
+            <div v-else class="text-xs-center">
+                {{similarFormatted}}
+            </div>
+        </td>
         <td class="text-xs-center">
             <v-btn flat icon v-if="notes" @click="handleDetailsClick">
                 <v-icon>more_vert</v-icon>
@@ -220,6 +234,13 @@
                 }
             },
 
+            similar: {
+                type: Array,
+                default: function () {
+                    return [];
+                }
+            },
+
             aroma: {
                 type: Object,
                 default: function () {
@@ -298,6 +319,16 @@
 
                     return emoji.emojify(`:flag-${flagCode.toLowerCase()}:`);
                 });
+            },
+
+            similarFormatted: function () {
+                const similarItems = this.similar;
+
+                if (!similarItems.length) {
+                    return locale.general.na;
+                }
+
+                return similarItems;
             },
 
             stylesFormatted: function () {
@@ -445,6 +476,10 @@
                 return Boolean(arr.length);
             },
 
+            isSimilarValid: (arr) => {
+                return Boolean(arr.length);
+            },
+
             handleClick: function (e) {
                 return this.onClick(this.$props, e);
             },
@@ -471,6 +506,7 @@
                     status === 1 &&
                     this.isCountryValid(hops.country) &&
                     this.isStylesValid(hops.styles) &&
+                    this.isSimilarValid(hops.similar) &&
                     this.isRangeValid(hops.co, hopsSchema.co) &&
                     this.isRangeValid(hops.oil, hopsSchema.oil) &&
                     this.isRangeValid(hops.myr, hopsSchema.myr) &&
