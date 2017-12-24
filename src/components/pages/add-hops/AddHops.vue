@@ -456,6 +456,7 @@
 
     import clone from 'clone';
 
+    import _defaultsDeep from 'lodash/defaultsDeep';
     import _isEmpty from 'lodash/isEmpty';
     import _isEqual from 'lodash/isEqual';
     import _filter from 'lodash/filter';
@@ -611,9 +612,9 @@
 
                 return this.aromas.slice(0)
                     .map(aroma => {
-                        const isSelected = aromaTags.primary.indexOf(aroma.name) > -1 ||
-                            aromaTags.secondary.indexOf(aroma.name) > -1 ||
-                            aromaTags.extra.indexOf(aroma.name) > -1;
+                        const isSelected = aromaTags.primary && aromaTags.primary.indexOf(aroma.name) > -1 ||
+                            aromaTags.secondary && aromaTags.secondary.indexOf(aroma.name) > -1 ||
+                            aromaTags.extra && aromaTags.extra.indexOf(aroma.name) > -1;
 
                         return {
                             value: aroma.name,
@@ -628,7 +629,7 @@
 
                 return this.aromasProcessed.slice(0)
                     .map(aroma => {
-                        const isSelected = aromasPrimary.indexOf(aroma.value) > -1;
+                        const isSelected = aromasPrimary && aromasPrimary.indexOf(aroma.value) > -1;
 
                         return {...aroma, isSelected};
                     });
@@ -639,7 +640,7 @@
 
                 return this.aromasProcessed.slice(0)
                     .map(aroma => {
-                        const isSelected = aromasSecondary.indexOf(aroma.value) > -1;
+                        const isSelected = aromasSecondary && aromasSecondary.indexOf(aroma.value) > -1;
 
                         return {...aroma, isSelected};
                     });
@@ -650,18 +651,18 @@
 
                 return this.aromasProcessed.slice(0)
                     .map(aroma => {
-                        const isSelected = aromasExtra.indexOf(aroma.value) > -1;
+                        const isSelected = aromasExtra && aromasExtra.indexOf(aroma.value) > -1;
 
                         return {...aroma, isSelected};
                     });
             },
 
             isAroma2Disabled: function () {
-                return !this.newHops.aroma.primary.length;
+                return this.newHops.aroma.primary && !this.newHops.aroma.primary.length;
             },
 
             isAroma3Disabled: function () {
-                return !this.newHops.aroma.secondary.length;
+                return this.newHops.aroma.secondary && !this.newHops.aroma.secondary.length;
             },
 
             hops: function () {
@@ -749,6 +750,8 @@
             // checking if new value is a duplicate
             // if it is - revert to previous state
             'newHops.alias': function (alias) {
+                if (!alias) return;
+
                 if (alias.length < 2) {
                     return false;
                 }
@@ -764,6 +767,8 @@
             // if only 1 item remains in current list
             // prevent from deselecting if subsequent lists are not empty
             'newHops.aroma.primary': function (aroma, prevAroma) {
+                if (!aroma) return;
+
                 if (aroma.length === 0 && prevAroma && prevAroma.length === 1) {
                     const lastValue = prevAroma[0];
                     const isSelected = this.findSelectedInAromaCategories();
@@ -783,6 +788,8 @@
                 }
             },
             'newHops.aroma.secondary': function (aroma, prevAroma) {
+                if (!aroma) return;
+
                 if (aroma.length === 0 && prevAroma && prevAroma.length === 1) {
                     const lastValue = prevAroma[0];
                     const isSelected = this.findSelectedInAromaCategories();
@@ -812,6 +819,8 @@
                 }
             },
             'newHops.aroma.extra': function (aroma) {
+                if (!aroma) return;
+
                 const lastValue = aroma[aroma.length - 1];
                 const isSelected = this.getAromaCategoryByValue('extra', { value: lastValue });
 
@@ -871,7 +880,7 @@
                         btnText: locale.addHops.notification.override,
                         btnColor: 'warning',
                         onAction: () => {
-                            this.notification.show = false;
+                             this.notification.show = false;
 
                             this.$firebaseRefs.dbHops
                                 .child(currentKey)
@@ -915,7 +924,7 @@
                 // debug
                 console.info('selected: ', this.selectedHops);
 
-                this.newHops = {...this.newHops, ...this.selectedHops};
+                this.newHops = _defaultsDeep(this.newHops, this.selectedHops);
 
                 // backwards compatibility
                 const newHops = this.newHops;
@@ -1076,12 +1085,12 @@
                 if (inPrimary && category !== 'primary') {
                     return {
                         category: 'primary',
-                        safeToDeselect: _filter(primary, { isSelected: true }).length > 1
+                        safeToDeselect: true//_filter(primary, { isSelected: true }).length > 1
                     };
                 } else if (inSecondary && category !== 'secondary') {
                     return {
                         category: 'secondary',
-                        safeToDeselect: _filter(secondary, { isSelected: true }).length > 1
+                        safeToDeselect: true//_filter(secondary, { isSelected: true }).length > 1
                     };
                 } else if (inExtra && category !== 'extra') {
                     return {
