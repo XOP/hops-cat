@@ -52,7 +52,9 @@ export default {
 
     notes: '',
 
-    styles: []
+    styles: [],
+
+    similar: []
 };
 
 export const USAGE_MAP = {
@@ -78,7 +80,7 @@ export const SHELF_LIFE_MAP = {
 };
 
 export const SHELF_LIFE_VALUES = _transform(SHELF_LIFE_MAP, (acc, val, key) => {
-    acc.push({ value: key, text: val });
+    acc.push({ value: Number(key), text: val });
 }, []);
 
 export const STATUS_MAP = {

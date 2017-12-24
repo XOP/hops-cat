@@ -306,6 +306,16 @@
                                         maxHeight="400"
                                     ></v-select>
 
+                                    <v-select
+                                        :label="locale.addHops.form.labels.similar"
+                                        multiple
+                                        :items="similarHopsProcessed"
+                                        appendIcon=""
+                                        v-model="newHops.similar"
+                                        autocomplete
+                                        maxHeight="400"
+                                    ></v-select>
+
                                     <v-text-field
                                         multi-line
                                         :label="locale.addHops.form.labels.notes"
@@ -354,7 +364,7 @@
 
                     <v-flex d-flex md4>
                         <v-card class="grey lighten-4">
-                            <v-card-text style="max-height: 80vh; overflow: auto;">
+                            <v-card-text style="overflow: auto;">
 
                                 <pre><code class="d-block">{{ JSON.stringify(transformHops(newHops), null, 2) }}</code></pre>
 
@@ -530,7 +540,9 @@
                     'hum',
                     'car',
                     'far',
-                    'country'
+                    'country',
+                    'styles',
+                    'similar'
                 ],
 
                 usageValues: USAGE_VALUES,
@@ -669,6 +681,24 @@
                     .filter(i => this.hiddenKeys.indexOf(i['.key']) === -1);
             },
 
+            similarHopsProcessed: function () {
+                return this.hopsProcessed.slice(0)
+                    .filter(hops => hops.name !== this.selectedHops.name)
+                    .map(hops => {
+                        const alias = hops.alias && hops.alias.length ? hops.alias[0] : null;
+                        let name = hops.name;
+
+                        if (alias) {
+                            name += ` (${alias})`;
+                        }
+
+                        return {
+                            text: name,
+                            value: hops.name
+                        };
+                    });
+            },
+
             isHopsSelected: function () {
                 return !_isEmpty(this.selectedHops);
             },
@@ -689,6 +719,7 @@
                         !_isEqual(selected.alias, edited.alias) ||
                         !_isEqual(selected.country, edited.country) ||
                         !_isEqual(selected.styles, edited.styles) ||
+                        !_isEqual(selected.similar, edited.similar) ||
                         !_isEqual(selected.alpha, edited.alpha) ||
                         !_isEqual(selected.beta, edited.beta) ||
                         !_isEqual(selected.co, edited.co) ||

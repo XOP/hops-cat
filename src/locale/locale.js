@@ -133,6 +133,7 @@ const locale = {
                 far: 'Farmesene',
                 countries: 'Countries of origin',
                 usedIn: 'Most used in',
+                similar: 'Closest substitutes',
                 notes: 'Description'
             },
             placeholders: {
