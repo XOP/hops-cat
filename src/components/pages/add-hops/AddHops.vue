@@ -176,7 +176,7 @@
                                                     <v-text-field :rules="acidRules" :label="locale.general.min" required v-model.number="newHops.alpha.min" type="number"></v-text-field>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-text-field :rules="acidRules" label="locale.general.max" required v-model.number="newHops.alpha.max" type="number"></v-text-field>
+                                                    <v-text-field :rules="acidRules" :label="locale.general.max" required v-model.number="newHops.alpha.max" type="number"></v-text-field>
                                                 </v-flex>
                                             </v-layout>
                                         </v-flex>
@@ -276,6 +276,7 @@
                                         multiple
                                         :items="flagsProcessed"
                                         appendIcon=""
+                                        prependIcon="flag"
                                         item-text="name"
                                         item-value="code"
                                         v-model="newHops.country"
@@ -301,6 +302,7 @@
                                         multiple
                                         :items="stylesProcessed"
                                         appendIcon=""
+                                        prependIcon="equalizer"
                                         v-model="newHops.styles"
                                         autocomplete
                                         maxHeight="400"
@@ -311,6 +313,7 @@
                                         multiple
                                         :items="similarHopsProcessed"
                                         appendIcon=""
+                                        prependIcon="swap_horiz"
                                         v-model="newHops.similar"
                                         autocomplete
                                         maxHeight="400"
