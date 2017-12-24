@@ -130,7 +130,7 @@ const locale = {
                 myr: 'Myrcene',
                 hum: 'Humulene',
                 car: 'Caryophyllene',
-                far: 'Farmesene',
+                far: 'Farnesene',
                 countries: 'Countries of origin',
                 usedIn: 'Most used in',
                 similar: 'Closest substitutes',

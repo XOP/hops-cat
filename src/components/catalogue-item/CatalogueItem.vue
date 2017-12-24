@@ -4,7 +4,7 @@
         @click="handleClick"
     >
         <td class="text-xs-left">
-            <v-icon :color="statusFormatted">insert_chart</v-icon>
+            <v-icon :color="statusFormatted">assignment</v-icon>
         </td>
         <td class="text-xs-left">
             <div>{{name}}</div>

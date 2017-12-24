@@ -719,14 +719,14 @@
                         selected.notes !== edited.notes ||
                         selected.usage !== edited.usage ||
                         selected.shelfLife !== edited.shelfLife ||
-                        !_isEqual(selected.alias, edited.alias) ||
-                        !_isEqual(selected.country, edited.country) ||
-                        !_isEqual(selected.styles, edited.styles) ||
-                        !_isEqual(selected.similar, edited.similar) ||
+                        !this.isArrayEqual(selected.alias, edited.alias) ||
+                        !this.isArrayEqual(selected.country, edited.country) ||
+                        !this.isArrayEqual(selected.styles, edited.styles) ||
+                        !this.isArrayEqual(selected.similar, edited.similar) ||
+                        !this.isAromaEqual(selected.aroma, edited.aroma) ||
                         !_isEqual(selected.alpha, edited.alpha) ||
                         !_isEqual(selected.beta, edited.beta) ||
                         !_isEqual(selected.co, edited.co) ||
-                        !_isEqual(selected.aroma, edited.aroma) ||
                         !_isEqual(selected.oil, edited.oil) ||
                         !_isEqual(selected.myr, edited.myr) ||
                         !_isEqual(selected.hum, edited.hum) ||
@@ -985,6 +985,27 @@
                 // remove notifications and errors
                 this.hideDefaultPropsNotification();
                 this.notification.show = false;
+            },
+
+            isArrayEqual: function (selected, edited) {
+                if (selected) {
+                    return _isEqual(selected, edited);
+                } else {
+                    // returns true if edited doesn't have values
+                    return !edited.length;
+                }
+            },
+
+            isAromaEqual: function (selected, edited) {
+                if (selected && selected.primary && selected.secondary && selected.extra) {
+                    return _isEqual(selected.primary, edited.primary) &&
+                        _isEqual(selected.secondary, edited.secondary) &&
+                        _isEqual(selected.extra, edited.extra)
+                } else {
+                    return !edited.primary.length &&
+                        !edited.secondary.length &&
+                        !edited.extra.length
+                }
             },
 
             removeFlag: function (flag) {
